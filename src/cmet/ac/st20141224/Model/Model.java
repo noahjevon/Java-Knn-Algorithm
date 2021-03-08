@@ -6,10 +6,6 @@ public class Model {
 
     public Model() {}
 
-    public Model(String input) {
-        this.inputtext = input;
-    }
-
     /**
      * @return the labeltext
      */
@@ -21,10 +17,10 @@ public class Model {
      * @param labeltext the labeltext to set
      */
     public void setImagetext(String input) {
-        this.inputtext = "Image(s) Selected: " + input;
+        this.inputtext = input;
     }
 
     public void setSourcetext(String input) {
-        this.inputtext = "Input(s) Selected: " + input;
+        this.inputtext = input;
     }
 }

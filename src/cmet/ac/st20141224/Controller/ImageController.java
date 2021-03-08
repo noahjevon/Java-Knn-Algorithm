@@ -43,7 +43,7 @@ public class ImageController {
         // Create a new JFrame container
         JFrame jfrm = new JFrame("Select Image");
 
-        // Creating file filter to only show .png images
+        // Filechooser to select images
         this.fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);  // Allow multiple selection
         FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG file", "png");  // File filter
@@ -69,7 +69,8 @@ public class ImageController {
                 int image_height = img.getHeight();
 
                 if (image_width > 32 && image_height > 32) {  // Checking to see if image is over-sized
-                    System.out.println("Image " + path + " " + name + " greater than 32x32.");  // Informing user
+                    JOptionPane.showMessageDialog(jfrm, "Image: " + name + " over 32x32 px. Could not load.",
+                            "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
                 else {  // Image not over-sized. Adding metadata to arrays & string.
                     images.add(name);
@@ -77,8 +78,14 @@ public class ImageController {
                     imagesString += name + " ";
                 }
             }
-            this.model.setImagetext(imagesString);  // Updating labels
-            this.view.jlabImg.setText(this.model.getInputtext());
+            if (images.size() > 3) {
+                this.model.setImagetext(imagesString);  // Updating labels
+                this.view.jlabImgDir.setText("Lots!");
+            }
+            else {
+                this.model.setImagetext(imagesString);  // Updating labels
+                this.view.jlabImgDir.setText(this.model.getInputtext());
+            }
         }
     }
 }
