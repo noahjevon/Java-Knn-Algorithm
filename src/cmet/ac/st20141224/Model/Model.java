@@ -1,4 +1,4 @@
-package cmet.ac.st20141224;
+package cmet.ac.st20141224.Model;
 
 public class Model {
 
@@ -27,7 +27,4 @@ public class Model {
     public void setSourcetext(String input) {
         this.inputtext = "Input(s) Selected: " + input;
     }
-
-
-
 }

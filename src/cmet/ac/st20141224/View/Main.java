@@ -1,28 +1,31 @@
-package cmet.ac.st20141224;
+package cmet.ac.st20141224.View;
+
+import cmet.ac.st20141224.Controller.*;
+import cmet.ac.st20141224.Model.Model;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.*;
+import javax.xml.transform.Source;
 
 
 public class Main {
-    JButton 	btnSrc;
-    JLabel      jlabSrc;
-    JLabel      jlabImg;
-    JButton 	btnImage;
-    JButton     btnRun;
-    JTextField	txtK;
-    JTextField	txtLabel;
-    JLabel 		jlabK;
-    JLabel 		jlabLabel;
+    public JButton 	    btnSrc;
+    public JLabel       jlabSrc;
+    public JLabel       jlabImg;
+    public JButton 	    btnImage;
+    public JButton      btnRun;
+    public JTextField	txtK;
+    public JTextField	txtLabel;
+    public JLabel 		jlabK;
+    public JLabel 		jlabLabel;
 
-    Model       model;
-    Controller  controller;
+    Model model;
+    Controller controller;
+    ImageController imageController;
+    SourceController sourceController;
 
 
     public Main() {
-
         // Create a new JFrame container.
         JFrame jfrm = new JFrame("st20141224 kNN Image Classification");
 
@@ -34,7 +37,6 @@ public class Main {
         jfrm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // initialise components
-
         this.btnSrc 	= new JButton("Select Input Source");  // Input source
         this.jlabSrc 	= new JLabel("Input(s) Selected: ");
 
@@ -66,10 +68,11 @@ public class Main {
 
         this.model      = new Model();
         this.controller = new Controller(this.model, this);
+        this.imageController = new ImageController(this.model, this);
+        this.sourceController = new SourceController(this.model, this);
 
         // Display the frame.
         jfrm.setVisible(true);
-
     }
 
 
