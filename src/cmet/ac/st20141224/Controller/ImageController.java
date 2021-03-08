@@ -80,7 +80,7 @@ public class ImageController {
             }
             if (images.size() > 3) {
                 this.model.setImagetext(imagesString);  // Updating labels
-                this.view.jlabImgDir.setText("Lots!");
+                this.view.jlabImgDir.setText("Images Selected: Lots!");
             }
             else {
                 this.model.setImagetext(imagesString);  // Updating labels

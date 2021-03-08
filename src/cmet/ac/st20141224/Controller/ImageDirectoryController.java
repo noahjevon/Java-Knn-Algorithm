@@ -88,7 +88,7 @@ public class ImageDirectoryController {
 
                 if (imagesDir.size() > 3) {
                     this.model.setImagetext(imagesStringDir);  // Updating labels
-                    this.view.jlabImgDir.setText("Lots!");
+                    this.view.jlabImgDir.setText("Images Selected: Lots!");
                 }
                 else {
                     this.model.setImagetext(imagesStringDir);  // Updating labels
