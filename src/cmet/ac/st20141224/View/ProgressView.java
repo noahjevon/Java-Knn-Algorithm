@@ -1,4 +1,4 @@
 package cmet.ac.st20141224.View;
 
-public class KnnViewUI {
+public class ProgressView {
 }
