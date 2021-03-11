@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="cmet.ac.st20141224.View.Panel.ImageChoosePanel">
+  <grid id="27dc6" binding="form" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="924" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="a0504" class="javax.swing.JButton" binding="openImageBtn">
+        <constraints border-constraint="West"/>
+        <properties>
+          <text value="Open Image"/>
+        </properties>
+      </component>
+      <component id="4e3bc" class="javax.swing.JLabel" binding="imagePathLbl">
+        <constraints border-constraint="Center"/>
+        <properties>
+          <text value="Image Path: "/>
+        </properties>
+      </component>
+      <component id="bb28a" class="javax.swing.JTextField" binding="imageNameTxt">
+        <constraints border-constraint="East"/>
+        <properties>
+          <columns value="15"/>
+          <editable value="false"/>
+          <enabled value="false"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
