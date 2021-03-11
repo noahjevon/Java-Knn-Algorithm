@@ -4,12 +4,14 @@ package cmet.ac.st20141224.FileIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+
 public class BufferedImageReader {
     int label;
     int[] imagedata;
     int image_width;
     int image_height;
     BufferedImage img;
+
 
     public BufferedImageReader(int label, int[] image_data, int image_width, int image_height) {
         this.label = label;

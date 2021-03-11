@@ -35,8 +35,6 @@ public class Controller {
 
         String path = selected_path.getAbsolutePath();
 
-        // Update path variable in the Model class
-
         // Update view with the selected path
         this.mainView.getImageChoosePanel().getImageNameTxt().setText(path);
     }
@@ -47,8 +45,6 @@ public class Controller {
         System.out.println("Folder name: " + selected_path.getAbsolutePath());
 
         String path = selected_path.getAbsolutePath();
-
-        // Update path variable in the Model class
 
         // Update view with the selected path
         this.mainView.getSourceChoosePanel().getSourceNameTxt().setText(path);
@@ -61,8 +57,6 @@ public class Controller {
 
         String path = selected_path.getAbsolutePath();
 
-        // Update path variable in the Model class
-
         // Update view with the selected path
         this.mainView.getParameterPanel().getLabelNameTxt().setText(path);
     }
@@ -74,11 +68,12 @@ public class Controller {
         String kValue = this.mainView.getParameterPanel().getkValueTxt().getText();
 
         // Update Model class
-        this.model.setImgSrc(imgSrc);
-        this.model.setSrcSrc(srcSrc);
-        this.model.setLblSrc(lblSrc);
-        this.model.setkValue(kValue);
+        this.checkParams.setImgSrc(imgSrc);
+        this.checkParams.setSrcSrc(srcSrc);
+        this.checkParams.setLblSrc(lblSrc);
+        this.checkParams.setkValue(kValue);
 
+        // Run checkParams in CheckParams class to ensure that fields are filled out correctly
         this.checkParams.checkParams();
     }
 

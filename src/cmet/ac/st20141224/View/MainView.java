@@ -46,8 +46,8 @@ public class MainView {
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setVisible(true);
 
-        checkParams = new CheckParams();
         model = new Model(checkParams);
+        checkParams = new CheckParams(model);
         controller = new Controller(model, this, checkParams);
     }
 

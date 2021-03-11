@@ -22,14 +22,7 @@ public class Model {
     }
 
     public void setImgSrc(String imgSrc) {
-        if (imgSrc.equals("")) {
-            ErrorView.errorMessage("Image source cannot be null!", "Image Source Error");
-            checkParams.setImg(false);
-        }
-        else {
-            this.imgSrc = imgSrc;
-            this.checkParams.setImg(true);
-        }
+        this.imgSrc = imgSrc;
     }
 
     public String getSrcSrc() {
@@ -37,14 +30,7 @@ public class Model {
     }
 
     public void setSrcSrc(String srcSrc) {
-        if (srcSrc.equals("")) {
-            ErrorView.errorMessage("Model source cannot be null!", "Model Source Error");
-            this.checkParams.setSrc(false);
-        }
-        else {
-            this.imgSrc = srcSrc;
-            this.checkParams.setSrc(true);
-        }
+        this.imgSrc = srcSrc;
     }
 
     public String getLblSrc() {
@@ -52,14 +38,7 @@ public class Model {
     }
 
     public void setLblSrc(String lblSrc) {
-        if (lblSrc.equals("")) {
-            ErrorView.errorMessage("Label source cannot be null!", "Label Source Error");
-            this.checkParams.setLbl(false);
-        }
-        else {
-            this.imgSrc = lblSrc;
-            this.checkParams.setLbl(true);
-        }
+        this.imgSrc = lblSrc;
     }
 
     public String getkValue() {
@@ -67,18 +46,6 @@ public class Model {
     }
 
     public void setkValue(String kValue) {
-        if (kValue.equals("")) {
-            ErrorView.errorMessage("K value cannot be null!", "K value Source Error");
-            this.checkParams.setkVal(false);
-        }
-        int kValueInt = Integer.parseInt(kValue);
-        if ((kValueInt < 1) || (kValueInt > 10)) {
-            ErrorView.errorMessage("K value must be between 1 and 10!", "K value Error");
-            this.checkParams.setkVal(false);
-        }
-        else {
-            this.kValue = kValue;
-            this.checkParams.setkVal(true);
-        }
+        this.kValue = kValue;
     }
 }
