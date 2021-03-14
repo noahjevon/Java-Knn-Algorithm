@@ -22,14 +22,14 @@ public class Controller {
         initController();
     }
 
-    private void initController() {
+    private void initController() {  // Action listeners for the various buttons within the MainView and panels
         this.mainView.getImageChoosePanel().getOpenImageBtn().addActionListener((ae) -> imageOpenAction());
         this.mainView.getSourceChoosePanel().getOpenSourceBtn().addActionListener((ae) -> sourceOpenAction());
         this.mainView.getParameterPanel().getOpenLabelBtn().addActionListener((ae) -> paramOpenAction());
         this.mainView.getRunPanel().getRunModelBtn().addActionListener((ae) -> runModelAction());
     }
 
-    private void imageOpenAction() {
+    private void imageOpenAction() {  // Image selection action
         File selected_path = this.mainView.getImageChoosePanel().showDirectoryChooserDialog();
 
         System.out.println("Image Folder name: " + selected_path.getAbsolutePath());
@@ -40,7 +40,7 @@ public class Controller {
         this.mainView.getImageChoosePanel().getImageNameTxt().setText(path);
     }
 
-    private void sourceOpenAction() {
+    private void sourceOpenAction() {  // Training data selection action
         File selected_path = this.mainView.getSourceChoosePanel().showDirectoryChooserDialog();
 
         System.out.println("Source Folder name: " + selected_path.getAbsolutePath());
@@ -51,7 +51,7 @@ public class Controller {
         this.mainView.getSourceChoosePanel().getSourceNameTxt().setText(path);
     }
 
-    private void paramOpenAction() {
+    private void paramOpenAction() {  // Label selection action
         File selected_path = this.mainView.getParameterPanel().showDirectoryChooserDialog();
 
         System.out.println("Label Folder name: " + selected_path.getAbsolutePath());
@@ -62,7 +62,7 @@ public class Controller {
         this.mainView.getParameterPanel().getLabelNameTxt().setText(path);
     }
 
-    private void runModelAction() {
+    private void runModelAction() {  // Run model action
         String imgSrc = this.mainView.getImageChoosePanel().getImageNameTxt().getText();
         String srcSrc = this.mainView.getSourceChoosePanel().getSourceNameTxt().getText();
         String lblSrc = this.mainView.getParameterPanel().getLabelNameTxt().getText();
@@ -72,12 +72,13 @@ public class Controller {
         this.model.setLblSrc(lblSrc);
         this.model.setImgSrc(imgSrc);
 
+        // Setting variables in CheckParams class
         this.checkParams.setImgSrc(imgSrc);
         this.checkParams.setSrcSrc(srcSrc);
         this.checkParams.setLblSrc(lblSrc);
         this.checkParams.setkValue(kValue);
 
-//         Run checkParams in CheckParams class to ensure that fields are filled out correctly
+        // Run checkParams in CheckParams class to ensure that fields are filled out correctly
         this.checkParams.checkParams();
     }
 
