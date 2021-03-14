@@ -11,7 +11,7 @@ public class Model {
     String kValue;
     List<String> labelList;
 
-    IFileReader labelReader;
+    IFileReader labelReader;  // Creating instance of IFileReader *3
     IFileReader imageReader;
     IFileReader sourceReader;
 
@@ -24,6 +24,8 @@ public class Model {
         sourceReader = new BufferedSourceReader();
     }
 
+
+    // Setters & Getters
     public String getImgSrc() {
         return imgSrc;
     }
