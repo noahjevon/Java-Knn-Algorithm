@@ -6,6 +6,7 @@ import cmet.ac.st20141224.Model.Model;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 
 public class Controller {
 
@@ -31,7 +32,7 @@ public class Controller {
     private void imageOpenAction() {
         File selected_path = this.mainView.getImageChoosePanel().showDirectoryChooserDialog();
 
-        System.out.println("Folder name: " + selected_path.getAbsolutePath());
+        System.out.println("Image Folder name: " + selected_path.getAbsolutePath());
 
         String path = selected_path.getAbsolutePath();
 
@@ -42,7 +43,7 @@ public class Controller {
     private void sourceOpenAction() {
         File selected_path = this.mainView.getSourceChoosePanel().showDirectoryChooserDialog();
 
-        System.out.println("Folder name: " + selected_path.getAbsolutePath());
+        System.out.println("Source Folder name: " + selected_path.getAbsolutePath());
 
         String path = selected_path.getAbsolutePath();
 
@@ -53,7 +54,7 @@ public class Controller {
     private void paramOpenAction() {
         File selected_path = this.mainView.getParameterPanel().showDirectoryChooserDialog();
 
-        System.out.println("Folder name: " + selected_path.getAbsolutePath());
+        System.out.println("Label Folder name: " + selected_path.getAbsolutePath());
 
         String path = selected_path.getAbsolutePath();
 
@@ -68,36 +69,18 @@ public class Controller {
         String kValue = this.mainView.getParameterPanel().getkValueTxt().getText();
 
         // Update Model class
+        this.model.setLblSrc(lblSrc);
+        this.model.setImgSrc(imgSrc);
+
         this.checkParams.setImgSrc(imgSrc);
         this.checkParams.setSrcSrc(srcSrc);
         this.checkParams.setLblSrc(lblSrc);
         this.checkParams.setkValue(kValue);
 
-        // Run checkParams in CheckParams class to ensure that fields are filled out correctly
+//         Run checkParams in CheckParams class to ensure that fields are filled out correctly
         this.checkParams.checkParams();
     }
 
 }
-//    JFrame jfrm = new JFrame("Run Model");
-//
-//    Model model;
-//    MainView view;
-//    String error = "";
-//
-//    public Controller(Model model, MainView view) {
-//        this.model = model;
-//        this.view = view;
-//
-//        initController();
-//    }
-//
-//    public void initController() {
-//        this.view.btnRun.addActionListener((ae) -> runModel());
-//    }
-//
-//    private void runModel() {
-//        // Make file input streams for data and images - loop through array, start new thread for each
-//        System.out.println("Ran model.");
-//    }
 
 
