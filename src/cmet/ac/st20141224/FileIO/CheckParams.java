@@ -4,6 +4,8 @@ import cmet.ac.st20141224.Model.Model;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
+import java.io.IOException;
+
 public class CheckParams {
     Model model;
 
@@ -11,6 +13,8 @@ public class CheckParams {
     Boolean src;
     Boolean lbl;
     Boolean kVal;
+
+    String lblSrc;
 
 
     public CheckParams(Model model) {
@@ -23,7 +27,6 @@ public class CheckParams {
             ErrorView.errorMessage("Image source cannot be null!", "Image Source Error");
             setImg(false);
         } else {
-            this.model.setImgSrc(imgSrc);
             setImg(true);
         }
     }
@@ -43,7 +46,6 @@ public class CheckParams {
             ErrorView.errorMessage("Label source cannot be null!", "Label Source Error");
             setLbl(false);
         } else {
-            this.model.setLblSrc(lblSrc);
             setLbl(true);
         }
     }
@@ -103,6 +105,29 @@ public class CheckParams {
     public void checkParams() {
         if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
             AlertView.alertMessage("Running model!", "Alert");
+
+            try {  // Label reader
+                this.model.getLabelReader().setFilename(this.model.getLblSrc());
+                this.model.getLabelReader().read();
+            } catch (IOException e) {
+                ErrorView.errorMessage("Error reading label data", "Label Error");
+            }
+
+            try {  // Source reader
+                this.model.getImageReader().setFilename(this.model.getImgSrc());
+                this.model.getImageReader().read();
+            } catch (IOException e) {
+                ErrorView.errorMessage("Error reading image data", "Image Error");
+            }
+
+            try {  // Image reader
+                this.model.getSourceReader().setFilename(this.model.getSrcSrc());
+                this.model.getSourceReader().setLabelName(this.model.getLblSrc());
+                this.model.getSourceReader().read();
+            } catch (IOException e) {
+                ErrorView.errorMessage("Error reading image data", "Image Error");
+            }
+
         }
         else {
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");
