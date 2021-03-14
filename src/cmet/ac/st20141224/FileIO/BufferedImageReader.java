@@ -1,111 +1,63 @@
 package cmet.ac.st20141224.FileIO;
 
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
-public class BufferedImageReader {
-    int label;
-    int[] imagedata;
-    int image_width;
-    int image_height;
+public class BufferedImageReader implements IFileReader {
+    String fileName;
     BufferedImage img;
+    ArrayList<String> images = new ArrayList<>();
 
-
-    public BufferedImageReader(int label, int[] image_data, int image_width, int image_height) {
-        this.label = label;
-        this.imagedata = image_data;
-        this.image_width = image_width;
-        this.image_height = image_height;
-        this.generateBufferedImage();
+    @Override
+    public void read() throws IOException {
+        System.out.println("filename" + fileName);
+        this.img = ImageIO.read(new FileInputStream(this.fileName));
+        displayImage();
     }
 
-
-    private void generateBufferedImage() {
-        if(imagedata.length > 0) {
-            this.img = new BufferedImage(this.image_width, this.image_height, 2);
-            this.img.setRGB(0, 0, this.image_width, this.image_height, this.imagedata, 0, this.image_width);
-        }
+    @Override
+    public Object getData() {
+        return this.img;
     }
 
-
-    /**
-     * @return the label
-     */
-    public int getLabel() {
-        return label;
+    @Override
+    public void setFilename(String filename) {
+        this.fileName = filename;
     }
 
-
-    /**
-     * @param label the label to set
-     */
-    public void setLabel(int label) {
-        this.label = label;
+    @Override
+    public String getFilename() {
+        return this.fileName;
     }
 
+    @Override
+    public void setLabelName(String labelName) {
 
-    /**
-     * @return the imagedata
-     */
-    public int[] getImagedata() {
-        return imagedata;
     }
 
+    // Temporary Function
+    public void displayImage() {
+        JLabel picLabel = new JLabel(new ImageIcon(img));
 
-    /**
-     * @param imagedata the imagedata to set
-     */
-    public void setImagedata(int[] imagedata) {
-        this.imagedata = imagedata;
-    }
+        JPanel jPanel = new JPanel();
+        jPanel.add(picLabel);
 
-
-    /**
-     * @return the image_width
-     */
-    public int getImage_width() {
-        return image_width;
-    }
-
-
-    /**
-     * @param image_width the image_width to set
-     */
-    public void setImage_width(int image_width) {
-        this.image_width = image_width;
-    }
-
-
-    /**
-     * @return the image_height
-     */
-    public int getImage_height() {
-        return image_height;
-    }
-
-
-    /**
-     * @param image_height the image_height to set
-     */
-    public void setImage_height(int image_height) {
-        this.image_height = image_height;
-    }
-
-
-    /**
-     * @return the buf_image
-     */
-    public BufferedImage getBuf_image() {
-        return img;
-    }
-
-
-    /**
-     * @param buf_image the buf_image to set
-     */
-    public void setBuf_image(BufferedImage buf_image) {
-        this.img = buf_image;
+        JFrame frame = new JFrame();
+        frame.setSize(new Dimension(img.getWidth(),img.getHeight()));
+        frame.add(jPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
     }
 }
