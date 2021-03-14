@@ -10,12 +10,13 @@ import java.awt.*;
 
 public class MainView {
 
+    // Initialise JFrame and panels required to build the view
     JFrame mainWindow;
-    ImageChoosePanel imageChoosePanel;
-    SourceChoosePanel sourceChoosePanel;
-    ParameterPanel parameterPanel;
-    ImagePanel imagePanel;
-    RunPanel runPanel;
+    ImageChoosePanel imageChoosePanel;  // Panel for image selection
+    SourceChoosePanel sourceChoosePanel;  // Panel for training set selection
+    ParameterPanel parameterPanel;  // Panel for K value and label source selection
+    ImagePanel imagePanel;  // Panel to display the image selected
+    RunPanel runPanel;  // Panel to display the run button
 
     Model model;
     CheckParams checkParams;
@@ -25,38 +26,40 @@ public class MainView {
 
     private MainView() {
         mainWindow = new JFrame("st20141224 Knn Image Classification");
-        mainWindow.setSize(500,250);
-        mainWindow.setLayout(new BoxLayout(mainWindow.getContentPane(), BoxLayout.Y_AXIS));
+        mainWindow.setSize(500,250);  // Setting size of MainWindow
+        mainWindow.setLayout(new BoxLayout(mainWindow.getContentPane(), BoxLayout.Y_AXIS));  // Specifying BoxLayout
 
-        imageChoosePanel = new ImageChoosePanel(mainWindow);
+        imageChoosePanel = new ImageChoosePanel(mainWindow);  // Adding image selection panel to JFrame
         mainWindow.add(imageChoosePanel);
 
-        sourceChoosePanel = new SourceChoosePanel(mainWindow);
+        sourceChoosePanel = new SourceChoosePanel(mainWindow);  // Adding training set selection panel to JFrame
         mainWindow.add(sourceChoosePanel);
 
-        parameterPanel = new ParameterPanel(mainWindow);
+        parameterPanel = new ParameterPanel(mainWindow);  // Adding parameter selection panel to JFrame
         mainWindow.add(parameterPanel);
 
-        imagePanel = new ImagePanel(mainWindow);
+        imagePanel = new ImagePanel(mainWindow);  // Adding image display panel to JFrame
         mainWindow.add(imagePanel);
 
-        runPanel = new RunPanel(mainWindow);
+        runPanel = new RunPanel(mainWindow);  // Adding run button panel to JFrame
         mainWindow.add(runPanel);
 
-        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainWindow.setVisible(true);
+        mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Setting program to close when GUI is exited
+        mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels cal be seen
 
         model = new Model(checkParams);
         checkParams = new CheckParams(model);
         controller = new Controller(model, this, checkParams);
     }
 
-    public static MainView getInstance() {
+    public static MainView getInstance() {  // Creating a new instance of MainView so only one can run at once
         if(instance == null)
             instance = new MainView();
         return instance;
     }
 
+
+    // Setters & Getters
     public ImageChoosePanel getImageChoosePanel() {
         return imageChoosePanel;
     }
