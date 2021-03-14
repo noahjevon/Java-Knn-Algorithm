@@ -1,20 +1,27 @@
 package cmet.ac.st20141224.Model;
 
-import cmet.ac.st20141224.Controller.Controller;
-import cmet.ac.st20141224.FileIO.CheckParams;
-import cmet.ac.st20141224.Launcher.Launcher;
-import cmet.ac.st20141224.View.*;
+import cmet.ac.st20141224.FileIO.*;
+
+import java.util.List;
 
 public class Model {
     String imgSrc;
     String srcSrc;
     String lblSrc;
     String kValue;
+    List<String> labelList;
+
+    IFileReader labelReader;
+    IFileReader imageReader;
+    IFileReader sourceReader;
 
     CheckParams checkParams;
 
     public Model(CheckParams checkParams) {
         this.checkParams = checkParams;
+        labelReader = new BufferedLabelReader();
+        imageReader = new BufferedImageReader();
+        sourceReader = new BufferedSourceReader();
     }
 
     public String getImgSrc() {
@@ -30,7 +37,7 @@ public class Model {
     }
 
     public void setSrcSrc(String srcSrc) {
-        this.imgSrc = srcSrc;
+        this.srcSrc = srcSrc;
     }
 
     public String getLblSrc() {
@@ -38,7 +45,7 @@ public class Model {
     }
 
     public void setLblSrc(String lblSrc) {
-        this.imgSrc = lblSrc;
+        this.lblSrc = lblSrc;
     }
 
     public String getkValue() {
@@ -47,5 +54,37 @@ public class Model {
 
     public void setkValue(String kValue) {
         this.kValue = kValue;
+    }
+
+    public List getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<String> labelList) {
+        this.labelList = labelList;
+    }
+
+    public IFileReader getLabelReader() {
+        return labelReader;
+    }
+
+    public void setLabelReader(IFileReader lLreader) {
+        this.labelReader = lLreader;
+    }
+
+    public IFileReader getImageReader() {
+        return imageReader;
+    }
+
+    public void setImageReader(IFileReader iReader) {
+        this.imageReader = iReader;
+    }
+
+    public IFileReader getSourceReader() {
+        return sourceReader;
+    }
+
+    public void setSourceReader(IFileReader sReader) {
+        this.sourceReader = sReader;
     }
 }
