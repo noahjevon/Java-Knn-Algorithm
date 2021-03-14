@@ -6,4 +6,5 @@ public interface IFileReader {
     public Object getData();	// returns the data read from the file.
     public void setFilename(String filename);
     public String getFilename();
+    public void setLabelName(String labelName);
 }
