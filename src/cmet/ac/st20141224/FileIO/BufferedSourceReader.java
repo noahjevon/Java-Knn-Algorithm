@@ -1,5 +1,6 @@
 package cmet.ac.st20141224.FileIO;
 
+import cmet.ac.st20141224.Controller.Controller;
 import cmet.ac.st20141224.Model.Model;
 
 import javax.imageio.ImageIO;
@@ -11,20 +12,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BufferedSourceReader implements IFileReader {
-
     String CIFAR;
     String labelPath;
 
     FileInputStream in_stream_images;
 
     List<String> labelList;
-    List<SourceImage> imageList;
-
-    Model model;
+    List<String> imageList;
 
     public BufferedSourceReader() {
-        this.imageList = new ArrayList<SourceImage>();
-        this.labelList = new ArrayList<String>();
+        this.labelList = new ArrayList<>();
     }
 
     @Override
@@ -32,34 +29,44 @@ public class BufferedSourceReader implements IFileReader {
 
         String image_filename = CIFAR;
 
-            in_stream_images = new FileInputStream(image_filename);
-                while(in_stream_images.available() > 0) {
-                    int label = in_stream_images.read();
-                    System.out.println("Label: " + label);
-                    Object textLabel = this.model.getLabelReader().getData();
-                    System.out.println("Text Label: " + textLabel);
+        in_stream_images = new FileInputStream(image_filename);
 
-                    int image_size = 1024;
-                    byte[] red_Data = new byte[1024];
-                    in_stream_images.read(red_Data);
+        // Read list of labels
+        labelList.clear();
+        Scanner s = new Scanner(new File(labelPath));
+        while (s.hasNext()) {
+            labelList.add(s.next());
+        }
+        s.close();
+        System.out.println(labelList);
 
-                    byte[] green_Data = new byte[1024];
-                    in_stream_images.read(green_Data);
+            while(in_stream_images.available() > 0) {
+                int label = in_stream_images.read();
+                System.out.println("Label: " + label + "Text label: " + labelList.get(label));
 
-                    byte[] blue_Data = new byte[1024];
-                    in_stream_images.read(blue_Data);
+                byte[] red_Data = new byte[1024];
+                in_stream_images.read(red_Data);
 
-                    BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+                byte[] green_Data = new byte[1024];
+                in_stream_images.read(green_Data);
 
-                    for(int i=0; i < 32; i++) {
-                        for (int j = 0; j < 32; j++) {
-                            Color color = new Color(
-                                    red_Data[i * 32 + j] & 0xFF,
-                                    green_Data[i * 32 + j] & 0xFF,
-                                    blue_Data[i * 32 + j] & 0xFF);
-                            img.setRGB(i, j, color.getRGB());
-                        }
+                byte[] blue_Data = new byte[1024];
+                in_stream_images.read(blue_Data);
+
+                BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+
+                for(int i=0; i < 32; i++) {
+                    for (int j = 0; j < 32; j++) {
+                        Color color = new Color(
+                                red_Data[i * 32 + j] & 0xFF,
+                                green_Data[i * 32 + j] & 0xFF,
+                                blue_Data[i * 32 + j] & 0xFF);
+                        img.setRGB(i, j, color.getRGB());
+                        int red = red_Data[i * 32 + j] & 0xFF;
+                        int green = green_Data[i * 32 + j] & 0xFF;
+                        int blue = blue_Data[i * 32 + j] & 0xFF;
                     }
+                }
             }
         }
 
