@@ -61,9 +61,14 @@ public class BufferedSourceReader implements IFileReader {
                                 green_Data[i * 32 + j] & 0xFF,
                                 blue_Data[i * 32 + j] & 0xFF);
                         img.setRGB(i, j, color.getRGB());
+                        // Get individual red, green and blue values of each pixel in image
                         int red = red_Data[i * 32 + j] & 0xFF;
                         int green = green_Data[i * 32 + j] & 0xFF;
                         int blue = blue_Data[i * 32 + j] & 0xFF;
+                        // Combine individual red, green, blue into one RGB value
+                        int rgb = (65536 * red) + (256 * green) + blue;  // Algorithm from StackOverflow user taskinoor
+                        // https://stackoverflow.com/questions/4801366/convert-rgb-values-to-integer#comment95858351_4801446
+                        System.out.println(rgb);
                     }
                 }
             }
