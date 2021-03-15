@@ -38,7 +38,6 @@ public class BufferedSourceReader implements IFileReader {
             labelList.add(s.next());
         }
         s.close();
-        System.out.println(labelList);
 
             while(in_stream_images.available() > 0) {
                 int label = in_stream_images.read();
