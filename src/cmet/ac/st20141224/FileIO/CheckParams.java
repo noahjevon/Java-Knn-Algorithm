@@ -4,6 +4,9 @@ import cmet.ac.st20141224.Model.Model;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -35,6 +38,19 @@ public class CheckParams {
         if (srcSrc.equals("")) {  // Check if training source is null
             ErrorView.errorMessage("Training source cannot be null!", "Training Source Error");
             setSrc(false);
+        }
+        BufferedImage img = null;
+        try {
+            img = ImageIO.read(new File(this.model.getImgSrc()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int image_width = img.getWidth();  // Getting image width and height
+        int image_height = img.getHeight();
+
+        if (image_width > 32 && image_height > 32) {  // Checking to see if image is over-sized
+            ErrorView.errorMessage("Image cannot be larger than 32x32!", "Image Size Error");
         } else {
             this.model.setSrcSrc(srcSrc);
             setSrc(true);
