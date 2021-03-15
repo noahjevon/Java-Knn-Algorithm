@@ -86,6 +86,7 @@ public class CheckParams {
 
             try {  // Read specified image
                 this.model.getImageReader().setFilename(this.model.getImgSrc());
+                this.model.getImageReader().setLabelName(this.model.getLblSrc());
                 this.model.getImageReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the source
                 ErrorView.errorMessage("Error reading image data", "Image Error");
