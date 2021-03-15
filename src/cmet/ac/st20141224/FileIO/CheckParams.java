@@ -5,6 +5,7 @@ import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CheckParams {
     Model model;
@@ -83,18 +84,19 @@ public class CheckParams {
                 ErrorView.errorMessage("Error reading label data", "Label Error");
             }
 
-            try {  // Read specified source
+            try {  // Read specified image
                 this.model.getImageReader().setFilename(this.model.getImgSrc());
                 this.model.getImageReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the source
-                ErrorView.errorMessage("Error reading source data", "Source Error");
+                ErrorView.errorMessage("Error reading image data", "Image Error");
             }
 
             try {  // Read specified image
                 this.model.getSourceReader().setFilename(this.model.getSrcSrc());
+                this.model.getSourceReader().setLabelName(this.model.getLblSrc());
                 this.model.getSourceReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the source
-                ErrorView.errorMessage("Error reading image data", "Image Error");
+                ErrorView.errorMessage("Error reading source data", "Source Error");
             }
 
         }
@@ -135,5 +137,4 @@ public class CheckParams {
     public void setkVal(Boolean kVal) {
         this.kVal = kVal;
     }
-
 }

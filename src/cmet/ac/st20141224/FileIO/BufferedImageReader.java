@@ -16,15 +16,20 @@ import java.util.Scanner;
 
 
 public class BufferedImageReader implements IFileReader {
+    String CIFAR;
+    String labelPath;
+
+    FileInputStream in_stream_images;
+
+    List<String> labelList;
+    List<SourceImage> imageList;
+
     String fileName;
     BufferedImage img;
     ArrayList<String> images = new ArrayList<>();
 
     @Override
     public void read() throws IOException {
-        System.out.println("filename" + fileName);
-        this.img = ImageIO.read(new FileInputStream(this.fileName));
-        displayImage();
     }
 
     @Override
@@ -45,19 +50,5 @@ public class BufferedImageReader implements IFileReader {
     @Override
     public void setLabelName(String labelName) {
 
-    }
-
-    // Temporary Function
-    public void displayImage() {
-        JLabel picLabel = new JLabel(new ImageIcon(img));
-
-        JPanel jPanel = new JPanel();
-        jPanel.add(picLabel);
-
-        JFrame frame = new JFrame();
-        frame.setSize(new Dimension(img.getWidth(),img.getHeight()));
-        frame.add(jPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setVisible(true);
     }
 }

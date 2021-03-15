@@ -47,7 +47,7 @@ public class MainView {
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Setting program to close when GUI is exited
         mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels cal be seen
 
-        model = new Model(checkParams);
+        model = new Model(checkParams, controller);
         checkParams = new CheckParams(model);
         controller = new Controller(model, this, checkParams);
     }

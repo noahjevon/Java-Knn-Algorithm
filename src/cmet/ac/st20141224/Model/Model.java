@@ -1,5 +1,6 @@
 package cmet.ac.st20141224.Model;
 
+import cmet.ac.st20141224.Controller.Controller;
 import cmet.ac.st20141224.FileIO.*;
 
 import java.util.List;
@@ -9,21 +10,22 @@ public class Model {
     String srcSrc;
     String lblSrc;
     String kValue;
-    List<String> labelList;
+    List<BufferedLabelReader> labelList;
 
     IFileReader labelReader;  // Creating instance of IFileReader *3
     IFileReader imageReader;
     IFileReader sourceReader;
 
     CheckParams checkParams;
+    Controller controller;
 
-    public Model(CheckParams checkParams) {
+    public Model(CheckParams checkParams, Controller controller) {
         this.checkParams = checkParams;
+        this.controller = controller;
         labelReader = new BufferedLabelReader();
         imageReader = new BufferedImageReader();
         sourceReader = new BufferedSourceReader();
     }
-
 
     // Setters & Getters
     public String getImgSrc() {
@@ -58,13 +60,13 @@ public class Model {
         this.kValue = kValue;
     }
 
-    public List getLabelList() {
-        return labelList;
-    }
-
-    public void setLabelList(List<String> labelList) {
-        this.labelList = labelList;
-    }
+//    public List getLabelList() {
+//        return labelList;
+//    }
+//
+//    public void setLabelList(List<String> labelList) {
+//        this.labelList = labelList;
+//    }
 
     public IFileReader getLabelReader() {
         return labelReader;
@@ -88,5 +90,13 @@ public class Model {
 
     public void setSourceReader(IFileReader sReader) {
         this.sourceReader = sReader;
+    }
+
+    public List<BufferedLabelReader> getLabelList() {
+        return labelList;
+    }
+
+    public void setLabelList(List<BufferedLabelReader> labelList) {
+        this.labelList = labelList;
     }
 }

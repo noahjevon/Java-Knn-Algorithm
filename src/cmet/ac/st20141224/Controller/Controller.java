@@ -1,5 +1,7 @@
 package cmet.ac.st20141224.Controller;
 
+import cmet.ac.st20141224.FileIO.BufferedImageReader;
+import cmet.ac.st20141224.FileIO.BufferedLabelReader;
 import cmet.ac.st20141224.FileIO.CheckParams;
 import cmet.ac.st20141224.View.MainView;
 import cmet.ac.st20141224.Model.Model;
@@ -7,6 +9,7 @@ import cmet.ac.st20141224.Model.Model;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class Controller {
 
@@ -81,7 +84,6 @@ public class Controller {
         // Run checkParams in CheckParams class to ensure that fields are filled out correctly
         this.checkParams.checkParams();
     }
-
 }
 
 
