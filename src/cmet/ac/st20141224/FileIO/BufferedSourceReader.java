@@ -1,68 +1,72 @@
 package cmet.ac.st20141224.FileIO;
 
+import cmet.ac.st20141224.Model.Model;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class BufferedSourceReader implements IFileReader {
 
     String CIFAR;
     String labelPath;
-    FileInputStream in_stream_labels;
+
     FileInputStream in_stream_images;
 
-    int number_of_labels;
-    int number_of_images;
+    List<String> labelList;
+    List<SourceImage> imageList;
 
-    int image_width;
-    int image_height;
-
-    List<SourceImage> mnistimage_list;
+    Model model;
 
     public BufferedSourceReader() {
-        this.mnistimage_list = new ArrayList<SourceImage>();
+        this.imageList = new ArrayList<SourceImage>();
+        this.labelList = new ArrayList<String>();
     }
 
     @Override
     public void read() throws IOException {
 
-        String label_filename = labelPath;
         String image_filename = CIFAR;
 
-        System.out.println(label_filename + " ,  " + image_filename);
+            in_stream_images = new FileInputStream(image_filename);
+                while(in_stream_images.available() > 0) {
+                    int label = in_stream_images.read();
+                    System.out.println("Label: " + label);
+                    Object textLabel = this.model.getLabelReader().getData();
+                    System.out.println("Text Label: " + textLabel);
 
-        in_stream_labels = new FileInputStream(label_filename);
-        in_stream_images = new FileInputStream(image_filename);
+                    int image_size = 1024;
+                    byte[] red_Data = new byte[1024];
+                    in_stream_images.read(red_Data);
 
-        //read labels start code. read 4 bytes, and assemble
-        int label_start_code = read4bytes(in_stream_images);
-        System.out.println("Label start code: " + label_start_code);
+                    byte[] green_Data = new byte[1024];
+                    in_stream_images.read(green_Data);
 
-        //read image start code. read 4 bytes, and assemble
-        int image_start_code = read4bytes(in_stream_images);
-        System.out.println("Image start code: " + image_start_code);
+                    byte[] blue_Data = new byte[1024];
+                    in_stream_images.read(blue_Data);
 
-        // read next 4 bytes
-        number_of_labels = read4bytes(in_stream_images);
-        number_of_images = read4bytes(in_stream_images);
+                    BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 
-        System.out.println("Number of labels: " + number_of_labels + " , number of images: " + number_of_images);
+                    for(int i=0; i < 32; i++) {
+                        for (int j = 0; j < 32; j++) {
+                            Color color = new Color(
+                                    red_Data[i * 32 + j] & 0xFF,
+                                    green_Data[i * 32 + j] & 0xFF,
+                                    blue_Data[i * 32 + j] & 0xFF);
+                            img.setRGB(i, j, color.getRGB());
+                        }
+                    }
+            }
+        }
 
-        // read next 4 bytes
-        image_width = read4bytes(in_stream_images);
-        image_height = read4bytes(in_stream_images);
-
-        System.out.println("Image width: " + image_width + " , Image height: " + image_height);
-    }
 
     @Override
     public Object getData() {
-        return this.mnistimage_list;
+        return this.imageList;
     }
 
     @Override
@@ -80,18 +84,4 @@ public class BufferedSourceReader implements IFileReader {
         this.labelPath = labelName;
     }
 
-    /**
-     *
-     * @param in_stream
-     * @return
-     * @throws IOException
-     */
-    private int read4bytes(FileInputStream in_stream) throws IOException{
-        int value =
-                    (in_stream.read() << 32) |
-                    (in_stream.read() << 24) |
-                    (in_stream.read() << 16) |
-                    (in_stream.read());
-        return value;
-    }
 }
