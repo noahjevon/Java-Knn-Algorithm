@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class BufferedLabelReader implements IFileReader {
+public class ImageLabelsIO implements IFileReader {
     String filePath;
     List<String> labelList;
 
-    public BufferedLabelReader() {
+    public ImageLabelsIO() {
         this.labelList = new ArrayList<String>();
     }
 
