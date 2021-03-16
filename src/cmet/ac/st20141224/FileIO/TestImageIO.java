@@ -1,7 +1,6 @@
 package cmet.ac.st20141224.FileIO;
 
 import cmet.ac.st20141224.Model.TestImageModel;
-import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.ErrorView;
 
 import java.awt.*;
@@ -9,8 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,12 +1,10 @@
 package cmet.ac.st20141224.FileIO;
 
 import cmet.ac.st20141224.Model.ImageLabelModel;
-import cmet.ac.st20141224.Model.MainViewModel;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class ImageLabelsIO implements IFileReader {
     String filePath;

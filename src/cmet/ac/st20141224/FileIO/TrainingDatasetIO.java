@@ -1,13 +1,10 @@
 package cmet.ac.st20141224.FileIO;
 
-import cmet.ac.st20141224.Model.SourceModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
