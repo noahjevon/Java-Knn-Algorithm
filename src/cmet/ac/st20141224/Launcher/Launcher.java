@@ -14,12 +14,7 @@ public class Launcher {
         }
 
         javax.swing.SwingUtilities.invokeLater(
-                new Runnable() {
-
-                    public void run() {
-                        MainView.getInstance();
-                    }
-                }
+                MainView::getInstance
         );
     }
 }

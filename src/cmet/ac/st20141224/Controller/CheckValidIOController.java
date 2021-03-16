@@ -1,20 +1,16 @@
-package cmet.ac.st20141224.FileIO;
+package cmet.ac.st20141224.Controller;
 
 import cmet.ac.st20141224.Model.MainViewModel;
-import cmet.ac.st20141224.Model.SourceModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
-import cmet.ac.st20141224.View.MainView;
-import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
-public class CheckValidIO {
+public class CheckValidIOController {
     MainViewModel mainViewModel;
 
     Boolean img;
@@ -23,7 +19,7 @@ public class CheckValidIO {
     Boolean kVal;
 
 
-    public CheckValidIO(MainViewModel mainViewModel) {
+    public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
     }
 
@@ -47,6 +43,7 @@ public class CheckValidIO {
         try {
             img = ImageIO.read(new File(this.mainViewModel.getImgSrc()));
         } catch (IOException e) {
+            ErrorView.errorMessage("Cannot read image file!", "Image Read Error");
             e.printStackTrace();
         }
 
@@ -134,6 +131,7 @@ public class CheckValidIO {
 //
 //            imageList.forEach (t -> System.out.println(t));
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
+
         }
         else {  // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");

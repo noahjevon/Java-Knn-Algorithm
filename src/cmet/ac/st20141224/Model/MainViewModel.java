@@ -1,5 +1,6 @@
 package cmet.ac.st20141224.Model;
 
+import cmet.ac.st20141224.Controller.CheckValidIOController;
 import cmet.ac.st20141224.Controller.MainController;
 import cmet.ac.st20141224.FileIO.*;
 
@@ -16,10 +17,10 @@ public class MainViewModel {
     IFileReader imageReader;
     IFileReader sourceReader;
 
-    CheckValidIO checkParams;
+    CheckValidIOController checkParams;
     MainController mainController;
 
-    public MainViewModel(CheckValidIO checkParams, MainController mainController) {
+    public MainViewModel(CheckValidIOController checkParams, MainController mainController) {
         this.checkParams = checkParams;
         this.mainController = mainController;
         labelReader = new ImageLabelsIO();
@@ -59,14 +60,6 @@ public class MainViewModel {
     public void setkValue(String kValue) {
         this.kValue = kValue;
     }
-
-//    public List getLabelList() {
-//        return labelList;
-//    }
-//
-//    public void setLabelList(List<String> labelList) {
-//        this.labelList = labelList;
-//    }
 
     public IFileReader getLabelReader() {
         return labelReader;

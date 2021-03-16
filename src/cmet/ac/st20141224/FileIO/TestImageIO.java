@@ -44,7 +44,6 @@ public class TestImageIO implements IFileReader {
         String name = path.getName();
         String labelStr = Character.toString(name.charAt(0));
         int label = Integer.parseInt(labelStr);
-        System.out.println(label);
 
         while(in_stream_images.available() > 0) {
 

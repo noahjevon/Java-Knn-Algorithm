@@ -1,7 +1,7 @@
 package cmet.ac.st20141224.View;
 
 import cmet.ac.st20141224.Controller.*;
-import cmet.ac.st20141224.FileIO.CheckValidIO;
+import cmet.ac.st20141224.Controller.CheckValidIOController;
 import cmet.ac.st20141224.Model.MainViewModel;
 import cmet.ac.st20141224.View.Panel.*;
 
@@ -19,7 +19,7 @@ public class MainView {
     RunPanel runPanel;  // Panel to display the run button
 
     MainViewModel mainViewModel;
-    CheckValidIO checkParams;
+    CheckValidIOController checkParams;
     MainController mainController;
 
     private static MainView instance;
@@ -49,7 +49,7 @@ public class MainView {
         mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels cal be seen
 
         mainViewModel = new MainViewModel(checkParams, mainController);
-        checkParams = new CheckValidIO(mainViewModel);
+        checkParams = new CheckValidIOController(mainViewModel);
         mainController = new MainController(mainViewModel, this, checkParams);
     }
 

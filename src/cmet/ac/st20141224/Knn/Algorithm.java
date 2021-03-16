@@ -1,6 +1,44 @@
 package cmet.ac.st20141224.Knn;
 
+import cmet.ac.st20141224.Model.TestImageModel;
+import cmet.ac.st20141224.Model.TrainingDatasetModel;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+
 public class Algorithm {
+
+    private int k;
+    private List<TrainingDatasetModel> data;
+    private List<TestImageModel> unknown;
+    private String result;
+    private double confidence;
+
+    public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown) {
+        this.k = k;
+        this.data = data;
+        this.unknown = unknown;
+    }
+
+
+    public void computeDistance() {
+        AtomicInteger image = new AtomicInteger();
+        this.data.forEach(item -> {
+            this.data.forEach((Consumer<? super TrainingDatasetModel>) item.getGreyscale());
+               System.out.println("Image: " + image.getAndIncrement() + item.getGreyscale());
+        });
+        //Loop for each image in set
+            //Nested loop for each value in image
+            //After loop, get average distance
+        //Add distance to image object
+    }
+
+
+    public void classify() {
+
+    }
+
 //    Knn has NO training phase. Takes test image, performs algorithm on all training images available and try to come up with a classification.
 //    If it’s a datastream, go through regression path. Not building a model using training dataset,
 //    instead takes whole training dataset and uses testing image or testing data on the whole dataset

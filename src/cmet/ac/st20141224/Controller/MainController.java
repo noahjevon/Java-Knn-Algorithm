@@ -1,6 +1,5 @@
 package cmet.ac.st20141224.Controller;
 
-import cmet.ac.st20141224.FileIO.CheckValidIO;
 import cmet.ac.st20141224.View.MainView;
 import cmet.ac.st20141224.Model.MainViewModel;
 
@@ -10,9 +9,9 @@ public class MainController {
 
     MainViewModel mainViewModel;
     MainView mainView;
-    CheckValidIO checkParams;
+    CheckValidIOController checkParams;
 
-    public MainController(MainViewModel mainViewModel, MainView mainView, CheckValidIO checkParams) {
+    public MainController(MainViewModel mainViewModel, MainView mainView, CheckValidIOController checkParams) {
         this.mainViewModel = mainViewModel;
         this.mainView = mainView;
         this.checkParams = checkParams;
