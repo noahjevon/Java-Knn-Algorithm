@@ -1,24 +1,19 @@
 package cmet.ac.st20141224.Controller;
 
-import cmet.ac.st20141224.FileIO.BufferedImageReader;
-import cmet.ac.st20141224.FileIO.BufferedLabelReader;
-import cmet.ac.st20141224.FileIO.CheckParams;
+import cmet.ac.st20141224.FileIO.CheckValidIO;
 import cmet.ac.st20141224.View.MainView;
-import cmet.ac.st20141224.Model.Model;
+import cmet.ac.st20141224.Model.MainViewModel;
 
-import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
-public class Controller {
+public class MainController {
 
-    Model model;
+    MainViewModel mainViewModel;
     MainView mainView;
-    CheckParams checkParams;
+    CheckValidIO checkParams;
 
-    public Controller(Model model, MainView mainView, CheckParams checkParams) {
-        this.model = model;
+    public MainController(MainViewModel mainViewModel, MainView mainView, CheckValidIO checkParams) {
+        this.mainViewModel = mainViewModel;
         this.mainView = mainView;
         this.checkParams = checkParams;
 
@@ -72,8 +67,8 @@ public class Controller {
         String kValue = this.mainView.getParameterPanel().getkValueTxt().getText();
 
         // Update Model class
-        this.model.setLblSrc(lblSrc);
-        this.model.setImgSrc(imgSrc);
+        this.mainViewModel.setLblSrc(lblSrc);
+        this.mainViewModel.setImgSrc(imgSrc);
 
         // Setting variables in CheckParams class
         this.checkParams.setImgSrc(imgSrc);

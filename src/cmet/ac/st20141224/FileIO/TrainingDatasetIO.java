@@ -1,63 +1,60 @@
 package cmet.ac.st20141224.FileIO;
 
 import cmet.ac.st20141224.Model.SourceModel;
+import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class TrainingDatasetIO implements IFileReader {
-    String CIFAR;
-    String labelPath;
+    private String CIFAR;
+    private String labelPath;
 
-    FileInputStream in_stream_images;
+    private FileInputStream imageStream;
 
-    List<String> labelList;
-    List<SourceModel> imageList;
-    List<Integer> rgbList;
+    private List<TrainingDatasetModel> imageList;
+    private List<Integer> redList;
+    private List<Integer> greenList;
+    private List<Integer> blueList;
+    private List<Integer> greyscaleList;
 
 
     public TrainingDatasetIO() {
-        this.labelList = new ArrayList<>();
-        this.imageList = new ArrayList<SourceModel>();
+        this.imageList = new ArrayList<TrainingDatasetModel>();
     }
 
 
     @Override
     public void read() throws IOException {
 
-        String image_filename = CIFAR;
+        String fileName = CIFAR;
 
-        in_stream_images = new FileInputStream(image_filename);
+        imageStream = new FileInputStream(fileName);
 
-        // Read list of labels
-        labelList.clear();
-        Scanner s = new Scanner(new File(labelPath));
-        while (s.hasNext()) {
-            labelList.add(s.next());
-        }
-        s.close();
-
-            while(in_stream_images.available() > 0) {
-                int label = in_stream_images.read();
-                String labelText = labelList.get(label).toString();
-                System.out.println("Label: " + label + "Text label: " + labelList.get(label));
+            while(imageStream.available() > 0) {
+                int label = imageStream.read();
 
                 byte[] red_Data = new byte[1024];
-                in_stream_images.read(red_Data);
+                imageStream.read(red_Data);
 
                 byte[] green_Data = new byte[1024];
-                in_stream_images.read(green_Data);
+                imageStream.read(green_Data);
 
                 byte[] blue_Data = new byte[1024];
-                in_stream_images.read(blue_Data);
+                imageStream.read(blue_Data);
 
                 BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
-                this.rgbList = new ArrayList<>();
+
+                this.redList = new ArrayList<>();
+                this.greenList = new ArrayList<>();
+                this.blueList = new ArrayList<>();
+                this.greyscaleList = new ArrayList<>();
 
                 for(int i=0; i < 32; i++) {
                     for (int j = 0; j < 32; j++) {
@@ -66,7 +63,17 @@ public class TrainingDatasetIO implements IFileReader {
                                 green_Data[i * 32 + j] & 0xFF,
                                 blue_Data[i * 32 + j] & 0xFF);
                         img.setRGB(i, j, color.getRGB());
+
+                        int red = red_Data[i * 32 + j] & 0xFF;
+                        int green = green_Data[i * 32 + j] & 0xFF;
+                        int blue = blue_Data[i * 32 + j] & 0xFF;
+                        int greyscale = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
+                        this.redList.add(red);
+                        this.greenList.add(green);
+                        this.blueList.add(blue);
+                        this.greyscaleList.add(greyscale);
                     }
+                    this.imageList.add(new TrainingDatasetModel(label, redList, greenList, blueList, greyscaleList));
                 }
             }
         }

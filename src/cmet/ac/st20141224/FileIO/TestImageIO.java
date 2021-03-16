@@ -1,37 +1,36 @@
 package cmet.ac.st20141224.FileIO;
 
-
+import cmet.ac.st20141224.Model.TestImageModel;
+import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.ErrorView;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.lang.reflect.Array;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 public class TestImageIO implements IFileReader {
     String testImage;
     String labelPath;
 
+    private List<TestImageModel> imageList;
+
     FileInputStream in_stream_images;
-
-    List<String> labelList;
-    List<SourceImage> imageList;
-
-    String fileName;
     BufferedImage img;
 
+    private List<Integer> redList;
+    private List<Integer> greenList;
+    private List<Integer> blueList;
+    private List<Integer> greyscaleList;
 
     public TestImageIO() {
-        this.labelList = new ArrayList<>();
+        this.imageList = new ArrayList<TestImageModel>();
     }
 
     
@@ -40,14 +39,12 @@ public class TestImageIO implements IFileReader {
         String image_filename = testImage;
 
         in_stream_images = new FileInputStream(image_filename);
-
-//      Read list of labels
-        labelList.clear();
-        Scanner s = new Scanner(new File(labelPath));
-        while (s.hasNext()) {
-            labelList.add(s.next());
-        }
-        s.close();
+        // Long process, probably a better way to do this. Getting first index in file name and converting to int for label
+        File path = new File(getFilename());
+        String name = path.getName();
+        String labelStr = Character.toString(name.charAt(0));
+        int label = Integer.parseInt(labelStr);
+        System.out.println(label);
 
         while(in_stream_images.available() > 0) {
 
@@ -61,6 +58,12 @@ public class TestImageIO implements IFileReader {
             in_stream_images.read(blue_Data);
 
             BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+
+            this.redList = new ArrayList<>();
+            this.greenList = new ArrayList<>();
+            this.blueList = new ArrayList<>();
+            this.greyscaleList = new ArrayList<>();
+
             int image_width = img.getWidth();
             int image_height = img.getHeight();
             if (image_height > 32 && image_width > 32) {  // Error message just in case image is not shrunk to 32x32
@@ -74,15 +77,18 @@ public class TestImageIO implements IFileReader {
                                 green_Data[i * 32 + j] & 0xFF,
                                 blue_Data[i * 32 + j] & 0xFF);
                         img.setRGB(i, j, color.getRGB());
+
                         int red = red_Data[i * 32 + j] & 0xFF;
                         int green = green_Data[i * 32 + j] & 0xFF;
                         int blue = blue_Data[i * 32 + j] & 0xFF;
-                        // Combine individual red, green, blue into one RGB value
-                        int rgb = (65536 * red) + (256 * green) + blue;  // Algorithm from StackOverflow user taskinoor
-                        // https://stackoverflow.com/questions/4801366/convert-rgb-values-to-integer#comment95858351_4801446
+                        int greyscale = (int) ((0.3 * red) + (0.59 * green) + (0.11 * blue));
 
-                        // COMBINE ALL RED VALUES, GREEN VALUES, BLUE VALUES ETC. INTO ONE VALUE (GRAYSCALE IMAGE)
+                        this.redList.add(red);
+                        this.greenList.add(green);
+                        this.blueList.add(blue);
+                        this.greyscaleList.add(greyscale);
                     }
+                    this.imageList.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
                 }
             }
         }

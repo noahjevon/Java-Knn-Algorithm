@@ -1,13 +1,5 @@
 package cmet.ac.st20141224.Controller;
 
-import cmet.ac.st20141224.Model.Model;
-import cmet.ac.st20141224.View.MainView;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.File;
-import java.util.ArrayList;
-
 public class SourceController {
 //    ArrayList sources       = new ArrayList();  // Array to store source file names
 //    ArrayList sourcesPath   = new ArrayList(); // Array to store source paths

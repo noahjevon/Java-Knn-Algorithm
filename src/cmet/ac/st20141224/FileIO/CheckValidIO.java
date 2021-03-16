@@ -1,17 +1,21 @@
 package cmet.ac.st20141224.FileIO;
 
-import cmet.ac.st20141224.Model.Model;
+import cmet.ac.st20141224.Model.MainViewModel;
+import cmet.ac.st20141224.Model.SourceModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
+import cmet.ac.st20141224.View.MainView;
+import com.sun.tools.javac.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
-public class CheckParams {
-    Model model;
+
+public class CheckValidIO {
+    MainViewModel mainViewModel;
 
     Boolean img;
     Boolean src;
@@ -19,8 +23,8 @@ public class CheckParams {
     Boolean kVal;
 
 
-    public CheckParams(Model model) {
-        this.model = model;  //
+    public CheckValidIO(MainViewModel mainViewModel) {
+        this.mainViewModel = mainViewModel;
     }
 
 
@@ -41,7 +45,7 @@ public class CheckParams {
         }
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File(this.model.getImgSrc()));
+            img = ImageIO.read(new File(this.mainViewModel.getImgSrc()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +56,7 @@ public class CheckParams {
         if (image_width > 32 && image_height > 32) {  // Checking to see if image is over-sized
             ErrorView.errorMessage("Image cannot be larger than 32x32!", "Image Size Error");
         } else {
-            this.model.setSrcSrc(srcSrc);
+            this.mainViewModel.setSrcSrc(srcSrc);
             setSrc(true);
         }
     }
@@ -63,6 +67,8 @@ public class CheckParams {
             ErrorView.errorMessage("Label source cannot be null!", "Label Source Error");
             setLbl(false);
         } else {
+            this.mainViewModel.setLblSrc(lblSrc);
+            System.out.println(this.mainViewModel.getLblSrc());
             setLbl(true);
         }
     }
@@ -80,7 +86,7 @@ public class CheckParams {
                 setkVal(false);
             }
             else {
-                this.model.setkValue(kValue);
+                this.mainViewModel.setkValue(kValue);
                 setkVal(true);
             }
         } catch (NumberFormatException e) {  // Check K value is a number
@@ -93,29 +99,41 @@ public class CheckParams {
         if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
             AlertView.alertMessage("Running model!", "Alert");  // Inform user model is running. Tests passed
 
+            // HERE GOES LOADING SCREEN TO SHOW THAT LABELS ARE BEING READ
+            // FIRST THREAD
             try {  // Read specified label
-                this.model.getLabelReader().setFilename(this.model.getLblSrc());
-                this.model.getLabelReader().read();
+                this.mainViewModel.getLabelReader().setFilename(this.mainViewModel.getLblSrc());
+                this.mainViewModel.getLabelReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the label
                 ErrorView.errorMessage("Error reading label data", "Label Error");
             }
 
+            // HERE GOES LOADING SCREEN TO SHOW THAT IMAGE IS BEING READ
+            // NEW THREAD
             try {  // Read specified image
-                this.model.getImageReader().setFilename(this.model.getImgSrc());
-                this.model.getImageReader().setLabelName(this.model.getLblSrc());
-                this.model.getImageReader().read();
+                this.mainViewModel.getImageReader().setFilename(this.mainViewModel.getImgSrc());
+                this.mainViewModel.getImageReader().setLabelName(this.mainViewModel.getLblSrc());
+                this.mainViewModel.getImageReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the source
                 ErrorView.errorMessage("Error reading image data", "Image Error");
             }
 
-            try {  // Read specified image
-                this.model.getSourceReader().setFilename(this.model.getSrcSrc());
-                this.model.getSourceReader().setLabelName(this.model.getLblSrc());
-                this.model.getSourceReader().read();
+            // HERE GOES LOADING SCREEN TO SHOW THAT TRAINING SET IS BEING READ
+            // NEW THREAD
+            try {  // Read specified source
+                this.mainViewModel.getSourceReader().setFilename(this.mainViewModel.getSrcSrc());
+                this.mainViewModel.getSourceReader().setLabelName(this.mainViewModel.getLblSrc());
+                this.mainViewModel.getSourceReader().read();
             } catch (IOException e) {  // Inform user there was an error reading the source
                 ErrorView.errorMessage("Error reading source data", "Source Error");
             }
 
+            // NEW THREAD STARTS (IT WAITS UNTIL PREVIOUS THREE THREADS HAVE FINISHED BEFORE RUNNING)
+            // MODEL RUNS HERE
+//            ArrayList<SourceModel> imageList = (ArrayList<SourceModel>) this.mainViewModel.getSourceReader().getData();
+//
+//            imageList.forEach (t -> System.out.println(t));
+            // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
         }
         else {  // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");

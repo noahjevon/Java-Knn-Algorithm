@@ -1,7 +1,7 @@
 package cmet.ac.st20141224.FileIO;
 
-import cmet.ac.st20141224.Controller.Controller;
-import cmet.ac.st20141224.Model.Model;
+import cmet.ac.st20141224.Model.ImageLabelModel;
+import cmet.ac.st20141224.Model.MainViewModel;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,23 +10,23 @@ import java.util.Scanner;
 
 public class ImageLabelsIO implements IFileReader {
     String filePath;
-    List<String> labelList;
+    List<ImageLabelModel> labelList;
 
     public ImageLabelsIO() {
-        this.labelList = new ArrayList<String>();
+        this.labelList = new ArrayList<ImageLabelModel>();
     }
 
     @Override
     public void read() throws IOException {
-//        labelList.clear();
-//        Scanner s = new Scanner(new File(filePath));
-//        while (s.hasNext()) {
-//            labelList.add(s.next());
-//        }
-//        s.close();
-//        System.out.println(labelList);
+        String line = "";
+        if(this.filePath != null);
+            try(BufferedReader br = new BufferedReader(new FileReader(this.filePath))) {
+                while((line = br.readLine()) != null) {
+                    String label = line;
+                    this.labelList.add(new ImageLabelModel(label));
+                }
+            }
     }
-
 
     @Override
     public Object getData() {

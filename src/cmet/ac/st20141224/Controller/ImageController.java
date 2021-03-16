@@ -1,16 +1,5 @@
 package cmet.ac.st20141224.Controller;
 
-import cmet.ac.st20141224.Model.Model;
-import cmet.ac.st20141224.View.MainView;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class ImageController {
 //    ArrayList<String> images        = new ArrayList<>();  // Array to store image file names
 //    ArrayList<String> imagesPath    = new ArrayList<>(); // Array to store image paths

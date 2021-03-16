@@ -1,30 +1,30 @@
 package cmet.ac.st20141224.Model;
 
-import cmet.ac.st20141224.Controller.Controller;
+import cmet.ac.st20141224.Controller.MainController;
 import cmet.ac.st20141224.FileIO.*;
 
 import java.util.List;
 
-public class Model {
+public class MainViewModel {
     String imgSrc;
     String srcSrc;
     String lblSrc;
     String kValue;
-    List<BufferedLabelReader> labelList;
+    List<ImageLabelsIO> labelList;
 
     IFileReader labelReader;  // Creating instance of IFileReader *3
     IFileReader imageReader;
     IFileReader sourceReader;
 
-    CheckParams checkParams;
-    Controller controller;
+    CheckValidIO checkParams;
+    MainController mainController;
 
-    public Model(CheckParams checkParams, Controller controller) {
+    public MainViewModel(CheckValidIO checkParams, MainController mainController) {
         this.checkParams = checkParams;
-        this.controller = controller;
-        labelReader = new BufferedLabelReader();
-        imageReader = new BufferedImageReader();
-        sourceReader = new BufferedSourceReader();
+        this.mainController = mainController;
+        labelReader = new ImageLabelsIO();
+        imageReader = new TestImageIO();
+        sourceReader = new TrainingDatasetIO();
     }
 
     // Setters & Getters
@@ -92,11 +92,11 @@ public class Model {
         this.sourceReader = sReader;
     }
 
-    public List<BufferedLabelReader> getLabelList() {
+    public List<ImageLabelsIO> getLabelList() {
         return labelList;
     }
 
-    public void setLabelList(List<BufferedLabelReader> labelList) {
+    public void setLabelList(List<ImageLabelsIO> labelList) {
         this.labelList = labelList;
     }
 }
