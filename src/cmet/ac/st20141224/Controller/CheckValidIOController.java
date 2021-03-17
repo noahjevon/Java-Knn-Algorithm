@@ -1,6 +1,7 @@
 package cmet.ac.st20141224.Controller;
 
 import cmet.ac.st20141224.FileIO.IFileReader;
+import cmet.ac.st20141224.FileIO.ImageLabelsIO;
 import cmet.ac.st20141224.FileIO.TestImageIO;
 import cmet.ac.st20141224.FileIO.TrainingDatasetIO;
 import cmet.ac.st20141224.Knn.Algorithm;
@@ -108,12 +109,13 @@ public class CheckValidIOController {
 
             IFileReader readTrainingDataset = new TrainingDatasetIO();
             IFileReader readTestImage = new TestImageIO();
+            IFileReader readLabels = new ImageLabelsIO();
 
             // HERE GOES LOADING SCREEN TO SHOW THAT LABELS ARE BEING READ
             // FIRST THREAD
             try {  // Read specified label
-                this.mainViewModel.getLabelReader().setFilename(this.mainViewModel.getLblSrc());
-                this.mainViewModel.getLabelReader().read();
+                readLabels.setFilename(this.mainViewModel.getLblSrc());
+                readLabels.read();
             } catch (IOException e) {  // Inform user there was an error reading the label
                 ErrorView.errorMessage("Error reading label data", "Label Error");
             }
@@ -145,6 +147,7 @@ public class CheckValidIOController {
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
             ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
             ArrayList<TestImageModel> testImage = (ArrayList<TestImageModel>) readTestImage.getData();
+            System.out.println("CheckValid TestImage: " + testImage);
             Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, testImage);
 
             algorithm.computeDistance();

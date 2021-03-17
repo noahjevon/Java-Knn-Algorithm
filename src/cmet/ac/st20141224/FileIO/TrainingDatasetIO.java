@@ -75,7 +75,6 @@ public class TrainingDatasetIO implements IFileReader {
             }
         }
 
-
     @Override
     public Object getData() {
         return this.imageList;

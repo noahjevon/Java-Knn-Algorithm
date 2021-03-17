@@ -22,7 +22,7 @@ public class Algorithm {
 
     public void computeDistance() {
 //        this.data.forEach(item -> {
-            System.out.println(unknown);
+            System.out.println("Algorithm UNKNOWN: " + unknown);
 //        });
         //Loop for each image in set
             //Nested loop for each value in image
