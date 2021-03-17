@@ -26,7 +26,7 @@ public class Algorithm {
     public void computeDistance() {
     this.data.forEach(image -> {
         this.distance = new ArrayList<>();
-        for (int i : image.getGreyscale()) {
+        for (int i : image.getGreyscale())  {
             this.unknown.forEach(pixel -> {
                 for (int p : pixel.getGreyscale()) {
                     double s = Math.pow((i - p), 2);
@@ -45,42 +45,40 @@ public class Algorithm {
 
 
     public void classify() {
-        System.out.println("Classifying...");
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
-        System.out.println("Classifying again....");
 
         List<TrainingDatasetModel> kList = this.data.subList(0, this.k);
         System.out.println(this.k);
         
         int plane = (int) kList.stream().filter(t -> (t.getLabel() == (0))).count();
         System.out.println("Plane count: " + plane);
-
-        int auto = (int) kList.stream().filter(t -> (t.getLabel() == (1))).count();
-        System.out.println("auto count: " + auto);
-
-        int bird = (int) kList.stream().filter(t -> (t.getLabel() == (2))).count();
-        System.out.println("bird count: " + bird);
-
-        int cat = (int) kList.stream().filter(t -> (t.getLabel() == (3))).count();
-        System.out.println("cat count: " + cat);
-
-        int deer = (int) kList.stream().filter(t -> (t.getLabel() == (4))).count();
-        System.out.println("deer count: " + deer);
-
-        int dog = (int) kList.stream().filter(t -> (t.getLabel() == (5))).count();
-        System.out.println("dog count: " + dog);
-
-        int frog = (int) kList.stream().filter(t -> (t.getLabel() == (6))).count();
-        System.out.println("frog count: " + frog);
-
-        int horse = (int) kList.stream().filter(t -> (t.getLabel() == (7))).count();
-        System.out.println("horse count: " + horse);
-
-        int ship = (int) kList.stream().filter(t -> (t.getLabel() == (8))).count();
-        System.out.println("ship count: " + ship);
-
-        int truck = (int) kList.stream().filter(t -> (t.getLabel() == (9))).count();
-        System.out.println("truck count: " + truck);
+//
+//        int auto = (int) kList.stream().filter(t -> (t.getLabel() == (1))).count();
+//        System.out.println("auto count: " + auto);
+//
+//        int bird = (int) kList.stream().filter(t -> (t.getLabel() == (2))).count();
+//        System.out.println("bird count: " + bird);
+//
+//        int cat = (int) kList.stream().filter(t -> (t.getLabel() == (3))).count();
+//        System.out.println("cat count: " + cat);
+//
+//        int deer = (int) kList.stream().filter(t -> (t.getLabel() == (4))).count();
+//        System.out.println("deer count: " + deer);
+//
+//        int dog = (int) kList.stream().filter(t -> (t.getLabel() == (5))).count();
+//        System.out.println("dog count: " + dog);
+//
+//        int frog = (int) kList.stream().filter(t -> (t.getLabel() == (6))).count();
+//        System.out.println("frog count: " + frog);
+//
+//        int horse = (int) kList.stream().filter(t -> (t.getLabel() == (7))).count();
+//        System.out.println("horse count: " + horse);
+//
+//        int ship = (int) kList.stream().filter(t -> (t.getLabel() == (8))).count();
+//        System.out.println("ship count: " + ship);
+//
+//        int truck = (int) kList.stream().filter(t -> (t.getLabel() == (9))).count();
+//        System.out.println("truck count: " + truck);
     }
 
     public int getK() {

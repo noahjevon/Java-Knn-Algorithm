@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageLabelsIO implements IFileReader {
-    String filePath;
-    List<ImageLabelModel> labelList;
+
+    String filePath; // String variable for the file path of the image labels
+    List<ImageLabelModel> labelList; // List to store the labels
 
     public ImageLabelsIO() {
         this.labelList = new ArrayList<ImageLabelModel>();
@@ -17,15 +18,16 @@ public class ImageLabelsIO implements IFileReader {
     @Override
     public void read() throws IOException {
         String line = "";
-        if(this.filePath != null);
-            try(BufferedReader br = new BufferedReader(new FileReader(this.filePath))) {
-                while((line = br.readLine()) != null) {
-                    String label = line;
-                    this.labelList.add(new ImageLabelModel(label));
+        if(this.filePath != null); // Checking to see if location is null
+            try(BufferedReader br = new BufferedReader(new FileReader(this.filePath))) { // Buffered reader to read file
+                while((line = br.readLine()) != null) { // While the line in the file is not null, read the file
+                    String label = line; // Assigning line in file to String
+                    this.labelList.add(new ImageLabelModel(label)); // Adding String to list that stores labels
                 }
             }
     }
 
+    // Getters & setters
     @Override
     public Object getData() {
         return this.labelList;
