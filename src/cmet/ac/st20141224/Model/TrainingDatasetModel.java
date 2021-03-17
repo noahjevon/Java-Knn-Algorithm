@@ -9,6 +9,7 @@ public class TrainingDatasetModel {
     private List<Integer> green;
     private List<Integer> blue;
     private List<Integer> greyscale;
+    private Double distance;
 
     public TrainingDatasetModel(int label, List<Integer> red, List<Integer> green, List<Integer> blue, List<Integer> greyscale) {
         this.label = label;
@@ -16,6 +17,14 @@ public class TrainingDatasetModel {
         this.green = green;
         this.blue = blue;
         this.greyscale = greyscale;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public int getLabel() {
