@@ -3,6 +3,7 @@ package cmet.ac.st20141224.Knn;
 import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
+import java.util.Comparator;
 import java.util.List;
 
 public class Algorithm {
@@ -21,8 +22,16 @@ public class Algorithm {
 
 
     public void computeDistance() {
-//        this.data.forEach(item -> {
-//        });
+    this.data.forEach(image -> {
+        for (int i : image.getGreyscale()) {
+            this.unknown.forEach(pixel -> {
+                for (int p : pixel.getGreyscale()) {
+
+                }
+            });
+        }
+    });
+
         //Loop for each image in set
             //Nested loop for each value in image
             //After loop, get average distance
