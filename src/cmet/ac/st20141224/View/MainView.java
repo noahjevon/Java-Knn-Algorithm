@@ -14,7 +14,7 @@ public class MainView {
 
 
     // Initialise JFrame and panels required to build the view
-    JFrame mainWindow;
+    JFrame mainWindow;  // Main window
     ImageChoosePanel imageChoosePanel;  // Panel for image selection
     SourceChoosePanel sourceChoosePanel;  // Panel for training set selection
     ParameterPanel parameterPanel;  // Panel for K value and label source selection
@@ -24,9 +24,6 @@ public class MainView {
     MainViewModel mainViewModel;
     CheckValidIOController checkValidIOController;
     MainController mainController;
-
-    TestImageModel testImageModel;
-    TrainingDatasetModel trainingDatasetModel;
 
     private static MainView instance;
 
