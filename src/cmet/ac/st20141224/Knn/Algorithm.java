@@ -25,7 +25,6 @@ public class Algorithm {
     public void computeDistance() {
         AtomicInteger image = new AtomicInteger();
         this.data.forEach(item -> {
-            this.data.forEach((Consumer<? super TrainingDatasetModel>) item.getGreyscale());
                System.out.println("Image: " + image.getAndIncrement() + item.getGreyscale());
         });
         //Loop for each image in set
@@ -39,7 +38,47 @@ public class Algorithm {
 
     }
 
-//    Knn has NO training phase. Takes test image, performs algorithm on all training images available and try to come up with a classification.
+    public int getK() {
+        return k;
+    }
+
+    public void setK(int k) {
+        this.k = k;
+    }
+
+    public List<TrainingDatasetModel> getData() {
+        return data;
+    }
+
+    public void setData(List<TrainingDatasetModel> data) {
+        this.data = data;
+    }
+
+    public List<TestImageModel> getUnknown() {
+        return unknown;
+    }
+
+    public void setUnknown(List<TestImageModel> unknown) {
+        this.unknown = unknown;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    public double getConfidence() {
+        return confidence;
+    }
+
+    public void setConfidence(double confidence) {
+        this.confidence = confidence;
+    }
+
+    //    Knn has NO training phase. Takes test image, performs algorithm on all training images available and try to come up with a classification.
 //    If it’s a datastream, go through regression path. Not building a model using training dataset,
 //    instead takes whole training dataset and uses testing image or testing data on the whole dataset
 //    to come up with classification – this Is why it’s a lazy algorithm

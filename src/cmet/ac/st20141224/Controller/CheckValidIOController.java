@@ -1,6 +1,12 @@
 package cmet.ac.st20141224.Controller;
 
+import cmet.ac.st20141224.FileIO.IFileReader;
+import cmet.ac.st20141224.FileIO.TestImageIO;
+import cmet.ac.st20141224.FileIO.TrainingDatasetIO;
+import cmet.ac.st20141224.Knn.Algorithm;
 import cmet.ac.st20141224.Model.MainViewModel;
+import cmet.ac.st20141224.Model.TestImageModel;
+import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
@@ -8,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class CheckValidIOController {
@@ -23,7 +30,7 @@ public class CheckValidIOController {
         this.mainViewModel = mainViewModel;
     }
 
-
+    // Check that test image source is valid and update model
     public void setImgSrc(String imgSrc) {
         if (imgSrc.equals("")) {  // Check if image source is null
             ErrorView.errorMessage("Image source cannot be null!", "Image Source Error");
@@ -34,6 +41,7 @@ public class CheckValidIOController {
     }
 
 
+    // Check that the source of training data is valid and update model
     public void setSrcSrc(String srcSrc) {
         if (srcSrc.equals("")) {  // Check if training source is null
             ErrorView.errorMessage("Training source cannot be null!", "Training Source Error");
@@ -59,6 +67,7 @@ public class CheckValidIOController {
     }
 
 
+    // Check that label source is valid and update model
     public void setLblSrc(String lblSrc) {
         if (lblSrc.equals("")) {  // Check if training source is null
             ErrorView.errorMessage("Label source cannot be null!", "Label Source Error");
@@ -71,6 +80,7 @@ public class CheckValidIOController {
     }
 
 
+    // Check that K value is valid and update model
     public void setkValue(String kValue) {
         try {
             int kValueInt = Integer.parseInt(kValue);
@@ -96,6 +106,9 @@ public class CheckValidIOController {
         if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
             AlertView.alertMessage("Running model!", "Alert");  // Inform user model is running. Tests passed
 
+            IFileReader readTrainingDataset = new TrainingDatasetIO();
+            IFileReader readTestImage = new TestImageIO();
+
             // HERE GOES LOADING SCREEN TO SHOW THAT LABELS ARE BEING READ
             // FIRST THREAD
             try {  // Read specified label
@@ -108,9 +121,9 @@ public class CheckValidIOController {
             // HERE GOES LOADING SCREEN TO SHOW THAT IMAGE IS BEING READ
             // NEW THREAD
             try {  // Read specified image
-                this.mainViewModel.getImageReader().setFilename(this.mainViewModel.getImgSrc());
-                this.mainViewModel.getImageReader().setLabelName(this.mainViewModel.getLblSrc());
-                this.mainViewModel.getImageReader().read();
+//                this.mainViewModel.getImageReader()
+                readTestImage.setFilename(this.mainViewModel.getImgSrc());
+                readTestImage.read();
             } catch (IOException e) {  // Inform user there was an error reading the source
                 ErrorView.errorMessage("Error reading image data", "Image Error");
             }
@@ -118,9 +131,8 @@ public class CheckValidIOController {
             // HERE GOES LOADING SCREEN TO SHOW THAT TRAINING SET IS BEING READ
             // NEW THREAD
             try {  // Read specified source
-                this.mainViewModel.getSourceReader().setFilename(this.mainViewModel.getSrcSrc());
-                this.mainViewModel.getSourceReader().setLabelName(this.mainViewModel.getLblSrc());
-                this.mainViewModel.getSourceReader().read();
+                readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc());
+                readTrainingDataset.read();
             } catch (IOException e) {  // Inform user there was an error reading the source
                 ErrorView.errorMessage("Error reading source data", "Source Error");
             }
@@ -131,7 +143,11 @@ public class CheckValidIOController {
 //
 //            imageList.forEach (t -> System.out.println(t));
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
+            ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
+            ArrayList<TestImageModel> testImage = (ArrayList<TestImageModel>) readTestImage.getData();
+            Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, testImage);
 
+            algorithm.computeDistance();
         }
         else {  // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");

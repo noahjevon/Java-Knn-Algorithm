@@ -53,8 +53,9 @@ public class MainViewModel {
         this.lblSrc = lblSrc;
     }
 
-    public String getkValue() {
-        return kValue;
+    public Integer getkValue() {
+        int kValueInt = Integer.parseInt(kValue);
+        return kValueInt;
     }
 
     public void setkValue(String kValue) {

@@ -2,7 +2,10 @@ package cmet.ac.st20141224.View;
 
 import cmet.ac.st20141224.Controller.*;
 import cmet.ac.st20141224.Controller.CheckValidIOController;
+import cmet.ac.st20141224.Knn.Algorithm;
 import cmet.ac.st20141224.Model.MainViewModel;
+import cmet.ac.st20141224.Model.TestImageModel;
+import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
@@ -19,8 +22,11 @@ public class MainView {
     RunPanel runPanel;  // Panel to display the run button
 
     MainViewModel mainViewModel;
-    CheckValidIOController checkParams;
+    CheckValidIOController checkValidIOController;
     MainController mainController;
+
+    TestImageModel testImageModel;
+    TrainingDatasetModel trainingDatasetModel;
 
     private static MainView instance;
 
@@ -48,9 +54,9 @@ public class MainView {
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Setting program to close when GUI is exited
         mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels cal be seen
 
-        mainViewModel = new MainViewModel(checkParams, mainController);
-        checkParams = new CheckValidIOController(mainViewModel);
-        mainController = new MainController(mainViewModel, this, checkParams);
+        mainViewModel = new MainViewModel(checkValidIOController, mainController);
+        checkValidIOController = new CheckValidIOController(mainViewModel);
+        mainController = new MainController(mainViewModel, this, checkValidIOController);
     }
 
 
