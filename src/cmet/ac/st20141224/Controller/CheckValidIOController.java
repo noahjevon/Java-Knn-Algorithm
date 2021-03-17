@@ -147,7 +147,6 @@ public class CheckValidIOController {
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
             ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
             ArrayList<TestImageModel> testImage = (ArrayList<TestImageModel>) readTestImage.getData();
-            System.out.println("CheckValid TestImage: " + testImage);
             Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, testImage);
 
             algorithm.computeDistance();

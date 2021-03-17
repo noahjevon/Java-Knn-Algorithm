@@ -88,7 +88,6 @@ public class TestImageIO implements IFileReader {
             }
         }
         this.imageList.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
-        System.out.println("TestImageIO: " + imageList);
     }
 
     @Override
