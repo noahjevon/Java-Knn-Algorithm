@@ -7,25 +7,25 @@ import cmet.ac.st20141224.FileIO.*;
 import java.util.List;
 
 public class MainViewModel {
-    String imgSrc;
-    String srcSrc;
-    String lblSrc;
-    String kValue;
-    List<ImageLabelsIO> labelList;
+    String imgSrc; // String to store image filepath
+    String srcSrc; // String to store training dataset filepath
+    String lblSrc; // String to store image label filepath
+    String kValue; // String to store K value
+    List<ImageLabelsIO> labelList; // Access list of labels
 
     IFileReader labelReader;  // Creating instance of IFileReader *3
     IFileReader imageReader;
     IFileReader sourceReader;
 
-    CheckValidIOController checkParams;
-    MainController mainController;
+    CheckValidIOController checkValidIO; // IO check access
+    MainController mainController; // Controller access
 
-    public MainViewModel(CheckValidIOController checkParams, MainController mainController) {
-        this.checkParams = checkParams;
-        this.mainController = mainController;
-        labelReader = new ImageLabelsIO();
-        imageReader = new TestImageIO();
-        sourceReader = new TrainingDatasetIO();
+    public MainViewModel(CheckValidIOController checkValidIO, MainController mainController) {
+        this.checkValidIO = checkValidIO; // Instance of CheckValidIO
+        this.mainController = mainController; // Instance of mainController
+        labelReader = new ImageLabelsIO(); // new instance of IFileReader to read labels
+        imageReader = new TestImageIO(); // New instance of IFileReader to read test image
+        sourceReader = new TrainingDatasetIO(); // New instance of IFIleReader to read training images
     }
 
     // Setters & Getters

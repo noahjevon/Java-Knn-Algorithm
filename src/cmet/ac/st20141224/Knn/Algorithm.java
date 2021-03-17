@@ -9,46 +9,46 @@ import java.util.List;
 
 public class Algorithm {
 
-    private int k;
-    private List<TrainingDatasetModel> data;
-    private List<TestImageModel> unknown;
-    private String result;
-    private double confidence;
-    private List<Double> distance;
+    private int k; // Integer to store k value
+    private List<TrainingDatasetModel> data; // List to store parameters of training image object
+    private List<TestImageModel> unknown; // List to store parameters of test image object
+    private String result; // String to store classification result
+    private double confidence; // Double to store confidence value
+    private List<Double> distance; // List of doubles to store distance vlaues
 
     public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown) {
-        this.k = k;
-        this.data = data;
-        this.unknown = unknown;
+        this.k = k; // Set k value
+        this.data = data; // Set training image
+        this.unknown = unknown; // Set test image value
     }
 
-
+    // Compute the distance between greyscale values in each pixel of training and test images
     public void computeDistance() {
-    this.data.forEach(image -> {
-        this.distance = new ArrayList<>();
-        for (int i : image.getGreyscale())  {
-            this.unknown.forEach(pixel -> {
-                for (int p : pixel.getGreyscale()) {
-                    double s = Math.pow((i - p), 2);
-                    double d = Math.sqrt(s);
-                    this.distance.add(d);
+    this.data.forEach(image -> { // For each image in training dataset
+        this.distance = new ArrayList<>(); // Declaring list to store distances
+        for (int i : image.getGreyscale())  { // For each greyscale pixel training in image, get value
+            this.unknown.forEach(pixel -> { // For each greyscale pixel in test image
+                for (int p : pixel.getGreyscale()) { // For each greyscale pixel test image, get value
+                    double s = Math.pow((i - p), 2); // Finding the distance between 2 points
+                    double d = Math.sqrt(s); // Finding square-root of distance
+                    this.distance.add(d); // Adding distance to list
                 }
             });
         }
-            double sum = distance.stream().mapToDouble(a -> a).sum();
-            double finalDistance = (sum / 1024); //Find a way to not have this hard-coded in the future
-            image.setDistance(finalDistance);
+            double sum = distance.stream().mapToDouble(a -> a).sum(); // Getting the sum of all distance values
+            double finalDistance = (sum / 1024); // Getting the average of all distance values in list
+            image.setDistance(finalDistance); // Setting the final distance value of the training image object
     });
-        System.out.println("Starting classification");
-        classify();
+        classify(); // Begin classification process
     }
 
 
+    // Classify the images using the dataset
     public void classify() {
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
 
-        List<TrainingDatasetModel> kList = this.data.subList(0, this.k);
-        System.out.println(this.k);
+        List<TrainingDatasetModel> // Creating sublist of images containing the lowest distance from K value
+                kList = this.data.subList(0, this.k);
         
         int plane = (int) kList.stream().filter(t -> (t.getLabel() == (0))).count();
         System.out.println("Plane count: " + plane);
@@ -81,6 +81,7 @@ public class Algorithm {
 //        System.out.println("truck count: " + truck);
     }
 
+    // Getters & setters
     public int getK() {
         return k;
     }

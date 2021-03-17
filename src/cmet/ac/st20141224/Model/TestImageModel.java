@@ -4,12 +4,13 @@ import java.util.List;
 
 public class TestImageModel {
 
-    private int label;
-    private List<Integer> red;
-    private List<Integer> green;
-    private List<Integer> blue;
-    private List<Integer> greyscale;
+    private int label; // Int to store label data
+    private List<Integer> red; // List to store red pixel data
+    private List<Integer> green; // List to store green pixel data
+    private List<Integer> blue; // List to store blue pixel data
+    private List<Integer> greyscale; // List to store greyscale pixel data
 
+    // New object - test image
     public TestImageModel(int label, List<Integer> red, List<Integer> green, List<Integer> blue, List<Integer> greyscale) {
         this.label = label;
         this.red = red;
