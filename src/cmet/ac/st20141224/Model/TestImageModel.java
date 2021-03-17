@@ -3,6 +3,7 @@ package cmet.ac.st20141224.Model;
 import java.util.List;
 
 public class TestImageModel {
+
     private int label;
     private List<Integer> red;
     private List<Integer> green;

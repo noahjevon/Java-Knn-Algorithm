@@ -4,8 +4,6 @@ import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 public class Algorithm {
 
@@ -23,10 +21,9 @@ public class Algorithm {
 
 
     public void computeDistance() {
-        AtomicInteger image = new AtomicInteger();
-        this.data.forEach(item -> {
-               System.out.println("Image: " + image.getAndIncrement() + item.getGreyscale());
-        });
+//        this.data.forEach(item -> {
+            System.out.println(unknown);
+//        });
         //Loop for each image in set
             //Nested loop for each value in image
             //After loop, get average distance

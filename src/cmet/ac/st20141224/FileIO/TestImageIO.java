@@ -84,8 +84,9 @@ public class TestImageIO implements IFileReader {
                         this.blueList.add(blue);
                         this.greyscaleList.add(greyscale);
                     }
-                    this.imageList.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
                 }
+                this.imageList.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
+                System.out.println("TestImageIO: " + imageList);
             }
         }
     }

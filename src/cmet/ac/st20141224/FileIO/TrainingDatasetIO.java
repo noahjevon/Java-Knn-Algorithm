@@ -70,8 +70,8 @@ public class TrainingDatasetIO implements IFileReader {
                         this.blueList.add(blue);
                         this.greyscaleList.add(greyscale);
                     }
-                    this.imageList.add(new TrainingDatasetModel(label, redList, greenList, blueList, greyscaleList));
                 }
+                this.imageList.add(new TrainingDatasetModel(label, redList, greenList, blueList, greyscaleList));
             }
         }
 
