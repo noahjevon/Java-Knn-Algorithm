@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class CheckValidIOController {
     MainViewModel mainViewModel;
+    TestImageModel image;
 
     Boolean img;
     Boolean src;
@@ -141,14 +142,12 @@ public class CheckValidIOController {
 
             // NEW THREAD STARTS (IT WAITS UNTIL PREVIOUS THREE THREADS HAVE FINISHED BEFORE RUNNING)
             // MODEL RUNS HERE
-//            ArrayList<SourceModel> imageList = (ArrayList<SourceModel>) this.mainViewModel.getSourceReader().getData();
 //
 //            imageList.forEach (t -> System.out.println(t));
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
             ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
-            ArrayList<TestImageModel> testImage = (ArrayList<TestImageModel>) readTestImage.getData();
-            Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, testImage);
-
+            ArrayList<TestImageModel> imageList = (ArrayList<TestImageModel>) readTestImage.getData();
+            Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, imageList);
             algorithm.computeDistance();
         }
         else {  // Let user know the parameters were invalid

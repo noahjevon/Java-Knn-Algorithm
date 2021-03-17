@@ -14,20 +14,19 @@ import java.util.List;
 
 public class TestImageIO implements IFileReader {
     String testImage;
-    String labelPath;
 
-    private List<TestImageModel> imageList;
+    private List<TestImageModel> imageList2;
 
     FileInputStream in_stream_images;
-    BufferedImage img;
 
+    private Integer label;
     private List<Integer> redList;
     private List<Integer> greenList;
     private List<Integer> blueList;
     private List<Integer> greyscaleList;
 
     public TestImageIO() {
-        this.imageList = new ArrayList<TestImageModel>();
+        this.imageList2 = new ArrayList<>();
     }
 
     
@@ -40,7 +39,7 @@ public class TestImageIO implements IFileReader {
         File path = new File(getFilename());
         String name = path.getName();
         String labelStr = Character.toString(name.charAt(0));
-        int label = Integer.parseInt(labelStr);
+        this.label = Integer.parseInt(labelStr);
 
         while(in_stream_images.available() > 0) {
 
@@ -87,12 +86,12 @@ public class TestImageIO implements IFileReader {
                 }
             }
         }
-        this.imageList.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
+        this.imageList2.add(new TestImageModel(label, redList, greenList, blueList, greyscaleList));
     }
 
     @Override
     public Object getData() {
-        return this.imageList;
+        return this.imageList2;
     }
 
     @Override
@@ -105,8 +104,4 @@ public class TestImageIO implements IFileReader {
         return this.testImage;
     }
 
-    @Override
-    public void setLabelName(String labelName) {
-        this.labelPath = labelName;
-    }
 }

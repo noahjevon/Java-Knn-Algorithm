@@ -11,7 +11,6 @@ import java.util.List;
 
 public class TrainingDatasetIO implements IFileReader {
     private String CIFAR;
-    private String labelPath;
 
     private FileInputStream imageStream;
 
@@ -90,9 +89,5 @@ public class TrainingDatasetIO implements IFileReader {
         return this.CIFAR;
     }
 
-    @Override
-    public void setLabelName(String labelName) {
-        this.labelPath = labelName;
-    }
 
 }

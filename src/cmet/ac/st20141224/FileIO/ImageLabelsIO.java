@@ -41,8 +41,4 @@ public class ImageLabelsIO implements IFileReader {
         return null;
     }
 
-    @Override
-    public void setLabelName(String labelName) {
-
-    }
 }
