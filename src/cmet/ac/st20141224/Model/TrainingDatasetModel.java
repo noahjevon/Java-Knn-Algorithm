@@ -4,13 +4,14 @@ import java.util.List;
 
 public class TrainingDatasetModel {
 
-    private int label;
-    private List<Integer> red;
-    private List<Integer> green;
-    private List<Integer> blue;
-    private List<Integer> greyscale;
-    private Double distance;
+    private int label; // Int to store label data
+    private List<Integer> red; // List to store red pixel data
+    private List<Integer> green; // List to store green pixel data
+    private List<Integer> blue; // List to store blue pixel data
+    private List<Integer> greyscale; // List to store greyscale pixel data
+    private Double distance; // Double to store distance value
 
+    // New object - training image
     public TrainingDatasetModel(int label, List<Integer> red, List<Integer> green, List<Integer> blue, List<Integer> greyscale) {
         this.label = label;
         this.red = red;
@@ -19,13 +20,10 @@ public class TrainingDatasetModel {
         this.greyscale = greyscale;
     }
 
-    public Double getDistance() {
-        return distance;
-    }
+    // Setters & getters
+    public Double getDistance() { return distance; }
 
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
+    public void setDistance(Double distance) { this.distance = distance; }
 
     public int getLabel() {
         return label;
@@ -68,7 +66,7 @@ public class TrainingDatasetModel {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // Allows training image object to be displayed as text
         return "TrainingDatasetModel{" +
                 "label=" + label +
                 ", red=" + red +

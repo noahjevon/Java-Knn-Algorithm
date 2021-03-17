@@ -19,6 +19,7 @@ public class TestImageModel {
         this.greyscale = greyscale;
     }
 
+    // Setters & getters
     public int getLabel() {
         return label;
     }
@@ -60,7 +61,7 @@ public class TestImageModel {
     }
 
     @Override
-    public String toString() {
+    public String toString() { // Allows test image object to be displayed as text
         return "TestImageModel{" +
                 "label=" + label +
                 ", red=" + red +

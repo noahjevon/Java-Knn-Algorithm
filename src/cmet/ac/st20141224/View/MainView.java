@@ -28,6 +28,10 @@ public class MainView {
     private static MainView instance;
 
 
+    /**
+     *  The main view of the application. Creates a main JFrame, which has panels added on found in the 'panel' folder
+     *  within the 'view' package.
+     */
     private MainView() {
         mainWindow = new JFrame("st20141224 Knn Image Classification");
         mainWindow.setSize(500,250);  // Setting size of MainWindow
@@ -57,6 +61,11 @@ public class MainView {
     }
 
 
+    /**
+     * Singleton class to emsure that only one instance of mainview is running at a time
+     *
+     * @return returns an instance of mainview
+     */
     public static MainView getInstance() {  // Creating a new instance of MainView so only one can run at once
         if(instance == null)
             instance = new MainView();
