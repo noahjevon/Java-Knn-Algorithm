@@ -23,9 +23,9 @@ public class MainViewModel {
     public MainViewModel(CheckValidIOController checkValidIO, MainViewController mainController) {
         this.checkValidIO = checkValidIO; // Instance of CheckValidIO
         this.mainController = mainController; // Instance of mainController
-        labelReader = new ImageLabelsIO(); // new instance of IFileReader to read labels
-        imageReader = new TestImageIO(); // New instance of IFileReader to read test image
-        sourceReader = new TrainingDatasetIO(); // New instance of IFIleReader to read training images
+        labelReader = new ImageLabelsIO(); // Instance of IFileReader to read labels
+        imageReader = new TestImageIO(); // Instance of IFileReader to read test image
+        sourceReader = new TrainingDatasetIO(); // Instance of IFIleReader to read training images
     }
 
     // Setters & Getters

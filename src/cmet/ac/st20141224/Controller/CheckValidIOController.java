@@ -29,8 +29,6 @@ public class CheckValidIOController {
     public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
     }
-
-
     /**
      * Check that test image source is valid. If it is not, it returns an error to the user.
      * Sets boolean value depending on outcome.

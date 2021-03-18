@@ -107,7 +107,6 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
-        System.out.println("Number of test images: " + this.unknown.size());
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
 
         this.labelList = new ArrayList<>();
