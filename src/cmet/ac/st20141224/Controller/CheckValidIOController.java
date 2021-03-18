@@ -52,7 +52,6 @@ public class CheckValidIOController {
 
     /**
      * Check that test data source is valid. If it is not, it returns an error to the user.
-     * Check to see if the test image is over a certain size. If it is, returns an error
      * Sets boolean value depending on outcome.
      *
      * @param imgSrc The filepath of the test data

@@ -161,7 +161,7 @@ public class Algorithm {
             // Display results to user
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
-            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence);
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence + "%");
         } else {
             // calculate the average accuracy
             Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
