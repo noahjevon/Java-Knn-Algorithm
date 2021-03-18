@@ -9,9 +9,6 @@ import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
