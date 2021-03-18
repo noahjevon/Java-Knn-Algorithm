@@ -6,9 +6,9 @@ import cmet.ac.st20141224.View.ResultsView;
 
 import java.util.*;
 
+
 public class Algorithm {
 
-    private MainViewModel mainViewModelModel;
     private ResultsView resultsView;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
@@ -18,14 +18,13 @@ public class Algorithm {
     private String result; // String to store classification result
     private double confidence; // Double to store confidence value
 
-    private String filePath;
+    private String filePath; // Specify the filepath
 
     private int actualLabel; // Actual label of classified image
     private String labelText; // Actual label of classified image in text format
-    private String predictedLabel; // List to store predicted label as a string
     private int correctClassification; // Int to store number of correct classifications
 
-    private HashMap<String, Integer> labelHash;
+    private HashMap<String, Integer> labelHash; // HashMap to store frequency that labels occur during classification
     private List<String> labelList; // List to store test image labels as a string
     private List<Double> distance; // List of doubles to store distance values
 
@@ -107,10 +106,10 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
-        this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
+        this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance)); // Compare values to get distance
 
-        this.labelList = new ArrayList<>();
-        this.labelHash = new HashMap<String, Integer>();
+        this.labelList = new ArrayList<>(); // Arraylist to store labels
+        this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
 
         int max = Integer.MIN_VALUE;
 
@@ -125,7 +124,7 @@ public class Algorithm {
         int length = 10; // Length of list (0-9)
         for (int i = 0; i < length; i++) { // Loop through list
             int finalI = i;
-            int lbl = (int) kList.stream().filter(t -> // Get label at list
+            int lbl = (int) kList.stream().filter(t -> // Get label and frequency at index
                     (t.getLabel() == (finalI))).count();
             this.labelHash.put(this.labelList.get(finalI), lbl); // Add label frequency to hash map
         }
@@ -141,15 +140,16 @@ public class Algorithm {
 
         // Getting the text label of the test image
         labelText = this.labelList.get(actualLabel);
+
         // Getting the predicted label of the test image
-        predictedLabel = this.result;
-        if (predictedLabel == labelText) {
-            this.correctClassification++;
+        if (this.result == labelText) { // If result from above loop matches the text label of the test image
+            this.correctClassification++; // Increment correctClassification
         } else {
         }
 
         // Find confidence value
-        this.confidence = 100 * ((double) max / kList.size()); // Confidence formula
+        this.confidence = 100 * ((double) max / kList.size());
+
 
         /**
          * If the number of unknown images exceeds 1, display results needed for one image. If it is greater than 1,
@@ -171,42 +171,4 @@ public class Algorithm {
     }
 
 
-    // Getters & setters
-    public int getK() {
-        return k;
-    }
-
-    public void setK(int k) { this.k = k; }
-
-    public List<TrainingDatasetModel> getData() {
-        return data;
-    }
-
-    public void setData(List<TrainingDatasetModel> data) {
-        this.data = data;
-    }
-
-    public List<TestImageModel> getUnknown() {
-        return unknown;
-    }
-
-    public void setUnknown(List<TestImageModel> unknown) {
-        this.unknown = unknown;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
-    }
-
-    public double getConfidence() {
-        return confidence;
-    }
-
-    public void setConfidence(double confidence) {
-        this.confidence = confidence;
-    }
 }
