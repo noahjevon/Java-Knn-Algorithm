@@ -24,8 +24,8 @@ public class TrainingDatasetIO implements IFileReader {
 
 
     public TrainingDatasetIO() {
-        this.imageList = new ArrayList<TrainingDatasetModel>();
-        this.filePath = new ArrayList<>();
+        this.imageList = new ArrayList<TrainingDatasetModel>(); // Arraylist to store object data
+        this.filePath = new ArrayList<>(); // Arraylist to store file paths
     }
 
 
@@ -41,7 +41,7 @@ public class TrainingDatasetIO implements IFileReader {
                 Files.walk(dir).forEach(path -> showFile(path.toFile())); // Run toFile to add paths to array
                 filePath.remove(0); // Remove first index (It's the directory itself)
 
-                for (String path : filePath) { // Start reading each file
+                for (String path : filePath) { // Start reading each file within directory
                     readData(path);
                 }
 
@@ -50,10 +50,23 @@ public class TrainingDatasetIO implements IFileReader {
             }
         }
 
+    /**
+     * Adds the paths of each file within the directory to filePath array. For use later to read each file
+     * individually.
+     *
+     * @param file The directory containing the files to be read
+     */
     public void showFile(File file) {
-        this.filePath.add(file.getAbsolutePath());
+        this.filePath.add(file.getAbsolutePath()); // Add absolute path of each file to filePath array
     }
 
+    /**
+     * Reads fine data. Accesses first byte to get label, then three batches of 1024 bytes to read red, green and
+     * blue data. Repeats process for each pixel in the image (1024) for each image in the binary file.
+     *
+     * @param path The individual path of each file being read
+     * @throws IOException Exception if there is an error in reading the image data
+     */
     public void readData(String path) throws IOException {
         FileInputStream imageStream; // Declaring new FileInputStream to read file
         String fileName = path; // Filepath
