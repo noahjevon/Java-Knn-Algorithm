@@ -15,7 +15,7 @@ public class ResultsView extends JFrame {
 
 public ResultsView() {
     mainWindow = new JFrame("Results");
-    mainWindow.setSize(250,200);  // Setting size of MainWindow
+    mainWindow.setSize(200,200);  // Setting size of MainWindow
     mainWindow.setLayout(new BoxLayout(mainWindow.getContentPane(), BoxLayout.Y_AXIS));  // Specifying BoxLayout
 
     resultsImagePanel = new ResultsImagePanel(mainWindow);  // Adding image selection panel to JFrame

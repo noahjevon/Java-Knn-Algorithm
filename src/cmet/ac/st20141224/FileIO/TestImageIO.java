@@ -74,7 +74,6 @@ public class TestImageIO implements IFileReader {
 
             File path2 = new File(fileName); // Getting whole path of the specified file
             String name = path2.getName(); // Getting just the name of the specified file
-            System.out.println(name);
             String labelStr = Character.toString(name.charAt(0)); // Getting the character at the first index in the file name
             this.label = Integer.parseInt(labelStr); // Converting this character to integer value
 

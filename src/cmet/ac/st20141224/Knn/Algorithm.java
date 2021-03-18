@@ -1,6 +1,7 @@
 package cmet.ac.st20141224.Knn;
 
 import cmet.ac.st20141224.Model.*;
+import cmet.ac.st20141224.View.ErrorView;
 import cmet.ac.st20141224.View.ResultsView;
 
 import java.util.*;
@@ -21,11 +22,11 @@ public class Algorithm {
 
     private int actualLabel; // Actual label of classified image
     private String labelText; // Actual label of classified image in text format
-    private String predictedLabel;
-    private int correctClassification;
+    private String predictedLabel; // List to store predicted label as a string
+    private int correctClassification; // Int to store number of correct classifications
 
     private HashMap<String, Integer> labelHash;
-    private List<String> labelList;
+    private List<String> labelList; // List to store test image labels as a string
     private List<Double> distance; // List of doubles to store distance values
 
     private List<Integer> test; // Lists to store pixel data of test image
@@ -79,7 +80,8 @@ public class Algorithm {
 
                 int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
                 if (length != test.size()) { // Check that lists are not different lengths
-                    System.out.println("Out of bounds exception!"); // Throw error if lists don't match
+                    ErrorView.errorMessage("Training data exceeds testing data. Please try" +
+                            "again.", "Out Of Bounds Exception!");
                 }
 
                 for (int i = 0; i < length; i++) { // For each pixel in image
@@ -119,7 +121,6 @@ public class Algorithm {
         for (ImageLabelModel imageLabels : labels) { // For each item in label object,
             this.labelList.add(imageLabels.getLabel()); // add to label list
         }
-        System.out.println(labelList);
 
         // Loop through list to find how many occurrences there are of each label
         int length = 10; // Length of list (0-9)
@@ -129,7 +130,6 @@ public class Algorithm {
                     (t.getLabel() == (finalI))).count();
             this.labelHash.put(this.labelList.get(finalI), lbl); // Add label frequency to hash map
         }
-        System.out.println(labelHash);
 
         // Finding highest occurrence of a label in hash map
         Set<Map.Entry<String, Integer>> entries = this.labelHash.entrySet();
@@ -151,8 +151,12 @@ public class Algorithm {
 
         // Find confidence value
         this.confidence = 100 * ((double) max / kList.size()); // Confidence formula
-        System.out.println("Result: " + this.result + " | " + "Confidence: " + this.confidence);
 
+        /**
+         * If the number of unknown images exceeds 1, display results needed for one image. If it is greater than 1,
+         * display the overall accuracy as well as how many images were successfully classified and how many images
+         * there are in total
+         */
         if (this.unknown.size() <= 1) {
             // Display results to user
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
