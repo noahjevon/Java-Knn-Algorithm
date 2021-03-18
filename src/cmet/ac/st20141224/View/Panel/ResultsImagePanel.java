@@ -5,6 +5,7 @@ import javax.swing.*;
 public class ResultsImagePanel extends JPanel {
 
     private JPanel form;
+    private String image;
     private JLabel imageView;
     JFrame mainWindow;
 
@@ -13,6 +14,7 @@ public class ResultsImagePanel extends JPanel {
     public ResultsImagePanel(JFrame mainWindow) {
         this.mainWindow = mainWindow;
         this.panel = new SpringLayout();
+        System.out.println(image);
         setupPanel();
     }
 
@@ -21,19 +23,14 @@ public class ResultsImagePanel extends JPanel {
         this.add(imageView);
     }
 
-    public JLabel getImageView() {
-        return imageView;
-    }
-
-    public void setImageView(JLabel imageView) {
-        this.imageView = imageView;
-    }
-
-    public SpringLayout getPanel() {
-        return panel;
-    }
+    // Getters & setters
+    public SpringLayout getPanel() { return panel; }
 
     public void setPanel(SpringLayout panel) {
         this.panel = panel;
     }
+
+    public String getImage() { return image; }
+
+    public void setImage(String image) { this.image = image; }
 }

@@ -17,6 +17,8 @@ public class Algorithm {
     private String result; // String to store classification result
     private double confidence; // Double to store confidence value
     private int label; // Actual label of classified image
+
+    private String filePath;
     private String labelText;
 
     private List<String> labelList;
@@ -58,6 +60,7 @@ public class Algorithm {
      */
     public void computeDistance() {
         for (TestImageModel testImage : unknown) { // For loop to get test image data
+            filePath = testImage.getFilePath();
             test = testImage.getGreyscale(); // Lists to store pixel data
             test_red = testImage.getRed();
             test_green = testImage.getGreen();

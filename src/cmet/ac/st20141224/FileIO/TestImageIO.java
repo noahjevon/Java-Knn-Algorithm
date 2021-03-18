@@ -93,7 +93,7 @@ public class TestImageIO implements IFileReader {
             }
         }
         this.imageList.add(new TestImageModel // Creating new object containing all image data
-                (label, redList, greenList, blueList, greyscaleList));
+                (fileName, label, redList, greenList, blueList, greyscaleList));
     }
 
     // Getters & setters

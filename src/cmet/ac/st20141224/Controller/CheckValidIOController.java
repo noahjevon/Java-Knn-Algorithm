@@ -11,11 +11,8 @@ import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
-import cmet.ac.st20141224.View.MainView;
-import cmet.ac.st20141224.View.ResultsView;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;

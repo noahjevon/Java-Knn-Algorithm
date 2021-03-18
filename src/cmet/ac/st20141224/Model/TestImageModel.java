@@ -4,6 +4,7 @@ import java.util.List;
 
 public class TestImageModel {
 
+    String filePath;
     private int label; // Int to store label data
     private List<Integer> red; // List to store red pixel data
     private List<Integer> green; // List to store green pixel data
@@ -11,7 +12,8 @@ public class TestImageModel {
     private List<Integer> greyscale; // List to store greyscale pixel data
 
     // New object - test image
-    public TestImageModel(int label, List<Integer> red, List<Integer> green, List<Integer> blue, List<Integer> greyscale) {
+    public TestImageModel(String filePath, int label, List<Integer> red, List<Integer> green, List<Integer> blue, List<Integer> greyscale) {
+        this.filePath = filePath;
         this.label = label;
         this.red = red;
         this.green = green;
@@ -58,6 +60,14 @@ public class TestImageModel {
 
     public void setGreyscale(List<Integer> greyscale) {
         this.greyscale = greyscale;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     @Override
