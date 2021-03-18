@@ -68,6 +68,7 @@ public class Algorithm {
             label = testImage.getLabel();
         }
 
+
         for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
             this.distance = new ArrayList<>(); // List to store distance
 
