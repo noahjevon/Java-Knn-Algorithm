@@ -1,18 +1,29 @@
 package cmet.ac.st20141224.Knn;
 
+import cmet.ac.st20141224.Model.ImageLabelModel;
 import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
+import java.security.Key;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Algorithm {
 
     private int k; // Integer to store k value
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
+    private List<ImageLabelModel> labels; // List to store labels of images
     private String result; // String to store classification result
+    private String name;
     private double confidence; // Double to store confidence value
+
+    List<String> labelList;
+    HashMap<String, Integer> labelHash;
+
     private List<Double> distance; // List of doubles to store distance vlaues
+
     private List<Integer> test;
     private List<Integer> test_red;
     private List<Integer> test_green;
@@ -32,10 +43,11 @@ public class Algorithm {
      * @param data The training data the model will run using
      * @param unknown The test data the model will run with
      */
-    public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown) {
+    public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown, List<ImageLabelModel> labels) {
         this.k = k; // Set k value
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
+        this.labels = labels;
     }
 
 
@@ -51,19 +63,19 @@ public class Algorithm {
         }
 
         for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
-            this.distance = new ArrayList<>(); // Declaring list to store distance
+            this.distance = new ArrayList<>(); // List to store distance
 
             train = trainImage.getGreyscale(); // Lists to store pixel data
             train_red = trainImage.getRed();
             train_green = trainImage.getGreen();
             train_blue = trainImage.getBlue();
 
-            int length = train_red.size();
-            if (length != test_red.size()) { // Check that lists are the same length
-                System.out.println("Out of bounds exception!"); // Throw error
+            int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
+            if (length != test.size()) { // Check that lists are the same length
+                System.out.println("Out of bounds exception!"); // Throw error if lists don't match
             }
             for (int i = 0; i < length; i ++) { // For each pixel in image
-                double s = Math.pow((train.get(i) - test.get(i)),2) + // get square root
+                double s = Math.pow((train.get(i) - test.get(i)),2) + // get square sum
                         Math.pow((+ train_red.get(i) - test_red.get(i)),2) +
                         Math.pow((+ train_green.get(i) - test_green.get(i)),2) +
                         Math.pow((+ train_blue.get(i) - test_blue.get(i)),2);
@@ -71,7 +83,7 @@ public class Algorithm {
                 this.distance.add(d); // Add distance to distance list
             }
             double sum = distance.stream().mapToDouble(a -> a).sum(); // Get sum of distances
-            double finalDistance = sum / distance.size(); // Get average distance
+            double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
             trainImage.setDistance(finalDistance); // Set distance of training image
         }
         classify();
@@ -85,39 +97,40 @@ public class Algorithm {
      */
     public void classify() {
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
+        this.labelList = new ArrayList<>();
+        this.labelHash = new HashMap<String, Integer>();
+
+        int max = Integer.MIN_VALUE;
+        String name = null;
 
         List<TrainingDatasetModel> // Creating sublist of images containing the lowest distance from K value
                 kList = this.data.subList(0, this.k);
-        
-        int plane = (int) kList.stream().filter(t -> (t.getLabel() == (0))).count();
-        System.out.println("Plane count: " + plane);
 
-        int auto = (int) kList.stream().filter(t -> (t.getLabel() == (1))).count();
-        System.out.println("auto count: " + auto);
+        for (ImageLabelModel imageLabels : labels) { // For each item in label object,
+            this.labelList.add(imageLabels.getLabel()); // add to label list
+        }
 
-        int bird = (int) kList.stream().filter(t -> (t.getLabel() == (2))).count();
-        System.out.println("bird count: " + bird);
+        // Loop through list to find how many occurrences there are of each label
+        int length = 10; // Length of list (0-9)
+        for (int i = 0; i < length; i ++) { // Loop through list
+            int finalI = i;
+            int lbl = (int) kList.stream().filter(t -> // Get label at list
+                    (t.getLabel() == (finalI))).count();
+            this.labelHash.put(this.labelList.get(finalI), lbl); // Add label frequency to hash map
+        }
 
-        int cat = (int) kList.stream().filter(t -> (t.getLabel() == (3))).count();
-        System.out.println("cat count: " + cat);
+        // Finding highest occurrence of a label in hash map
+        Set<Map.Entry<String,Integer>> entries=this.labelHash.entrySet();
+        for(Map.Entry<String,Integer> entry:entries) {
+            if (entry.getValue() > max) {
+                max = entry.getValue();
+                name = entry.getKey();
+            }
+        }
 
-        int deer = (int) kList.stream().filter(t -> (t.getLabel() == (4))).count();
-        System.out.println("deer count: " + deer);
-
-        int dog = (int) kList.stream().filter(t -> (t.getLabel() == (5))).count();
-        System.out.println("dog count: " + dog);
-
-        int frog = (int) kList.stream().filter(t -> (t.getLabel() == (6))).count();
-        System.out.println("frog count: " + frog);
-
-        int horse = (int) kList.stream().filter(t -> (t.getLabel() == (7))).count();
-        System.out.println("horse count: " + horse);
-
-        int ship = (int) kList.stream().filter(t -> (t.getLabel() == (8))).count();
-        System.out.println("ship count: " + ship);
-
-        int truck = (int) kList.stream().filter(t -> (t.getLabel() == (9))).count();
-        System.out.println("truck count: " + truck);
+        // Find confidence value
+        this.confidence = 100 * ((double) max / kList.size());
+        System.out.println("Result: " + name + " | " + "Confidence: " + confidence);
     }
 
     // Getters & setters
