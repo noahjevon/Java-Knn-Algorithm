@@ -16,14 +16,16 @@ public class Algorithm {
     private int k; // Integer to store k value
     private String result; // String to store classification result
     private double confidence; // Double to store confidence value
-    private int label; // Actual label of classified image
 
     private String filePath;
-    private String labelText;
 
-    private List<String> labelList;
+    private int actualLabel; // Actual label of classified image
+    private String labelText; // Actual label of classified image in text format
+    private String predictedLabel;
+    private int correctClassification;
+
     private HashMap<String, Integer> labelHash;
-
+    private List<String> labelList;
     private List<Double> distance; // List of doubles to store distance values
 
     private List<Integer> test; // Lists to store pixel data of test image
@@ -65,35 +67,35 @@ public class Algorithm {
             test_red = testImage.getRed();
             test_green = testImage.getGreen();
             test_blue = testImage.getBlue();
-            label = testImage.getLabel();
-        }
+            actualLabel = testImage.getLabel();
 
+            for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
+                this.distance = new ArrayList<>(); // List to store distance
 
-        for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
-            this.distance = new ArrayList<>(); // List to store distance
+                train = trainImage.getGreyscale(); // Lists to store pixel data
+                train_red = trainImage.getRed();
+                train_green = trainImage.getGreen();
+                train_blue = trainImage.getBlue();
 
-            train = trainImage.getGreyscale(); // Lists to store pixel data
-            train_red = trainImage.getRed();
-            train_green = trainImage.getGreen();
-            train_blue = trainImage.getBlue();
+                int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
+                if (length != test.size()) { // Check that lists are not different lengths
+                    System.out.println("Out of bounds exception!"); // Throw error if lists don't match
+                }
 
-            int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
-            if (length != test.size()) { // Check that lists are the same length
-                System.out.println("Out of bounds exception!"); // Throw error if lists don't match
+                for (int i = 0; i < length; i++) { // For each pixel in image
+                    double s = Math.pow((train.get(i) - test.get(i)), 2) + // get square sum
+                            Math.pow((+train_red.get(i) - test_red.get(i)), 2) +
+                            Math.pow((+train_green.get(i) - test_green.get(i)), 2) +
+                            Math.pow((+train_blue.get(i) - test_blue.get(i)), 2);
+                    double d = Math.sqrt(s);
+                    this.distance.add(d); // Add distance to distance list
+                }
+                double sum = distance.stream().mapToDouble(a -> a).sum(); // Get sum of distances
+                double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
+                trainImage.setDistance(finalDistance); // Set distance of training image
             }
-            for (int i = 0; i < length; i ++) { // For each pixel in image
-                double s = Math.pow((train.get(i) - test.get(i)),2) + // get square sum
-                        Math.pow((+ train_red.get(i) - test_red.get(i)),2) +
-                        Math.pow((+ train_green.get(i) - test_green.get(i)),2) +
-                        Math.pow((+ train_blue.get(i) - test_blue.get(i)),2);
-                double d = Math.sqrt(s);
-                this.distance.add(d); // Add distance to distance list
-            }
-            double sum = distance.stream().mapToDouble(a -> a).sum(); // Get sum of distances
-            double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
-            trainImage.setDistance(finalDistance); // Set distance of training image
+            classify(); // Begin classification
         }
-        classify(); // Begin classification
     }
 
 
@@ -103,6 +105,7 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
+        System.out.println("Number of test images: " + this.unknown.size());
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
 
         this.labelList = new ArrayList<>();
@@ -116,19 +119,21 @@ public class Algorithm {
         for (ImageLabelModel imageLabels : labels) { // For each item in label object,
             this.labelList.add(imageLabels.getLabel()); // add to label list
         }
+        System.out.println(labelList);
 
         // Loop through list to find how many occurrences there are of each label
         int length = 10; // Length of list (0-9)
-        for (int i = 0; i < length; i ++) { // Loop through list
+        for (int i = 0; i < length; i++) { // Loop through list
             int finalI = i;
             int lbl = (int) kList.stream().filter(t -> // Get label at list
                     (t.getLabel() == (finalI))).count();
             this.labelHash.put(this.labelList.get(finalI), lbl); // Add label frequency to hash map
         }
+        System.out.println(labelHash);
 
         // Finding highest occurrence of a label in hash map
-        Set<Map.Entry<String,Integer>> entries=this.labelHash.entrySet();
-        for(Map.Entry<String,Integer> entry:entries) { // Iterate through all values in hash map
+        Set<Map.Entry<String, Integer>> entries = this.labelHash.entrySet();
+        for (Map.Entry<String, Integer> entry : entries) { // Iterate through all values in hash map
             if (entry.getValue() > max) {
                 max = entry.getValue(); // Get largest value in hashmap
                 this.result = entry.getKey(); // Get key for largest value in hash map
@@ -136,17 +141,32 @@ public class Algorithm {
         }
 
         // Getting the text label of the test image
-        labelText = this.labelList.get(label);
+        labelText = this.labelList.get(actualLabel);
+        // Getting the predicted label of the test image
+        predictedLabel = this.result;
+        if (predictedLabel == labelText) {
+            this.correctClassification++;
+        } else {
+        }
 
         // Find confidence value
         this.confidence = 100 * ((double) max / kList.size()); // Confidence formula
         System.out.println("Result: " + this.result + " | " + "Confidence: " + this.confidence);
 
-        // Display results to user
-        this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
-        this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
-        this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence);
+        if (this.unknown.size() <= 1) {
+            // Display results to user
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
+            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence);
+        } else {
+            // calculate the average accuracy
+            Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified:" + this.correctClassification);
+            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracy + "%");
+        }
     }
+
 
     // Getters & setters
     public int getK() {
