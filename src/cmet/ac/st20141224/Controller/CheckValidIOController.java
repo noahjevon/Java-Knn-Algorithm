@@ -64,24 +64,27 @@ public class CheckValidIOController {
         if (imgSrc.equals("")) {
             ErrorView.errorMessage("Image source cannot be null!", "Image Source Error");
             setSrc(false);
-        }
-        BufferedImage img = null;
-        try {
-            img = ImageIO.read(new File(this.mainViewModel.getImgSrc()));
-        } catch (IOException e) {
-            ErrorView.errorMessage("Cannot read image file!", "Image Read Error");
-            e.printStackTrace();
-        }
-
-        int image_width = img.getWidth(); // Getting image width and height
-        int image_height = img.getHeight();
-
-        if (image_width > 32 && image_height > 32) { // Checking to see if image is over-sized
-            ErrorView.errorMessage("Image cannot be larger than 32x32!", "Image Size Error");
         } else {
             this.mainViewModel.setImgSrc(imgSrc);
             setSrc(true);
         }
+//        BufferedImage img = null;
+//        try {
+//            img = ImageIO.read(new File(this.mainViewModel.getImgSrc()));
+//        } catch (IOException e) {
+//            ErrorView.errorMessage("Cannot read image file!", "Image Read Error");
+//            e.printStackTrace();
+//        }
+
+//        int image_width = img.getWidth(); // Getting image width and height
+//        int image_height = img.getHeight();
+//
+//        if (image_width > 32 && image_height > 32) { // Checking to see if image is over-sized
+//            ErrorView.errorMessage("Image cannot be larger than 32x32!", "Image Size Error");
+//        } else {
+//            this.mainViewModel.setImgSrc(imgSrc);
+//            setSrc(true);
+//        }
     }
 
 

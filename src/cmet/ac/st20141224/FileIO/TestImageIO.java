@@ -9,7 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -17,8 +21,8 @@ public class TestImageIO implements IFileReader {
     String testImage; // Declaring variable to store file path
 
     private List<TestImageModel> imageList; // Declaring list to store image data
-    private List<ImageLabelModel> labelList;
-
+    private List<ImageLabelModel> labelList; // List of labels
+    public List<String> filePath; // List to store individual paths of files in the directory
     FileInputStream in_stream_images; // Declaring new FileInputStream
 
     private Integer label; // Integer to store label of image
@@ -30,30 +34,60 @@ public class TestImageIO implements IFileReader {
     public TestImageIO() {
         this.imageList = new ArrayList<>();
         this.labelList = new ArrayList<ImageLabelModel>();
+        this.filePath = new ArrayList<>();
     }
 
     
     @Override
     public void read() throws IOException {
+        File file = new File(testImage); // Path of directory or file
+
+        boolean isDirectory = file.isDirectory(); // Boolean to see if directory or file
+        if (isDirectory == true) { // If a directory,
+            String folder = testImage; // Specify folder
+            Path dir = Paths.get(folder); // Specify paths
+            Files.walk(dir).forEach(path -> showFile(path.toFile())); // Run toFile to add paths to array
+            filePath.remove(0); // Remove first index (It's the directory itself)
+            System.out.println(filePath);
+
+            for (String path : filePath) { // Start reading each file
+                readData(path);
+            }
+
+        } else { // If not a directory, read single file
+            readData(testImage);
+        }
+
         String fileName = testImage; // Filepath
 
         in_stream_images = new FileInputStream(fileName); // Declaring new FileInputStream to read file
+    }
 
-        File path = new File(getFilename()); // Getting whole path of the specified file
-        String name = path.getName(); // Getting just the name of the specified file
+    public void showFile(File file) {
+        this.filePath.add(file.getAbsolutePath());
+    }
+
+    public void readData(String path) throws IOException {
+        FileInputStream imageStream; // Declaring new FileInputStream to read file
+        String fileName = path; // Filepath
+
+        File path2 = new File(fileName); // Getting whole path of the specified file
+        String name = path2.getName(); // Getting just the name of the specified file
+        System.out.println(name);
         String labelStr = Character.toString(name.charAt(0)); // Getting the character at the first index in the file name
         this.label = Integer.parseInt(labelStr); // Converting this character to integer value
 
-        while(in_stream_images.available() > 0) { // Checking that image data is available
+        imageStream = new FileInputStream(fileName); // Declaring new FileInputStream to read file
+        while(imageStream.available() > 0) { // Checking that image data is available
 
             byte[] red_Data = new byte[1024]; // Reading 1024 bytes of red data
-            in_stream_images.read(red_Data);
+            imageStream.read(red_Data);
 
             byte[] green_Data = new byte[1024]; // Reading 1024 bytes of green data
-            in_stream_images.read(green_Data);
+            imageStream.read(green_Data);
 
             byte[] blue_Data = new byte[1024]; // Reading 1024 bytes of blue data
-            in_stream_images.read(blue_Data);
+            imageStream.read(blue_Data);
 
             BufferedImage img = new BufferedImage // New BufferedImage for the image being read
                     (32, 32, BufferedImage.TYPE_INT_ARGB);
