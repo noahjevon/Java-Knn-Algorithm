@@ -3,9 +3,8 @@ package cmet.ac.st20141224.Knn;
 import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public class Algorithm {
 
@@ -15,35 +14,77 @@ public class Algorithm {
     private String result; // String to store classification result
     private double confidence; // Double to store confidence value
     private List<Double> distance; // List of doubles to store distance vlaues
+    private List<Integer> test;
+    private List<Integer> test_red;
+    private List<Integer> test_green;
+    private List<Integer> test_blue;
 
+    private List<Integer> train;
+    private List<Integer> train_red;
+    private List<Integer> train_green;
+    private List<Integer> train_blue;
+    private int label;
+
+
+    /**
+     * Algorithm that accepts parameters used in order to get distances between pixel data, and classify the data
+     * to make a prediction as to what the test data may be.
+     *
+     * @param k The K value the model will run using
+     * @param data The training data the model will run using
+     * @param unknown The test data the model will run with
+     */
     public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown) {
         this.k = k; // Set k value
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
     }
 
-    // Compute the distance between greyscale values in each pixel of training and test images
+
+    /**
+     * Method to compute the distance between two data points within training and testing images.
+     */
     public void computeDistance() {
-    this.data.forEach(image -> { // For each image in training dataset
-        this.distance = new ArrayList<>(); // Declaring list to store distances
-        for (int i : image.getGreyscale())  { // For each greyscale pixel training in image, get value
-            this.unknown.forEach(pixel -> { // For each greyscale pixel in test image
-                for (int p : pixel.getGreyscale()) { // For each greyscale pixel test image, get value
-                    double s = Math.pow((i - p), 2); // Finding the distance between 2 points
-                    double d = Math.sqrt(s); // Finding square-root of distance
-                    this.distance.add(d); // Adding distance to list
-                }
-            });
+        for (TestImageModel val2 : unknown) {
+            test = val2.getGreyscale();
+            test_red = val2.getRed();
+            test_green = val2.getGreen();
+            test_blue = val2.getBlue();
         }
-            double sum = distance.stream().mapToDouble(a -> a).sum(); // Getting the sum of all distance values
-            double finalDistance = (sum / 1024); // Getting the average of all distance values in list
-            image.setDistance(finalDistance); // Setting the final distance value of the training image object
-    });
-        classify(); // Begin classification process
+
+        for (TrainingDatasetModel val : data) {
+            this.distance = new ArrayList<>(); // Declaring list to store distance
+
+            train = val.getGreyscale();
+            train_red = val.getRed();
+            train_green = val.getGreen();
+            train_blue = val.getBlue();
+
+            int length = train_red.size();
+            if (length != test_red.size()) {
+                System.out.println("Out of bounds exception!");
+            }
+            for (int i = 0; i < length; i ++) {
+                double s = Math.pow((train.get(i) - test.get(i)),2) +
+                        Math.pow((+ train_red.get(i) - test_red.get(i)),2) +
+                        Math.pow((+ train_green.get(i) - test_green.get(i)),2) +
+                        Math.pow((+ train_blue.get(i) - test_blue.get(i)),2);
+                double d = Math.sqrt(s);
+                this.distance.add(d);
+            }
+            double sum = distance.stream().mapToDouble(a -> a).sum();
+            double finalDistance = sum / 1024;
+            val.setDistance(finalDistance);
+        }
+        classify();
     }
 
 
-    // Classify the images using the dataset
+    /**
+     * Method to classify the distances in order to find out which images are likely to belong to the same class as the
+     * test image, allowing an informed decision to be made. Uses K value to take the top 'n' values of the classified
+     * data, where 'n' = K.
+     */
     public void classify() {
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
 
@@ -52,33 +93,33 @@ public class Algorithm {
         
         int plane = (int) kList.stream().filter(t -> (t.getLabel() == (0))).count();
         System.out.println("Plane count: " + plane);
-//
-//        int auto = (int) kList.stream().filter(t -> (t.getLabel() == (1))).count();
-//        System.out.println("auto count: " + auto);
-//
-//        int bird = (int) kList.stream().filter(t -> (t.getLabel() == (2))).count();
-//        System.out.println("bird count: " + bird);
-//
-//        int cat = (int) kList.stream().filter(t -> (t.getLabel() == (3))).count();
-//        System.out.println("cat count: " + cat);
-//
-//        int deer = (int) kList.stream().filter(t -> (t.getLabel() == (4))).count();
-//        System.out.println("deer count: " + deer);
-//
-//        int dog = (int) kList.stream().filter(t -> (t.getLabel() == (5))).count();
-//        System.out.println("dog count: " + dog);
-//
-//        int frog = (int) kList.stream().filter(t -> (t.getLabel() == (6))).count();
-//        System.out.println("frog count: " + frog);
-//
-//        int horse = (int) kList.stream().filter(t -> (t.getLabel() == (7))).count();
-//        System.out.println("horse count: " + horse);
-//
-//        int ship = (int) kList.stream().filter(t -> (t.getLabel() == (8))).count();
-//        System.out.println("ship count: " + ship);
-//
-//        int truck = (int) kList.stream().filter(t -> (t.getLabel() == (9))).count();
-//        System.out.println("truck count: " + truck);
+
+        int auto = (int) kList.stream().filter(t -> (t.getLabel() == (1))).count();
+        System.out.println("auto count: " + auto);
+
+        int bird = (int) kList.stream().filter(t -> (t.getLabel() == (2))).count();
+        System.out.println("bird count: " + bird);
+
+        int cat = (int) kList.stream().filter(t -> (t.getLabel() == (3))).count();
+        System.out.println("cat count: " + cat);
+
+        int deer = (int) kList.stream().filter(t -> (t.getLabel() == (4))).count();
+        System.out.println("deer count: " + deer);
+
+        int dog = (int) kList.stream().filter(t -> (t.getLabel() == (5))).count();
+        System.out.println("dog count: " + dog);
+
+        int frog = (int) kList.stream().filter(t -> (t.getLabel() == (6))).count();
+        System.out.println("frog count: " + frog);
+
+        int horse = (int) kList.stream().filter(t -> (t.getLabel() == (7))).count();
+        System.out.println("horse count: " + horse);
+
+        int ship = (int) kList.stream().filter(t -> (t.getLabel() == (8))).count();
+        System.out.println("ship count: " + ship);
+
+        int truck = (int) kList.stream().filter(t -> (t.getLabel() == (9))).count();
+        System.out.println("truck count: " + truck);
     }
 
     // Getters & setters
@@ -86,9 +127,7 @@ public class Algorithm {
         return k;
     }
 
-    public void setK(int k) {
-        this.k = k;
-    }
+    public void setK(int k) { this.k = k; }
 
     public List<TrainingDatasetModel> getData() {
         return data;

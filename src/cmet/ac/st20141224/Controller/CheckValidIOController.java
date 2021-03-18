@@ -17,7 +17,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+/**
+ * Class to check if inputs are valid. If validity checks come back positive, the class proceeds to run the model with
+ * specified parameters.
+ */
 public class CheckValidIOController {
     MainViewModel mainViewModel;
 
@@ -32,10 +35,17 @@ public class CheckValidIOController {
         this.mainViewModel = mainViewModel;
     }
 
-    // Check that test image source is valid || In-line comments are the same for next 3 classes so only included in first
-    public void setImgSrc(String imgSrc) {
-        if (imgSrc.equals("")) {  // Check if image source is null
-            ErrorView.errorMessage("Image source cannot be null!", "Image Source Error"); // Throw error if invalid
+
+    /**
+     * Check that test image source is valid. If it is not, it returns an error to the user.
+     * Sets boolean value depending on outcome.
+     *
+     * In-line comments for the next three classes are very similar, so have only been included when there
+     * are some differences.
+     */
+    public void setSrcSrc(String srcSrc) {
+        if (srcSrc.equals("")) {  // Check if image source is null
+            ErrorView.errorMessage("Training source cannot be null!", "Image Source Error"); // Throw error if invalid
             setImg(false); // Set boolean value to 'false' if input is invalid
         } else {
             setImg(true); // Set boolean value to 'true' if input is valid
@@ -43,9 +53,15 @@ public class CheckValidIOController {
     }
 
 
-    // Check that the source of training data is valid
-    public void setSrcSrc(String srcSrc) {
-        if (srcSrc.equals("")) {
+    /**
+     * Check that test data source is valid. If it is not, it returns an error to the user.
+     * Check to see if the test image is over a certain size. If it is, returns an error
+     * Sets boolean value depending on outcome.
+     *
+     * @param imgSrc The filepath of the training data
+     */
+    public void setImgSrc(String imgSrc) {
+        if (imgSrc.equals("")) {
             ErrorView.errorMessage("Training source cannot be null!", "Training Source Error");
             setSrc(false);
         }
@@ -63,13 +79,19 @@ public class CheckValidIOController {
         if (image_width > 32 && image_height > 32) { // Checking to see if image is over-sized
             ErrorView.errorMessage("Image cannot be larger than 32x32!", "Image Size Error");
         } else {
-            this.mainViewModel.setSrcSrc(srcSrc);
+            this.mainViewModel.setImgSrc(imgSrc);
             setSrc(true);
         }
     }
 
 
-    // Check that label source is valid
+
+    /**
+     * Check that test data source is valid. If it is not, it returns an error to the user.
+     * Sets boolean value depending on outcome.
+     *
+     * @param lblSrc The filepath of the label
+     */
     public void setLblSrc(String lblSrc) {
         if (lblSrc.equals("")) {
             ErrorView.errorMessage("Label source cannot be null!", "Label Source Error");
@@ -82,7 +104,13 @@ public class CheckValidIOController {
     }
 
 
-    // Check that K value is valid
+
+    /**
+     * Check that the K value is valid. If it is not, it returns an error to the user.
+     * Sets boolean value depending on outcome.
+     *
+     * @param kValue The kValue specified by the user
+     */
     public void setkValue(String kValue) {
         try {
             int kValueInt = Integer.parseInt(kValue);
@@ -104,6 +132,11 @@ public class CheckValidIOController {
     }
 
 
+    /**
+     * Checks that all boolean values from above are true. If they are, proceed to run the model.
+     * Initialises the file readers, reads the data within the try-catch statements.
+     * Creates a new instance of the Algorithm class using data required for it to run (test, label and image data)
+     */
     public void checkIO() { // Check to see if all boolean values return true
         if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
             AlertView.alertMessage("Running model!", "Alert"); // Inform user model is running. Tests passed
