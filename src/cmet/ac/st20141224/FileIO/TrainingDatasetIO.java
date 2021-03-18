@@ -5,8 +5,12 @@ import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 public class TrainingDatasetIO implements IFileReader {
@@ -32,7 +36,6 @@ public class TrainingDatasetIO implements IFileReader {
         String fileName = CIFAR; // Filepath
 
         imageStream = new FileInputStream(fileName); // Declaring new FileInputStream to read file
-
             while(imageStream.available() > 0) { // Checking that image data is available
                 int label = imageStream.read(); // Reading first byte to get label value
 
@@ -94,6 +97,4 @@ public class TrainingDatasetIO implements IFileReader {
     public String getFilename() {
         return this.CIFAR;
     }
-
-
 }

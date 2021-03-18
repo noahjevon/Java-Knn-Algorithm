@@ -32,7 +32,6 @@ public class SourceChoosePanel extends JPanel {
 
     public File showDirectoryChooserDialog() {
         this.fileChooser = new JFileChooser();
-        fileChooser.setMultiSelectionEnabled(true);  // Allow multiple selection
         FileNameExtensionFilter filter = new FileNameExtensionFilter("BIN files", "bin");  // File filter
         fileChooser.setFileFilter(filter);  // Apply file filter
         this.fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));

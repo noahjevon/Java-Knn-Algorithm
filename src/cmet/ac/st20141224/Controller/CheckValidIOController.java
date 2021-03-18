@@ -1,9 +1,6 @@
 package cmet.ac.st20141224.Controller;
 
-import cmet.ac.st20141224.FileIO.IFileReader;
-import cmet.ac.st20141224.FileIO.ImageLabelsIO;
-import cmet.ac.st20141224.FileIO.TestImageIO;
-import cmet.ac.st20141224.FileIO.TrainingDatasetIO;
+import cmet.ac.st20141224.FileIO.*;
 import cmet.ac.st20141224.Knn.Algorithm;
 import cmet.ac.st20141224.Model.ImageLabelModel;
 import cmet.ac.st20141224.Model.MainViewModel;
@@ -148,6 +145,8 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
+            IFileReader readTrainingDatasetDirectory = new TrainingDatasetDirectoryIO();
+
             // HERE GOES LOADING SCREEN TO SHOW THAT LABELS ARE BEING READ
             // FIRST THREAD
             try {
@@ -168,13 +167,25 @@ public class CheckValidIOController {
 
             // HERE GOES LOADING SCREEN TO SHOW THAT TRAINING SET IS BEING READ
             // NEW THREAD
-            try { // Read specified source
-                readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
-                readTrainingDataset.read(); // Reading training data
-            } catch (IOException e) { // Inform user there was an error reading the training data
-                ErrorView.errorMessage("Error reading source data", "Source Error");
-            }
+            File file = new File(this.mainViewModel.getSrcSrc());
+            boolean isDirectory = file.isDirectory();
 
+            if (isDirectory == true) { // If path is a directory, read all files
+                try { // Read specified source
+                    readTrainingDatasetDirectory.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
+                    readTrainingDatasetDirectory.read(); // Reading training data
+                } catch (IOException e) { // Inform user there was an error reading the training data
+                    ErrorView.errorMessage("Error reading source data", "Source Error");
+                }
+
+            } else { // If path is a single file, read single file
+                try { // Read specified source
+                    readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
+                    readTrainingDataset.read(); // Reading training data
+                } catch (IOException e) { // Inform user there was an error reading the training data
+                    ErrorView.errorMessage("Error reading source data", "Source Error");
+                }
+            }
             // NEW THREAD STARTS (IT WAITS UNTIL PREVIOUS THREE THREADS HAVE FINISHED BEFORE RUNNING)
             // MODEL RUNS HERE
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
