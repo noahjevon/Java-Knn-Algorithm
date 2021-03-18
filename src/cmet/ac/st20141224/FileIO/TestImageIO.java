@@ -1,5 +1,6 @@
 package cmet.ac.st20141224.FileIO;
 
+import cmet.ac.st20141224.Model.ImageLabelModel;
 import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.View.ErrorView;
 
@@ -16,6 +17,7 @@ public class TestImageIO implements IFileReader {
     String testImage; // Declaring variable to store file path
 
     private List<TestImageModel> imageList; // Declaring list to store image data
+    private List<ImageLabelModel> labelList;
 
     FileInputStream in_stream_images; // Declaring new FileInputStream
 
@@ -27,6 +29,7 @@ public class TestImageIO implements IFileReader {
 
     public TestImageIO() {
         this.imageList = new ArrayList<>();
+        this.labelList = new ArrayList<ImageLabelModel>();
     }
 
     

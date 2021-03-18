@@ -5,13 +5,13 @@ import cmet.ac.st20141224.Model.MainViewModel;
 
 import java.io.File;
 
-public class MainController {
+public class MainViewController {
 
     MainViewModel mainViewModel; // Declaring the MainViewModel
     MainView mainView; // Declaring the MainView
     CheckValidIOController checkValidIO; // Declaring the IO check controller
 
-    public MainController(MainViewModel mainViewModel, MainView mainView, CheckValidIOController checkValidIO) {
+    public MainViewController(MainViewModel mainViewModel, MainView mainView, CheckValidIOController checkValidIO) {
         this.mainViewModel = mainViewModel;
         this.mainView = mainView;
         this.checkValidIO = checkValidIO;

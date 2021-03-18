@@ -1,7 +1,7 @@
 package cmet.ac.st20141224.Model;
 
 import cmet.ac.st20141224.Controller.CheckValidIOController;
-import cmet.ac.st20141224.Controller.MainController;
+import cmet.ac.st20141224.Controller.MainViewController;
 import cmet.ac.st20141224.FileIO.*;
 
 import java.util.List;
@@ -18,9 +18,9 @@ public class MainViewModel {
     IFileReader sourceReader;
 
     CheckValidIOController checkValidIO; // IO check access
-    MainController mainController; // Controller access
+    MainViewController mainController; // Controller access
 
-    public MainViewModel(CheckValidIOController checkValidIO, MainController mainController) {
+    public MainViewModel(CheckValidIOController checkValidIO, MainViewController mainController) {
         this.checkValidIO = checkValidIO; // Instance of CheckValidIO
         this.mainController = mainController; // Instance of mainController
         labelReader = new ImageLabelsIO(); // new instance of IFileReader to read labels

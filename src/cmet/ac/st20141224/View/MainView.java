@@ -2,28 +2,22 @@ package cmet.ac.st20141224.View;
 
 import cmet.ac.st20141224.Controller.*;
 import cmet.ac.st20141224.Controller.CheckValidIOController;
-import cmet.ac.st20141224.Knn.Algorithm;
 import cmet.ac.st20141224.Model.MainViewModel;
-import cmet.ac.st20141224.Model.TestImageModel;
-import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
 
 public class MainView {
-
-
     // Initialise JFrame and panels required to build the view
     JFrame mainWindow;  // Main window
     ImageChoosePanel imageChoosePanel;  // Panel for image selection
     SourceChoosePanel sourceChoosePanel;  // Panel for training set selection
     ParameterPanel parameterPanel;  // Panel for K value and label source selection
-    ImagePanel imagePanel;  // Panel to display the image selected
     RunPanel runPanel;  // Panel to display the run button
 
     MainViewModel mainViewModel;
     CheckValidIOController checkValidIOController;
-    MainController mainController;
+    MainViewController mainController;
 
     private static MainView instance;
 
@@ -46,9 +40,6 @@ public class MainView {
         parameterPanel = new ParameterPanel(mainWindow);  // Adding parameter selection panel to JFrame
         mainWindow.add(parameterPanel);
 
-        imagePanel = new ImagePanel(mainWindow);  // Adding image display panel to JFrame
-        mainWindow.add(imagePanel);
-
         runPanel = new RunPanel(mainWindow);  // Adding run button panel to JFrame
         mainWindow.add(runPanel);
 
@@ -57,7 +48,7 @@ public class MainView {
 
         mainViewModel = new MainViewModel(checkValidIOController, mainController);
         checkValidIOController = new CheckValidIOController(mainViewModel);
-        mainController = new MainController(mainViewModel, this, checkValidIOController);
+        mainController = new MainViewController(mainViewModel, this, checkValidIOController);
     }
 
 
@@ -98,14 +89,6 @@ public class MainView {
         this.parameterPanel = parameterPanel;
     }
 
-    public ImagePanel getImagePanel() {
-        return imagePanel;
-    }
-
-    public void setImagePanel(ImagePanel imagePanel) {
-        this.imagePanel = imagePanel;
-    }
-
     public RunPanel getRunPanel() {
         return runPanel;
     }
@@ -122,11 +105,11 @@ public class MainView {
         this.mainViewModel = mainViewModel;
     }
 
-    public MainController getController() {
+    public MainViewController getController() {
         return mainController;
     }
 
-    public void setController(MainController mainController) {
+    public void setController(MainViewController mainController) {
         this.mainController = mainController;
     }
 }

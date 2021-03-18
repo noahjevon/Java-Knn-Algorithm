@@ -1,35 +1,35 @@
 package cmet.ac.st20141224.Knn;
 
-import cmet.ac.st20141224.Model.ImageLabelModel;
-import cmet.ac.st20141224.Model.TestImageModel;
-import cmet.ac.st20141224.Model.TrainingDatasetModel;
+import cmet.ac.st20141224.Model.*;
+import cmet.ac.st20141224.View.ResultsView;
 
-import java.security.Key;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Algorithm {
 
-    private int k; // Integer to store k value
+    private MainViewModel mainViewModelModel;
+    private ResultsView resultsView;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
     private List<ImageLabelModel> labels; // List to store labels of images
+
+    private int k; // Integer to store k value
     private String result; // String to store classification result
-    private String name;
     private double confidence; // Double to store confidence value
+    private int label; // Actual label of classified image
+    private String labelText;
 
-    List<String> labelList;
-    HashMap<String, Integer> labelHash;
+    private List<String> labelList;
+    private HashMap<String, Integer> labelHash;
 
-    private List<Double> distance; // List of doubles to store distance vlaues
+    private List<Double> distance; // List of doubles to store distance values
 
-    private List<Integer> test;
+    private List<Integer> test; // Lists to store pixel data of test image
     private List<Integer> test_red;
     private List<Integer> test_green;
     private List<Integer> test_blue;
 
-    private List<Integer> train;
+    private List<Integer> train; // Lists to store pixel data of train image
     private List<Integer> train_red;
     private List<Integer> train_green;
     private List<Integer> train_blue;
@@ -44,6 +44,8 @@ public class Algorithm {
      * @param unknown The test data the model will run with
      */
     public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown, List<ImageLabelModel> labels) {
+        this.resultsView = new ResultsView();
+
         this.k = k; // Set k value
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
@@ -60,6 +62,7 @@ public class Algorithm {
             test_red = testImage.getRed();
             test_green = testImage.getGreen();
             test_blue = testImage.getBlue();
+            label = testImage.getLabel();
         }
 
         for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
@@ -86,7 +89,7 @@ public class Algorithm {
             double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
             trainImage.setDistance(finalDistance); // Set distance of training image
         }
-        classify();
+        classify(); // Begin classification
     }
 
 
@@ -97,11 +100,11 @@ public class Algorithm {
      */
     public void classify() {
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance));
+
         this.labelList = new ArrayList<>();
         this.labelHash = new HashMap<String, Integer>();
 
         int max = Integer.MIN_VALUE;
-        String name = null;
 
         List<TrainingDatasetModel> // Creating sublist of images containing the lowest distance from K value
                 kList = this.data.subList(0, this.k);
@@ -121,16 +124,24 @@ public class Algorithm {
 
         // Finding highest occurrence of a label in hash map
         Set<Map.Entry<String,Integer>> entries=this.labelHash.entrySet();
-        for(Map.Entry<String,Integer> entry:entries) {
+        for(Map.Entry<String,Integer> entry:entries) { // Iterate through all values in hash map
             if (entry.getValue() > max) {
-                max = entry.getValue();
-                name = entry.getKey();
+                max = entry.getValue(); // Get largest value in hashmap
+                this.result = entry.getKey(); // Get key for largest value in hash map
             }
         }
 
+        // Getting the text label of the test image
+        labelText = this.labelList.get(label);
+
         // Find confidence value
-        this.confidence = 100 * ((double) max / kList.size());
-        System.out.println("Result: " + name + " | " + "Confidence: " + confidence);
+        this.confidence = 100 * ((double) max / kList.size()); // Confidence formula
+        System.out.println("Result: " + this.result + " | " + "Confidence: " + this.confidence);
+
+        // Display results to user
+        this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
+        this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
+        this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence);
     }
 
     // Getters & setters
