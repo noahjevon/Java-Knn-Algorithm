@@ -19,6 +19,10 @@ public class MainViewController {
         initController(); // Run the controller
     }
 
+
+    /**
+     * Initialise the controller and set up action listeners to handle button presses
+     */
     private void initController() { // Action listeners for the various buttons within the MainView and panels
         this.mainView.getImageChoosePanel().getOpenImageBtn().addActionListener((ae) -> imageOpenAction());
         this.mainView.getSourceChoosePanel().getOpenSourceBtn().addActionListener((ae) -> sourceOpenAction());
@@ -26,6 +30,10 @@ public class MainViewController {
         this.mainView.getRunPanel().getRunModelBtn().addActionListener((ae) -> runModelAction());
     }
 
+
+    /**
+     * Action that occurs when the user clicks image open button from the MainView
+     */
     private void imageOpenAction() { // Image selection action
         File selected_path = this.mainView.getImageChoosePanel().showDirectoryChooserDialog(); // Show directory chooser
         String path = selected_path.getAbsolutePath(); // Get path
@@ -33,6 +41,10 @@ public class MainViewController {
         this.mainViewModel.setImgSrc(this.mainView.getImageChoosePanel().getImageNameTxt().getText()); // Update model
     }
 
+
+    /**
+     * Action that occurs when the user clicks source open button from the MainView
+     */
     private void sourceOpenAction() {
         File selected_path = this.mainView.getSourceChoosePanel().showDirectoryChooserDialog();
         String path = selected_path.getAbsolutePath();
@@ -40,6 +52,10 @@ public class MainViewController {
         this.mainViewModel.setSrcSrc(this.mainView.getSourceChoosePanel().getSourceNameTxt().getText());
     }
 
+
+    /**
+     * Action that occurs when the user clicks label open button from the MainView
+     */
     private void paramOpenAction() {
         File selected_path = this.mainView.getParameterPanel().showDirectoryChooserDialog();
         String path = selected_path.getAbsolutePath();
@@ -47,6 +63,10 @@ public class MainViewController {
         this.mainViewModel.setLblSrc(this.mainView.getParameterPanel().getLabelNameTxt().getText());
     }
 
+
+    /**
+     * Action that occurs when the user clicks run button from the MainView
+     */
     private void runModelAction() {  // Run model action
         // Setting variables in CheckParams class
         this.checkValidIO.setImgSrc(this.mainView.getImageChoosePanel().getImageNameTxt().getText());
