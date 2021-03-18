@@ -5,13 +5,17 @@ import cmet.ac.st20141224.FileIO.ImageLabelsIO;
 import cmet.ac.st20141224.FileIO.TestImageIO;
 import cmet.ac.st20141224.FileIO.TrainingDatasetIO;
 import cmet.ac.st20141224.Knn.Algorithm;
+import cmet.ac.st20141224.Model.ImageLabelModel;
 import cmet.ac.st20141224.Model.MainViewModel;
 import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
+import cmet.ac.st20141224.View.MainView;
+import cmet.ac.st20141224.View.ResultsView;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +46,8 @@ public class CheckValidIOController {
      *
      * In-line comments for the next three classes are very similar, so have only been included when there
      * are some differences.
+     *
+     * @param srcSrc The filepath of the training data
      */
     public void setSrcSrc(String srcSrc) {
         if (srcSrc.equals("")) {  // Check if image source is null
@@ -58,11 +64,11 @@ public class CheckValidIOController {
      * Check to see if the test image is over a certain size. If it is, returns an error
      * Sets boolean value depending on outcome.
      *
-     * @param imgSrc The filepath of the training data
+     * @param imgSrc The filepath of the test data
      */
     public void setImgSrc(String imgSrc) {
         if (imgSrc.equals("")) {
-            ErrorView.errorMessage("Training source cannot be null!", "Training Source Error");
+            ErrorView.errorMessage("Image source cannot be null!", "Image Source Error");
             setSrc(false);
         }
         BufferedImage img = null;
@@ -87,7 +93,7 @@ public class CheckValidIOController {
 
 
     /**
-     * Check that test data source is valid. If it is not, it returns an error to the user.
+     * Check that label source is valid. If it is not, it returns an error to the user.
      * Sets boolean value depending on outcome.
      *
      * @param lblSrc The filepath of the label
@@ -98,7 +104,6 @@ public class CheckValidIOController {
             setLbl(false);
         } else {
             this.mainViewModel.setLblSrc(lblSrc);
-            System.out.println(this.mainViewModel.getLblSrc());
             setLbl(true);
         }
     }
@@ -178,11 +183,12 @@ public class CheckValidIOController {
             // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
 
             // Declaring ArrayLists for the training dataset and the image data
+            ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();
             ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
             ArrayList<TestImageModel> imageList = (ArrayList<TestImageModel>) readTestImage.getData();
 
             // Creating new instance of 'Algorithm' class with data from IO classes
-            Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, imageList);
+            Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, imageList, labelList);
             algorithm.computeDistance(); // Running the computeDistance method in the Algorithm class
         }
         else { // Let user know the parameters were invalid
