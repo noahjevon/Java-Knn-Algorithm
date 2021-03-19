@@ -50,8 +50,6 @@ public class Algorithm {
      * @param unknown The test data the model will run with
      */
     public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown, List<ImageLabelModel> labels) {
-        this.resultsView = new ResultsView();
-
         this.k = k; // Set k value
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
@@ -63,8 +61,9 @@ public class Algorithm {
      * Method to compute the distance between two data points within training and testing images.
      */
     public void computeDistance() {
+        this.resultsView = new ResultsView();
         for (TestImageModel testImage : unknown) { // For loop to get test image data
-            filePath = testImage.getFilePath();
+            this.filePath = testImage.getFilePath();
             test = testImage.getGreyscale(); // Lists to store pixel data
             test_red = testImage.getRed();
             test_green = testImage.getGreen();
@@ -163,6 +162,7 @@ public class Algorithm {
          */
         if (this.unknown.size() <= 1) {
             // Display results to user
+            this.resultsView.getResultsImagePanel().setImage(filePath);
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
