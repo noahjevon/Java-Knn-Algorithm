@@ -4,7 +4,9 @@ import cmet.ac.st20141224.Model.*;
 import cmet.ac.st20141224.View.ErrorView;
 import cmet.ac.st20141224.View.ResultsView;
 
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.RecursiveAction;
 
 
 public class Algorithm {
@@ -106,6 +108,8 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
+        DecimalFormat df = new DecimalFormat("#.00"); // DecimalFormat to 2 decimal places
+
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance)); // Compare values to get distance
 
         this.labelList = new ArrayList<>(); // Arraylist to store labels
@@ -149,6 +153,7 @@ public class Algorithm {
 
         // Find confidence value
         this.confidence = 100 * ((double) max / kList.size());
+        String confidenceFormatted = df.format(confidence);
 
 
         /**
@@ -160,15 +165,14 @@ public class Algorithm {
             // Display results to user
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
-            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidence + "%");
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
         } else {
             // calculate the average accuracy
             Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
+            String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified:" + this.correctClassification);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
-            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracy + "%");
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
         }
     }
-
-
 }
