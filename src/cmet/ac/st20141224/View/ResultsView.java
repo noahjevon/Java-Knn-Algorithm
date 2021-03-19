@@ -30,6 +30,12 @@ public ResultsView() {
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public ResultsImagePanel getResultsImagePanel() {
         return resultsImagePanel;
     }

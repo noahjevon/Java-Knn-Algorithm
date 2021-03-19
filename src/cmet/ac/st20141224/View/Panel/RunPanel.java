@@ -22,6 +22,12 @@ public class RunPanel extends JPanel{
         this.add(runModelBtn);
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public JButton getRunModelBtn() {
         return runModelBtn;
     }

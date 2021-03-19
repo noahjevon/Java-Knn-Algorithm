@@ -119,9 +119,9 @@ public class Algorithm {
         List<TrainingDatasetModel> // Creating sublist of images containing the lowest distance from K value
                 kList = this.data.subList(0, this.k);
 
-        for (ImageLabelModel imageLabels : labels) { // For each item in label object,
+        for (ImageLabelModel imageLabels : labels)  // For each item in label object,
             this.labelList.add(imageLabels.getLabel()); // add to label list
-        }
+
 
         // Loop through list to find how many occurrences there are of each label
         int length = 10; // Length of list (0-9)
@@ -148,6 +148,7 @@ public class Algorithm {
         if (this.result == labelText) { // If result from above loop matches the text label of the test image
             this.correctClassification++; // Increment correctClassification
         } else {
+            // Do nothing
         }
 
         // Find confidence value

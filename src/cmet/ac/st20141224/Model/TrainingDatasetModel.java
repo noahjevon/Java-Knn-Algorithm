@@ -20,7 +20,12 @@ public class TrainingDatasetModel {
         this.greyscale = greyscale;
     }
 
-    // Setters & getters
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public Double getDistance() { return distance; }
 
     public void setDistance(Double distance) { this.distance = distance; }

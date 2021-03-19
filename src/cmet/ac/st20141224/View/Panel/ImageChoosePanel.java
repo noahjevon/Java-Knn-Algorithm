@@ -44,6 +44,12 @@ public class ImageChoosePanel extends JPanel {
         return selected_path;
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public JButton getOpenImageBtn() {
         return openImageBtn;
     }

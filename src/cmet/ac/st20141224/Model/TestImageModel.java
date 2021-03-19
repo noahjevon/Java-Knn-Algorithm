@@ -21,7 +21,12 @@ public class TestImageModel {
         this.greyscale = greyscale;
     }
 
-    // Setters & getters
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public int getLabel() {
         return label;
     }

@@ -27,7 +27,11 @@ public class ImageLabelsIO implements IFileReader {
             }
     }
 
-    // Getters & setters
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     @Override
     public Object getData() {
         return this.labelList;

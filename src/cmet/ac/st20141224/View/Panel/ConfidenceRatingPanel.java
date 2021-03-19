@@ -15,11 +15,20 @@ public class ConfidenceRatingPanel extends JPanel{
         setupPanel();
     }
 
+    /**
+     * Adds contents to the panel
+     */
     private void setupPanel() {
         this.add(form);
         this.add(confidenceRating);
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public JLabel getConfidenceRating() {
         return confidenceRating;
     }

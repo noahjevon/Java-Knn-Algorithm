@@ -42,6 +42,12 @@ public class ProgressView {
         }
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public JFrame getFrame() {
         return frame;
     }

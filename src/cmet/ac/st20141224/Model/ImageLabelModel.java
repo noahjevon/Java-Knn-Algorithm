@@ -15,7 +15,11 @@ public class ImageLabelModel { // Handles label object
                 '}';
     }
 
-    // Setters & getters
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public String getLabel() {
         return label;
     }

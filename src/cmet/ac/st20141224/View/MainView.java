@@ -64,7 +64,11 @@ public class MainView {
     }
 
 
-    // Setters & Getters
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public ImageChoosePanel getImageChoosePanel() {
         return imageChoosePanel;
     }

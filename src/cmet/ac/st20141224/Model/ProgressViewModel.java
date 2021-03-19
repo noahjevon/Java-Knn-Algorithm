@@ -17,6 +17,12 @@ public class ProgressViewModel {
         this.progressViewController = progressViewController;
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public String getBarTitle() {
         return barTitle;
     }

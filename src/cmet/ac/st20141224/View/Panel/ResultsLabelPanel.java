@@ -23,6 +23,12 @@ public class ResultsLabelPanel extends JPanel {
         this.add(resultLabel);
     }
 
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public JPanel getForm() {
         return form;
     }

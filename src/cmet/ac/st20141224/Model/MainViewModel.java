@@ -28,7 +28,12 @@ public class MainViewModel {
         sourceReader = new TrainingDatasetIO(); // Instance of IFIleReader to read training images
     }
 
-    // Setters & Getters
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public String getImgSrc() {
         return imgSrc;
     }

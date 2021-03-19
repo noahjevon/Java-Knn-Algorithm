@@ -22,17 +22,29 @@ public class ResultsImagePanel extends JPanel {
         setupPanel();
     }
 
+    /**
+     * Adds contents to the panel
+     */
     private void setupPanel() {
         this.add(form);
     }
 
+    /**
+     * Updates image value (Had to do this - had bug where image always returned null as it was being called before
+     * it was assigned from the Algorithm class)
+     */
     private void updateImage() {
         System.out.println(image);
         this.imageView = new JLabel(new ImageIcon(image));
         this.add(imageView);
     }
 
-    // Getters & setters
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public SpringLayout getPanel() { return panel; }
 
     public void setPanel(SpringLayout panel) {
