@@ -36,6 +36,10 @@ public class Algorithm {
 
     private List<Integer> train; // Lists to store pixel data of train image
 
+    private int startTime;
+    private int endTime;
+    private int timeTaken;
+
     List<Integer> greyscale;
 
 
@@ -59,6 +63,7 @@ public class Algorithm {
      * Method to compute the distance between two data points within training and testing images.
      */
     public void computeDistance() {
+        this.startTime = (int) System.currentTimeMillis();
         this.resultsView = new ResultsView();
 
         this.labelList = new ArrayList<>(); // Arraylist to store labels
@@ -142,12 +147,16 @@ public class Algorithm {
          * display the overall accuracy as well as how many images were successfully classified and how many images
          * there are in total
          */
+        this.endTime = (int) System.currentTimeMillis();
+        this.timeTaken = (endTime - startTime);
         if (this.unknown.size() <= 1) {
             // Display results to user
             this.resultsView.getResultsImagePanel().setImage(filePath);
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
+            this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
+            this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
         } else {
             // calculate the average accuracy
             Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
@@ -155,6 +164,8 @@ public class Algorithm {
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified:" + this.correctClassification);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
+            this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
+            this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
         }
     }
 }

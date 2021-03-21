@@ -1,31 +1,37 @@
 package cmet.ac.st20141224.View;
 
-import cmet.ac.st20141224.View.Panel.ConfidenceRatingPanel;
-import cmet.ac.st20141224.View.Panel.ResultsImagePanel;
-import cmet.ac.st20141224.View.Panel.ResultsLabelPanel;
+import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
 
 public class ResultsView extends JFrame {
     JFrame mainWindow;  // Main window
 
+    KValuePanel kValuePanel;
     ResultsImagePanel resultsImagePanel;
     ResultsLabelPanel resultsLabelPanel;
     ConfidenceRatingPanel confidenceRatingPanel;
+    TimeTakenPanel timeTakenPanel;
 
 public ResultsView() {
     mainWindow = new JFrame("Results");
-    mainWindow.setSize(200,200);  // Setting size of MainWindow
+    mainWindow.setSize(200,250);  // Setting size of MainWindow
     mainWindow.setLayout(new BoxLayout(mainWindow.getContentPane(), BoxLayout.Y_AXIS));  // Specifying BoxLayout
 
     resultsImagePanel = new ResultsImagePanel(mainWindow);  // Adding image selection panel to JFrame
     mainWindow.add(resultsImagePanel);
+
+    kValuePanel = new KValuePanel(mainWindow);
+    mainWindow.add(kValuePanel);
 
     resultsLabelPanel = new ResultsLabelPanel(mainWindow);  // Adding image selection panel to JFrame
     mainWindow.add(resultsLabelPanel);
 
     confidenceRatingPanel = new ConfidenceRatingPanel(mainWindow);  // Adding image selection panel to JFrame
     mainWindow.add(confidenceRatingPanel);
+
+    timeTakenPanel = new TimeTakenPanel(mainWindow);
+    mainWindow.add(timeTakenPanel);
 
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
     }
@@ -66,5 +72,21 @@ public ResultsView() {
 
     public void setConfidenceRatingPanel(ConfidenceRatingPanel confidenceRatingPanel) {
         this.confidenceRatingPanel = confidenceRatingPanel;
+    }
+
+    public TimeTakenPanel getTimeTakenPanel() {
+        return timeTakenPanel;
+    }
+
+    public void setTimeTakenPanel(TimeTakenPanel timeTakenPanel) {
+        this.timeTakenPanel = timeTakenPanel;
+    }
+
+    public KValuePanel getkValuePanel() {
+        return kValuePanel;
+    }
+
+    public void setkValuePanel(KValuePanel kValuePanel) {
+        this.kValuePanel = kValuePanel;
     }
 }
