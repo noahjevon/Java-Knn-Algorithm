@@ -11,7 +11,7 @@ public class RecursiveAlgorithm extends RecursiveAction implements IAlgorithm<Do
 
     private static final long serialVersionID = 1l;
 
-    final int threshold = 5000; // how many objects to run with
+    final int threshold = 2500; // how many objects to run with
 
     List<Double> distance;
     List<Integer> train;
@@ -30,8 +30,6 @@ public class RecursiveAlgorithm extends RecursiveAction implements IAlgorithm<Do
     protected void compute() {
         if((end - start) < threshold) {
                 for (int i = start; i < end; i++) {
-                    int pos = -1;
-                        pos++;
                         distance = new ArrayList<>(); // List to store distance
                         train = (data[i].getGreyscale()); // Lists to store pixel data
 

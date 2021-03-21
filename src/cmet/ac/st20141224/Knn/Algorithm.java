@@ -75,11 +75,14 @@ public class Algorithm {
             actualLabel = testImage.getLabel();
 
             greyscale = testImage.getGreyscale();
-            ForkJoinPool fjpool = new ForkJoinPool();
-            TrainingDatasetModel[] train = this.data.toArray(new TrainingDatasetModel[this.data.size()]);
-            RecursiveAlgorithm task = new RecursiveAlgorithm(train, greyscale, 0, this.data.size());
 
-            fjpool.invoke(task);
+            ForkJoinPool fjpool = new ForkJoinPool(); // New ForkJoinPool
+            TrainingDatasetModel[] train = this.data.toArray(new TrainingDatasetModel[this.data.size()]);
+
+            RecursiveAlgorithm task = new RecursiveAlgorithm(train,
+                    greyscale, 0, this.data.size()); // New task with training data, greyscale data, start point and set size
+
+            fjpool.invoke(task); // Start the ForkJoinPool
 
             classify(); // Begin classification
         }
