@@ -125,8 +125,7 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
-            // HERE GOES LOADING SCREEN TO SHOW THAT LABELS ARE BEING READ
-            // FIRST THREAD
+            // **Executors | Thread Pool**
             try {
                 readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
                 readLabels.read(); // Reading the label file
@@ -134,21 +133,13 @@ public class CheckValidIOController {
                 ErrorView.errorMessage("Error reading label data", "Label Error");
             }
 
-            // HERE GOES LOADING SCREEN TO SHOW THAT IMAGE IS BEING READ
-            // NEW THREAD
             try {
                 readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
                 readTestImage.read(); // Reading test image
-            } catch (IOException e) { // Inform user there was an error reading the test image
-                ErrorView.errorMessage("Error reading image data", "Image Error");
+            } catch (IOException e) { // Empty catch - fixed bug where it would always show (Error now handled
+                                      // in the TestImageIO class
             }
 
-            // HERE GOES LOADING SCREEN TO SHOW THAT TRAINING SET IS BEING READ
-            // NEW THREAD
-//            File file = new File(this.mainViewModel.getSrcSrc());
-//            boolean isDirectory = file.isDirectory();
-//
-//
             try { // Read specified source
                 readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
                 readTrainingDataset.read(); // Reading training data
@@ -174,7 +165,11 @@ public class CheckValidIOController {
         }
     }
 
-    // Setters & Getters
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     public Boolean getImg() {
         return img;
     }
