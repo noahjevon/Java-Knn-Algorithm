@@ -1,3 +1,4 @@
+
 package cmet.ac.st20141224.Knn;
 
 import cmet.ac.st20141224.Model.*;
@@ -6,6 +7,7 @@ import cmet.ac.st20141224.View.ResultsView;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
 
@@ -31,14 +33,10 @@ public class Algorithm {
     private List<Double> distance; // List of doubles to store distance values
 
     private List<Integer> test; // Lists to store pixel data of test image
-    private List<Integer> test_red;
-    private List<Integer> test_green;
-    private List<Integer> test_blue;
 
     private List<Integer> train; // Lists to store pixel data of train image
-    private List<Integer> train_red;
-    private List<Integer> train_green;
-    private List<Integer> train_blue;
+
+    List<Integer> greyscale;
 
 
     /**
@@ -62,40 +60,27 @@ public class Algorithm {
      */
     public void computeDistance() {
         this.resultsView = new ResultsView();
+
+        this.labelList = new ArrayList<>(); // Arraylist to store labels
+        this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
+
+        for (ImageLabelModel imageLabels : labels)  // For each item in label object,
+            this.labelList.add(imageLabels.getLabel()); // add to label list
+
         for (TestImageModel testImage : unknown) { // For loop to get test image data
+            this.greyscale = new ArrayList<>();
+
             this.filePath = testImage.getFilePath();
             test = testImage.getGreyscale(); // Lists to store pixel data
-            test_red = testImage.getRed();
-            test_green = testImage.getGreen();
-            test_blue = testImage.getBlue();
             actualLabel = testImage.getLabel();
 
-            for (TrainingDatasetModel trainImage : data) { // For loop to get training image data
-                this.distance = new ArrayList<>(); // List to store distance
+            greyscale = testImage.getGreyscale();
+            ForkJoinPool fjpool = new ForkJoinPool();
+            TrainingDatasetModel[] train = this.data.toArray(new TrainingDatasetModel[this.data.size()]);
+            RecursiveAlgorithm task = new RecursiveAlgorithm(train, greyscale, 0, this.data.size());
 
-                train = trainImage.getGreyscale(); // Lists to store pixel data
-                train_red = trainImage.getRed();
-                train_green = trainImage.getGreen();
-                train_blue = trainImage.getBlue();
+            fjpool.invoke(task);
 
-                int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
-                if (length != test.size()) { // Check that lists are not different lengths
-                    ErrorView.errorMessage("Training data exceeds testing data. Please try" +
-                            "again.", "Out Of Bounds Exception!");
-                }
-
-                for (int i = 0; i < length; i++) { // For each pixel in image
-                    double s = Math.pow((train.get(i) - test.get(i)), 2) + // get square sum
-                            Math.pow((+train_red.get(i) - test_red.get(i)), 2) +
-                            Math.pow((+train_green.get(i) - test_green.get(i)), 2) +
-                            Math.pow((+train_blue.get(i) - test_blue.get(i)), 2);
-                    double d = Math.sqrt(s);
-                    this.distance.add(d); // Add distance to distance list
-                }
-                double sum = distance.stream().mapToDouble(a -> a).sum(); // Get sum of distances
-                double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
-                trainImage.setDistance(finalDistance); // Set distance of training image
-            }
             classify(); // Begin classification
         }
     }
@@ -111,20 +96,13 @@ public class Algorithm {
 
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance)); // Compare values to get distance
 
-        this.labelList = new ArrayList<>(); // Arraylist to store labels
-        this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
-
         int max = Integer.MIN_VALUE;
 
         List<TrainingDatasetModel> // Creating sublist of images containing the lowest distance from K value
                 kList = this.data.subList(0, this.k);
 
-        for (ImageLabelModel imageLabels : labels)  // For each item in label object,
-            this.labelList.add(imageLabels.getLabel()); // add to label list
-
-
         // Loop through list to find how many occurrences there are of each label
-        int length = 10; // Length of list (0-9)
+        int length = labelList.size();
         for (int i = 0; i < length; i++) { // Loop through list
             int finalI = i;
             int lbl = (int) kList.stream().filter(t -> // Get label and frequency at index

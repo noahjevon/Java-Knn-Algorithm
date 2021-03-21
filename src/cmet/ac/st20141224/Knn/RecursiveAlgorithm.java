@@ -1,9 +1,6 @@
 package cmet.ac.st20141224.Knn;
 
-import cmet.ac.st20141224.Model.ImageLabelModel;
-import cmet.ac.st20141224.Model.TestImageModel;
 import cmet.ac.st20141224.Model.TrainingDatasetModel;
-import cmet.ac.st20141224.View.ErrorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,53 +11,51 @@ public class RecursiveAlgorithm extends RecursiveAction implements IAlgorithm<Do
 
     private static final long serialVersionID = 1l;
 
-    final int threshold = 5000; // how many objects to run with - try with thousands
+    final int threshold = 5000; // how many objects to run with
 
+    List<Double> distance;
+    List<Integer> train;
     TrainingDatasetModel[] data;
-    TestImageModel[] unknown;
-    static int testSize;
+    List<Integer> greyscale;
     int start, end;
 
-    public RecursiveAlgorithm(TrainingDatasetModel[] data, TestImageModel[] unknown, int start, int end) {
+    public RecursiveAlgorithm(TrainingDatasetModel[] data, List<Integer> greyscale, int start, int end) {
         this.data = data;
         this.start = start;
         this.end = end;
-        this.unknown = unknown;
+        this.greyscale = greyscale;
     }
 
     @Override
     protected void compute() {
         if((end - start) < threshold) {
-            for (int i = start; i < end; i++) {
-                int pos = -1; // Position of test image (start at -1)
-                for (TestImageModel testImage : unknown) {
-                    pos++; // Increase test image position (goes to 0)
-                    List<Double> distance = new ArrayList<>();
-                    List<Integer> train;
-                    List<Integer> test;
-                    train = (data[i].getGreyscale());
-                    test = (unknown[pos].getGreyscale()); // Use pos to find index of current test image (increases)
-                    int length = (train.size());
+                for (int i = start; i < end; i++) {
+                    int pos = -1;
+                        pos++;
+                        distance = new ArrayList<>(); // List to store distance
+                        train = (data[i].getGreyscale()); // Lists to store pixel data
 
-                    for (int p = 0; p < length; p++) {
-                        double s = Math.pow((train.get(p) - test.get(p)), 2);
-                        double d = Math.sqrt(s);
-                        distance.add(d);
+                        int length = train.size(); // Set length to list of greyscale data list (Should be 1024)
+
+                        for (int p = 0; p < length; p++) { // For each pixel in image
+                            double s = Math.pow((train.get(p) - greyscale.get(p)), 2); // get square sum
+                            double d = Math.sqrt(s);
+                            this.distance.add(d); // Add distance to distance list
+                        }
+                        double sum = distance.stream().mapToDouble(a -> a).sum(); // Get sum of distances
+                        double finalDistance = sum / distance.size(); // Get average distance (divide sum number of distances)
+                        data[i].setDistance(finalDistance);
                     }
-                    double sum = distance.stream().mapToDouble(a -> a).sum();
-                    double finalDistance = sum / distance.size();
-                    data[i].setDistance(finalDistance);
                 }
-            }
-        }
         else {
             int middle = (start + end) / 2;
-            invokeAll(new RecursiveAlgorithm(data, unknown, start, middle), new RecursiveAlgorithm(data, unknown, middle, end));
+            invokeAll(new RecursiveAlgorithm(data, greyscale, start, middle), new RecursiveAlgorithm(data, greyscale, middle, end));
         }
     }
 
+
     @Override
-    public Double normalize(Integer val, Integer min, Integer max) {
+    public Double distance(Integer val, Integer min, Integer max) {
         return null;
     }
 }
