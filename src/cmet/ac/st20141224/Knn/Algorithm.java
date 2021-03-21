@@ -2,13 +2,13 @@
 package cmet.ac.st20141224.Knn;
 
 import cmet.ac.st20141224.Model.*;
-import cmet.ac.st20141224.View.ErrorView;
 import cmet.ac.st20141224.View.ResultsView;
 
+import javax.swing.*;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveAction;
 
 
 public class Algorithm {
@@ -55,16 +55,26 @@ public class Algorithm {
         this.k = k; // Set k value
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
-        this.labels = labels;
+        this.labels = labels; // Set label value
+        (new AlgorithmThread()).execute();
+    }
+
+    class AlgorithmThread extends SwingWorker {
+        @Override
+        protected Object doInBackground() throws Exception {
+            return computeDistance();
+        }
     }
 
 
     /**
      * Method to compute the distance between two data points within training and testing images.
+     * @return
      */
-    public void computeDistance() {
-        this.startTime = (int) System.currentTimeMillis();
-        this.resultsView = new ResultsView();
+    public Object computeDistance() {
+        this.startTime = (int) System.currentTimeMillis(); // Get time at start
+
+        this.resultsView = new ResultsView(); // NMew instance of ResultsView
 
         this.labelList = new ArrayList<>(); // Arraylist to store labels
         this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
@@ -72,6 +82,7 @@ public class Algorithm {
         for (ImageLabelModel imageLabels : labels)  // For each item in label object,
             this.labelList.add(imageLabels.getLabel()); // add to label list
 
+        //progress bar start
         for (TestImageModel testImage : unknown) { // For loop to get test image data
             this.greyscale = new ArrayList<>();
 
@@ -91,6 +102,7 @@ public class Algorithm {
 
             classify(); // Begin classification
         }
+        return null;
     }
 
 
@@ -145,27 +157,27 @@ public class Algorithm {
         /**
          * If the number of unknown images exceeds 1, display results needed for one image. If it is greater than 1,
          * display the overall accuracy as well as how many images were successfully classified and how many images
-         * there are in total
+         * there are in total. Also outputs the K value used, how many files were processed and how long it took
+         * in milliseconds.
          */
-        this.endTime = (int) System.currentTimeMillis();
-        this.timeTaken = (endTime - startTime);
+        this.endTime = (int) System.currentTimeMillis(); // Get time at completion
+        this.timeTaken = (endTime - startTime); // Calculate time taken
         if (this.unknown.size() <= 1) {
             // Display results to user
             this.resultsView.getResultsImagePanel().setImage(filePath);
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
-            this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
-            this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
         } else {
             // calculate the average accuracy
             Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
             String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
-            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified:" + this.correctClassification);
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification);
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
-            this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
-            this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
         }
+        // Show how many K value used, number of files processed, and the time it took to complete
+        this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
+        this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
     }
 }

@@ -65,7 +65,6 @@ public class CheckValidIOController {
     }
 
 
-
     /**
      * Check that label source is valid. If it is not, it returns an error to the user.
      * Sets boolean value depending on outcome.
@@ -81,7 +80,6 @@ public class CheckValidIOController {
             setLbl(true);
         }
     }
-
 
 
     /**
@@ -147,10 +145,6 @@ public class CheckValidIOController {
                 ErrorView.errorMessage("Error reading source data", "Source Error");
             }
 
-            // NEW THREAD STARTS (IT WAITS UNTIL PREVIOUS THREE THREADS HAVE FINISHED BEFORE RUNNING)
-            // MODEL RUNS HERE
-            // HERE GOES LOADING SCREEN TO SHOW THAT MODEL IS RUNNING
-
             // Declaring ArrayLists for the training dataset and the image data
             ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();
             ArrayList<TrainingDatasetModel> trainingSet = (ArrayList<TrainingDatasetModel>) readTrainingDataset.getData();
@@ -158,12 +152,12 @@ public class CheckValidIOController {
 
             // Creating new instance of 'Algorithm' class with data from IO classes
             Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, imageList, labelList);
-            algorithm.computeDistance(); // Running the computeDistance method in the Algorithm class
         }
         else { // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");
         }
     }
+
 
     /**
      * Getters & setters
