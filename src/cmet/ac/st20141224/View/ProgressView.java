@@ -8,37 +8,30 @@ import javax.swing.*;
 public class ProgressView {
     JFrame frame = new JFrame();
     JProgressBar bar = new JProgressBar(0, 100);
-    JButton stop = new JButton();
+    JButton stop = new JButton("stop");
+    int percentage;
 
     ProgressView progressView;
     ProgressViewModel progressViewModel;
     ProgressViewController progressViewController;
 
-    ProgressView() {
+    public ProgressView() {
         bar.setValue(0);
         bar.setBounds(0, 0, 100, 50);
         bar.setStringPainted(true);
 
         frame.add(bar);
         frame.add(stop);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(100,100);
         frame.setLayout(null);
         frame.setVisible(true);
-
-        fill();
     }
 
     public void fill() {
         int counter = 0;
         while(counter<=100) {
             bar.setValue(counter);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            counter += 1;
+            counter += percentage;
         }
     }
 
@@ -48,6 +41,16 @@ public class ProgressView {
      *
      * @return Returns the current value assigned to variable
      */
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+        System.out.println(percentage);
+    }
+
     public JFrame getFrame() {
         return frame;
     }

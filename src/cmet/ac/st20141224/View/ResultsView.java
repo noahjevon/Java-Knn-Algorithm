@@ -12,6 +12,8 @@ public class ResultsView extends JFrame {
     ResultsLabelPanel resultsLabelPanel;
     ConfidenceRatingPanel confidenceRatingPanel;
     TimeTakenPanel timeTakenPanel;
+    ProgressPanel progressPanel;
+    StopPanel stopPanel;
 
     public String title;
 
@@ -35,7 +37,18 @@ public ResultsView() {
     timeTakenPanel = new TimeTakenPanel(mainWindow);
     mainWindow.add(timeTakenPanel);
 
+    progressPanel = new ProgressPanel(mainWindow);
+    mainWindow.add(progressPanel);
+
+    stopPanel = new StopPanel(mainWindow);
+    mainWindow.add(stopPanel);
+
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
+    }
+
+    public void removeProgress() {
+    mainWindow.remove(progressPanel);
+    mainWindow.remove(stopPanel);
     }
 
     /**
@@ -101,5 +114,21 @@ public ResultsView() {
 
     public void setkValuePanel(KValuePanel kValuePanel) {
         this.kValuePanel = kValuePanel;
+    }
+
+    public ProgressPanel getProgressPanel() {
+        return progressPanel;
+    }
+
+    public void setProgressPanel(ProgressPanel progressPanel) {
+        this.progressPanel = progressPanel;
+    }
+
+    public StopPanel getStopPanel() {
+        return stopPanel;
+    }
+
+    public void setStopPanel(StopPanel stopPanel) {
+        this.stopPanel = stopPanel;
     }
 }

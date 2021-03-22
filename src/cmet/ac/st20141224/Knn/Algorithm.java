@@ -2,6 +2,8 @@
 package cmet.ac.st20141224.Knn;
 
 import cmet.ac.st20141224.Model.*;
+import cmet.ac.st20141224.View.MainView;
+import cmet.ac.st20141224.View.ProgressView;
 import cmet.ac.st20141224.View.ResultsView;
 
 import javax.swing.*;
@@ -15,6 +17,7 @@ import java.util.concurrent.ForkJoinPool;
 public class Algorithm {
 
     private ResultsView resultsView;
+    private ProgressView progressView;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
     private List<ImageLabelModel> labels; // List to store labels of images
@@ -36,6 +39,8 @@ public class Algorithm {
     private List<Integer> test; // Lists to store pixel data of test image
 
     private List<Integer> train; // Lists to store pixel data of train image
+
+    private int percentage = 0;
 
     private int startTime;
     private int endTime;
@@ -72,7 +77,6 @@ public class Algorithm {
         }
     }
 
-
     /**
      * Method to compute the distance between two data points within training and testing images.
      * @return
@@ -88,7 +92,7 @@ public class Algorithm {
         for (ImageLabelModel imageLabels : labels)  // For each item in label object,
             this.labelList.add(imageLabels.getLabel()); // add to label list
 
-        //progress bar start
+
         for (TestImageModel testImage : unknown) { // For loop to get test image data
             this.greyscale = new ArrayList<>();
 
@@ -118,6 +122,7 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
+        this.percentage = percentage + 1;
         DecimalFormat df = new DecimalFormat("#.00"); // DecimalFormat to 2 decimal places
 
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance)); // Compare values to get distance
@@ -168,6 +173,9 @@ public class Algorithm {
          */
         this.endTime = (int) System.currentTimeMillis(); // Get time at completion
         this.timeTaken = (endTime - startTime); // Calculate time taken
+
+        this.resultsView.getProgressPanel().getProgressLabel().setText("File: " + this.percentage + " out of: " + this.unknown.size());
+
         if (this.unknown.size() <= 1) {
             // Display results to user
             File f = new File(filePath); // Get file name

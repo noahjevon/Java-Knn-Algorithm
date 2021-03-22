@@ -2,6 +2,7 @@ package cmet.ac.st20141224.Controller;
 
 import cmet.ac.st20141224.View.MainView;
 import cmet.ac.st20141224.Model.MainViewModel;
+import cmet.ac.st20141224.View.ProgressBar;
 
 import java.io.File;
 
