@@ -11,6 +11,8 @@ import cmet.ac.st20141224.View.ErrorView;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Class to check if inputs are valid. If validity checks come back positive, the class proceeds to run the model with
@@ -123,27 +125,43 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
-            // **Executors | Thread Pool**
-            try {
-                readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
-                readLabels.read(); // Reading the label file
-            } catch (IOException e) { // Inform user there was an error reading the label
-                ErrorView.errorMessage("Error reading label data", "Label Error");
-            }
+            long start = System.currentTimeMillis();
+            //CompletableFuture allows each block to be run in parallel
+            CompletableFuture<Void> labels = CompletableFuture.runAsync(()->{
+                try {
+                    readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
+                    readLabels.read(); // Reading the label file
+                } catch (IOException e) { // Inform user there was an error reading the label
+                    ErrorView.errorMessage("Error reading label data", "Label Error");
+                }
+            });
 
-            try {
-                readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
-                readTestImage.read(); // Reading test image
-            } catch (IOException e) { // Empty catch - fixed bug where it would always show (Error now handled
-                                      // in the TestImageIO class
-            }
+            CompletableFuture<Void> test = CompletableFuture.runAsync(()->{
+                try {
+                    readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
+                    readTestImage.read(); // Reading test image
+                } catch (IOException e) { // Empty catch - fixed bug where it would always show (Error now handled
+                    // in the TestImageIO class
+                }
+            });
 
-            try { // Read specified source
-                readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
-                readTrainingDataset.read(); // Reading training data
-            } catch (IOException e) { // Inform user there was an error reading the training data
-                ErrorView.errorMessage("Error reading source data", "Source Error");
+            CompletableFuture<Void> train = CompletableFuture.runAsync(()->{
+                try { // Read specified source
+                    readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
+                    readTrainingDataset.read(); // Reading training data
+                } catch (IOException e) { // Inform user there was an error reading the training data
+                    ErrorView.errorMessage("Error reading source data", "Source Error");
+                }
+            });
+
+            CompletableFuture<Void> thread = CompletableFuture.allOf(labels, test, train); // Wait for all to finish
+            try {
+                thread.get();
+            } catch (InterruptedException | ExecutionException e) {
+                // Handle exception here
             }
+            long end = System.currentTimeMillis();
+            System.out.println("Took " + (end - start));
 
             // Declaring ArrayLists for the training dataset and the image data
             ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();
