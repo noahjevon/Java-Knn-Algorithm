@@ -1,11 +1,6 @@
 package cmet.ac.st20141224.View.Panel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class ResultsImagePanel extends JPanel {
 
@@ -54,6 +49,5 @@ public class ResultsImagePanel extends JPanel {
 
     public String getImage() { return this.image; }
 
-    public void setImage(String image) { this.image = image;
-    updateImage();}
+    public void setImage(String image) { this.image = image; updateImage();}
 }

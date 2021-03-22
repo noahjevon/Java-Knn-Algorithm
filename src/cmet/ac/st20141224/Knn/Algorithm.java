@@ -92,11 +92,11 @@ public class Algorithm {
         for (TestImageModel testImage : unknown) { // For loop to get test image data
             this.greyscale = new ArrayList<>();
 
-            this.filePath = testImage.getFilePath();
+            this.filePath = testImage.getFilePath(); // Get filepath of image
             test = testImage.getGreyscale(); // Lists to store pixel data
-            actualLabel = testImage.getLabel();
+            actualLabel = testImage.getLabel(); // Get label of image
 
-            greyscale = testImage.getGreyscale();
+            greyscale = testImage.getGreyscale(); // Get greyscale value of image
 
             ForkJoinPool fjpool = new ForkJoinPool(); // New ForkJoinPool
             TrainingDatasetModel[] train = this.data.toArray(new TrainingDatasetModel[this.data.size()]);

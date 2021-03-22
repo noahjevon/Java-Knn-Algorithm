@@ -29,6 +29,12 @@ public class TrainingDatasetIO implements IFileReader {
     }
 
 
+    /**
+     * Reads the files in the dataset. Boolean value determines if the given path is a file or directory. If it is
+     * a directory, it repeats the read process for every file in the directory.
+     *
+     * @throws IOException Throws error if there is mistake reading the files
+     */
     @Override
     public void read() throws IOException {
         File file = new File(CIFAR); // Path of directory or file
@@ -50,6 +56,7 @@ public class TrainingDatasetIO implements IFileReader {
             }
         }
 
+
     /**
      * Adds the paths of each file within the directory to filePath array. For use later to read each file
      * individually.
@@ -59,6 +66,7 @@ public class TrainingDatasetIO implements IFileReader {
     public void showFile(File file) {
         this.filePath.add(file.getAbsolutePath()); // Add absolute path of each file to filePath array
     }
+
 
     /**
      * Reads fine data. Accesses first byte to get label, then three batches of 1024 bytes to read red, green and
@@ -118,7 +126,12 @@ public class TrainingDatasetIO implements IFileReader {
         }
     }
 
-    // Getters & setters
+
+    /**
+     * Getters & setters
+     *
+     * @return Returns the current value assigned to variable
+     */
     @Override
     public Object getData() {
         return this.imageList;
