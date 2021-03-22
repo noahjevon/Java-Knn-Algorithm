@@ -55,10 +55,6 @@ public class TestImageIO implements IFileReader {
         } else { // If not a directory, read single file
             readData(testImage);
         }
-
-        String fileName = testImage; // Filepath
-
-        in_stream_images = new FileInputStream(fileName); // Declaring new FileInputStream to read file
     }
 
     public void showFile(File file) {
@@ -95,7 +91,6 @@ public class TestImageIO implements IFileReader {
                 if (image_height > 32 && image_width > 32) { // Checking that image is 32 x 32 or less
                     ErrorView.errorMessage("Image cannot be greater than 32x32!", "Image Size Error");
                 } else {
-
                     this.redList = new ArrayList<>(); // Initialising list to store red data
                     this.greenList = new ArrayList<>(); // Initialising list to store green data
                     this.blueList = new ArrayList<>(); // Initialising list to store blue data
