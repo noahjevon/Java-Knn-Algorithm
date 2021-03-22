@@ -5,6 +5,7 @@ import cmet.ac.st20141224.Model.*;
 import cmet.ac.st20141224.View.ResultsView;
 
 import javax.swing.*;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.List;
@@ -59,10 +60,15 @@ public class Algorithm {
         (new AlgorithmThread()).execute();
     }
 
+    /**
+     * SwingWorker thread. Allows the GUI to update dynamically, showing the user an increasing time in ms and a dynamically
+     * changing accuracy rating as the classification process runs. Can be seen better when using larger amounts of source
+     * and training files.
+     */
     class AlgorithmThread extends SwingWorker {
         @Override
         protected Object doInBackground() throws Exception {
-            return computeDistance();
+            return computeDistance(); // Start computeDistance from worker thread
         }
     }
 
@@ -74,7 +80,7 @@ public class Algorithm {
     public Object computeDistance() {
         this.startTime = (int) System.currentTimeMillis(); // Get time at start
 
-        this.resultsView = new ResultsView(); // NMew instance of ResultsView
+        this.resultsView = new ResultsView(); // New instance of ResultsView
 
         this.labelList = new ArrayList<>(); // Arraylist to store labels
         this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
@@ -164,15 +170,18 @@ public class Algorithm {
         this.timeTaken = (endTime - startTime); // Calculate time taken
         if (this.unknown.size() <= 1) {
             // Display results to user
+            File f = new File(filePath); // Get file name
+            this.resultsView.setTitle(f.getName()); // Set title to file name
             this.resultsView.getResultsImagePanel().setImage(filePath);
-            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText);
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText + "  ");
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
         } else {
             // calculate the average accuracy
             Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
             String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
-            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification);
+            this.resultsView.setTitle("Multiple Files");
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification + "  ");
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
         }

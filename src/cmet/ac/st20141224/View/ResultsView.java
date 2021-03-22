@@ -13,9 +13,11 @@ public class ResultsView extends JFrame {
     ConfidenceRatingPanel confidenceRatingPanel;
     TimeTakenPanel timeTakenPanel;
 
+    public String title;
+
 public ResultsView() {
-    mainWindow = new JFrame("Results");
-    mainWindow.setSize(200,250);  // Setting size of MainWindow
+    mainWindow = new JFrame();
+    mainWindow.setSize(325,250);  // Setting size of MainWindow
     mainWindow.setLayout(new BoxLayout(mainWindow.getContentPane(), BoxLayout.Y_AXIS));  // Specifying BoxLayout
 
     resultsImagePanel = new ResultsImagePanel(mainWindow);  // Adding image selection panel to JFrame
@@ -36,12 +38,23 @@ public ResultsView() {
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
     }
 
-
     /**
      * Getters & setters
      *
      * @return Returns the current value assigned to variable
      */
+
+    @Override
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+        mainWindow.setTitle(title);
+    }
+
     public ResultsImagePanel getResultsImagePanel() {
         return resultsImagePanel;
     }
