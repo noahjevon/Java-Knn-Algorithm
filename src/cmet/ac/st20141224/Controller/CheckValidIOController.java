@@ -9,6 +9,7 @@ import cmet.ac.st20141224.Model.TrainingDatasetModel;
 import cmet.ac.st20141224.View.AlertView;
 import cmet.ac.st20141224.View.ErrorView;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -30,6 +31,7 @@ public class CheckValidIOController {
 
     public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
+        (new CheckValidIOController.readThread()).execute(); // worker thread
     }
     /**
      * Check that test image source is valid. If it is not, it returns an error to the user.
@@ -111,12 +113,21 @@ public class CheckValidIOController {
     }
 
 
+    class readThread extends SwingWorker { // Reading files is a relatively long task. Worker thread to handle this.
+        @Override
+        protected Object doInBackground() throws Exception {
+            return checkIO(); // Start checkIO from worker thread
+        }
+    }
+
+
     /**
      * Checks that all boolean values from above are true. If they are, proceed to run the model.
      * Initialises the file readers, reads the data within the try-catch statements.
      * Creates a new instance of the Algorithm class using data required for it to run (test, label and image data)
+     * @return
      */
-    public void checkIO() { // Check to see if all boolean values return true
+    public Object checkIO() { // Check to see if all boolean values return true
         if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
             AlertView.alertMessage("Running model!", "Alert"); // Inform user model is running. Tests passed
 
@@ -171,6 +182,7 @@ public class CheckValidIOController {
         else { // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");
         }
+        return null;
     }
 
 
