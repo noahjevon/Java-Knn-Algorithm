@@ -15,8 +15,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Class to check if inputs are valid. If validity checks come back positive, the class proceeds to run the model with
- * specified parameters.
+ * Class to check if inputs are valid. If validity checks come back positive, the class proceeds to read data and
+ * run the model with the data objects.
  */
 public class CheckValidIOController {
     MainViewModel mainViewModel;
@@ -125,8 +125,7 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
-            long start = System.currentTimeMillis();
-            //CompletableFuture allows each block to be run in parallel
+            //CompletableFuture allows each block to be run in parallel. Saves approx. 0.2 seconds.
             CompletableFuture<Void> labels = CompletableFuture.runAsync(()->{
                 try {
                     readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
@@ -140,8 +139,8 @@ public class CheckValidIOController {
                 try {
                     readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
                     readTestImage.read(); // Reading test image
-                } catch (IOException e) { // Empty catch - fixed bug where it would always show (Error now handled
-                    // in the TestImageIO class
+                } catch (IOException e) {
+                    ErrorView.errorMessage("Error reading image", "Image Read Error");
                 }
             });
 
@@ -154,14 +153,12 @@ public class CheckValidIOController {
                 }
             });
 
-            CompletableFuture<Void> thread = CompletableFuture.allOf(labels, test, train); // Wait for all to finish
+            CompletableFuture<Void> future = CompletableFuture.allOf(labels, test, train); // Wait for all to finish
             try {
-                thread.get();
+                future.get();
             } catch (InterruptedException | ExecutionException e) {
                 // Handle exception here
             }
-            long end = System.currentTimeMillis();
-            System.out.println("Took " + (end - start));
 
             // Declaring ArrayLists for the training dataset and the image data
             ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();

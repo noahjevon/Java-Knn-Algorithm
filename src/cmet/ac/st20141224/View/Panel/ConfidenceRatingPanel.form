@@ -10,7 +10,7 @@
       <component id="6592" class="javax.swing.JLabel" binding="confidenceRating">
         <constraints border-constraint="Center"/>
         <properties>
-          <text value="Label"/>
+          <text value=""/>
         </properties>
       </component>
     </children>
