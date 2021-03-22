@@ -19,4 +19,12 @@ public class StopPanel extends JPanel{
         this.add(form);
         this.add(stopButton);
     }
+
+    public JButton getStopButton() {
+        return stopButton;
+    }
+
+    public void setStopButton(JButton stopButton) {
+        this.stopButton = stopButton;
+    }
 }

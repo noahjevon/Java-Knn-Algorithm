@@ -2,8 +2,6 @@
 package cmet.ac.st20141224.Knn;
 
 import cmet.ac.st20141224.Model.*;
-import cmet.ac.st20141224.View.MainView;
-import cmet.ac.st20141224.View.ProgressView;
 import cmet.ac.st20141224.View.ResultsView;
 
 import javax.swing.*;
@@ -17,7 +15,6 @@ import java.util.concurrent.ForkJoinPool;
 public class Algorithm {
 
     private ResultsView resultsView;
-    private ProgressView progressView;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
     private List<ImageLabelModel> labels; // List to store labels of images

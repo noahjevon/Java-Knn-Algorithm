@@ -1,5 +1,6 @@
 package cmet.ac.st20141224.View;
 
+import cmet.ac.st20141224.Controller.ResultsViewController;
 import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
@@ -14,6 +15,9 @@ public class ResultsView extends JFrame {
     TimeTakenPanel timeTakenPanel;
     ProgressPanel progressPanel;
     StopPanel stopPanel;
+
+    ResultsViewController resultsViewController;
+    ResultsView resultsView;
 
     public String title;
 
@@ -44,6 +48,8 @@ public ResultsView() {
     mainWindow.add(stopPanel);
 
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
+
+    resultsViewController = new ResultsViewController(this);
     }
 
     public void removeProgress() {

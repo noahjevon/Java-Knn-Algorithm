@@ -6,9 +6,6 @@ import cmet.ac.st20141224.Model.MainViewModel;
 import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.util.concurrent.TimeUnit;
 
 public class MainView {
     // Initialise JFrame and panels required to build the view
