@@ -1,6 +1,6 @@
-
 package cmet.ac.st20141224.Knn;
 
+import cmet.ac.st20141224.Controller.ResultsViewController;
 import cmet.ac.st20141224.Model.*;
 import cmet.ac.st20141224.View.ResultsView;
 
@@ -15,6 +15,7 @@ import java.util.concurrent.ForkJoinPool;
 public class Algorithm {
 
     private ResultsView resultsView;
+    private ResultsViewController resultsViewController;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
     private List<ImageLabelModel> labels; // List to store labels of images
@@ -42,6 +43,7 @@ public class Algorithm {
     private int startTime;
     private int endTime;
     private int timeTaken;
+    public Boolean isCancelled;
 
     List<Integer> greyscale;
 
@@ -50,8 +52,8 @@ public class Algorithm {
      * Algorithm that accepts parameters used in order to get distances between pixel data, and classify the data
      * to make a prediction as to what the test data may be.
      *
-     * @param k The K value the model will run using
-     * @param data The training data the model will run using
+     * @param k       The K value the model will run using
+     * @param data    The training data the model will run using
      * @param unknown The test data the model will run with
      */
     public Algorithm(int k, List<TrainingDatasetModel> data, List<TestImageModel> unknown, List<ImageLabelModel> labels) {
@@ -59,7 +61,9 @@ public class Algorithm {
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
         this.labels = labels; // Set label value
-        (new AlgorithmThread()).execute();
+        this.resultsView = new ResultsView();
+        this.resultsViewController = new ResultsViewController(resultsView);
+        computeDistance();
     }
 
     /**
@@ -67,49 +71,56 @@ public class Algorithm {
      * changing accuracy rating as the classification process runs. Can be seen better when using larger amounts of source
      * and training files.
      */
-    class AlgorithmThread extends SwingWorker {
-        @Override
-        protected Object doInBackground() throws Exception {
-            return computeDistance(); // Start computeDistance from worker thread
-        }
-    }
+
 
     /**
      * Method to compute the distance between two data points within training and testing images.
+     *
      * @return
      */
-    public Object computeDistance() {
+
+    public void computeDistance() {
         this.startTime = (int) System.currentTimeMillis(); // Get time at start
 
-        this.resultsView = new ResultsView(); // New instance of ResultsView
+        final SwingWorker sw = new SwingWorker<Integer, Integer>() {
 
-        this.labelList = new ArrayList<>(); // Arraylist to store labels
-        this.labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
+            protected Integer doInBackground() throws Exception {
+                final ProgressMonitor pm = new ProgressMonitor(resultsView, "", "", 1, unknown.size() - 1);
+                pm.setMillisToDecideToPopup(100);
+                pm.setMillisToPopup(100);
+                labelList = new ArrayList<>(); // Arraylist to store labels
+                labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
 
-        for (ImageLabelModel imageLabels : labels)  // For each item in label object,
-            this.labelList.add(imageLabels.getLabel()); // add to label list
+                for (ImageLabelModel imageLabels : labels)  // For each item in label object,
+                    labelList.add(imageLabels.getLabel()); // add to label list
 
+                for (TestImageModel testImage : unknown) {
+                    int i = -1;
+                    while (i++ < unknown.size() && !pm.isCanceled()) {
+                        TestImageModel image = unknown.get(i);
+                        pm.setProgress(i);
+                        greyscale = new ArrayList<>();
+                        filePath = image.getFilePath(); // Get filepath of image
+                        test = image.getGreyscale(); // Lists to store pixel data
+                        actualLabel = image.getLabel(); // Get label of image
+                        pm.setNote(filePath);
+                        greyscale = image.getGreyscale(); // Get greyscale value of image
 
-        for (TestImageModel testImage : unknown) { // For loop to get test image data
-            this.greyscale = new ArrayList<>();
+                        ForkJoinPool fjpool = new ForkJoinPool(); // New ForkJoinPool
+                        TrainingDatasetModel[] train = data.toArray(new TrainingDatasetModel[data.size()]);
 
-            this.filePath = testImage.getFilePath(); // Get filepath of image
-            test = testImage.getGreyscale(); // Lists to store pixel data
-            actualLabel = testImage.getLabel(); // Get label of image
+                        RecursiveAlgorithm task = new RecursiveAlgorithm(train,
+                                greyscale, 0, data.size()); // New task with training data, greyscale data, start point and set size
 
-            greyscale = testImage.getGreyscale(); // Get greyscale value of image
+                        fjpool.invoke(task); // Start the ForkJoinPool
 
-            ForkJoinPool fjpool = new ForkJoinPool(); // New ForkJoinPool
-            TrainingDatasetModel[] train = this.data.toArray(new TrainingDatasetModel[this.data.size()]);
-
-            RecursiveAlgorithm task = new RecursiveAlgorithm(train,
-                    greyscale, 0, this.data.size()); // New task with training data, greyscale data, start point and set size
-
-            fjpool.invoke(task); // Start the ForkJoinPool
-
-            classify(); // Begin classification
-        }
-        return null;
+                        classify();
+                    }
+                }
+                return null;
+            }
+        };
+        sw.execute();
     }
 
 
@@ -171,8 +182,6 @@ public class Algorithm {
         this.endTime = (int) System.currentTimeMillis(); // Get time at completion
         this.timeTaken = (endTime - startTime); // Calculate time taken
 
-        this.resultsView.getProgressPanel().getProgressLabel().setText("File: " + this.percentage + " out of: " + this.unknown.size());
-
         if (this.unknown.size() <= 1) {
             // Display results to user
             File f = new File(filePath); // Get file name
@@ -183,15 +192,17 @@ public class Algorithm {
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
         } else {
             // calculate the average accuracy
-            Double accuracy = (double)(this.correctClassification * 100) / (this.unknown.size());
+            Double accuracy = (double) (this.correctClassification * 100) / (this.unknown.size());
             String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
             this.resultsView.setTitle("Multiple Files");
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification + "  ");
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
         }
-        // Show how many K value used, number of files processed, and the time it took to complete
+        // Show K value used and the time it took to complete
         this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
-        this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText((this.unknown.size() + this.data.size()) + " files in " + timeTaken + " ms.");
+        this.resultsView.getTimeTakenPanel().getTimeTakenLabel().setText(("Process took: " + timeTaken + " ms."));
     }
 }
+
+

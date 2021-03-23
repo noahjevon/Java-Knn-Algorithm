@@ -136,40 +136,29 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
+            // REMOVE THESE COMPLETABLE FUTURES - CAUSE INFINITE ERROR HANGING!!!!!
+
             //CompletableFuture allows each block to be run in parallel. Saves approx. 0.2 seconds.
-            CompletableFuture<Void> labels = CompletableFuture.runAsync(()->{
                 try {
                     readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
                     readLabels.read(); // Reading the label file
                 } catch (IOException e) { // Inform user there was an error reading the label
                     ErrorView.errorMessage("Error reading label data", "Label Error");
                 }
-            });
 
-            CompletableFuture<Void> test = CompletableFuture.runAsync(()->{
                 try {
                     readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
                     readTestImage.read(); // Reading test image
                 } catch (IOException e) {
                     ErrorView.errorMessage("Error reading image", "Image Read Error");
                 }
-            });
-
-            CompletableFuture<Void> train = CompletableFuture.runAsync(()->{
                 try { // Read specified source
                     readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
                     readTrainingDataset.read(); // Reading training data
                 } catch (IOException e) { // Inform user there was an error reading the training data
                     ErrorView.errorMessage("Error reading source data", "Source Error");
                 }
-            });
 
-            CompletableFuture<Void> future = CompletableFuture.allOf(labels, test, train); // Wait for all to finish
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                // Handle exception here
-            }
 
             // Declaring ArrayLists for the training dataset and the image data
             ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();
