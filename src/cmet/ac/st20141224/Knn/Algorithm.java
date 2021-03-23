@@ -37,6 +37,7 @@ public class Algorithm {
     private List<Integer> train; // Lists to store pixel data of train image
 
     private int percentage = 0;
+    int i = -1;
 
     private int startTime;
     private int endTime;
@@ -92,7 +93,6 @@ public class Algorithm {
                     labelList.add(imageLabels.getLabel()); // add to label list
 
                 for (TestImageModel testImage : unknown) {
-                    int i = -1;
                     while (i++ < unknown.size() && !pm.isCanceled()) {
                         TestImageModel image = unknown.get(i);
                         pm.setProgress(i);
@@ -193,7 +193,7 @@ public class Algorithm {
             String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
             this.resultsView.setTitle("Multiple Files");
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification + "  ");
-            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + this.unknown.size());
+            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + (i + 1));
             this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
         }
         // Show K value used and the time it took to complete
