@@ -1,6 +1,5 @@
 package cmet.ac.st20141224.View;
 
-import cmet.ac.st20141224.Controller.ResultsViewController;
 import cmet.ac.st20141224.View.Panel.*;
 
 import javax.swing.*;
@@ -14,7 +13,6 @@ public class ResultsView extends JFrame {
     ConfidenceRatingPanel confidenceRatingPanel;
     TimeTakenPanel timeTakenPanel;
 
-    ResultsViewController resultsViewController;
     ResultsView resultsView;
 
     public String title;
@@ -41,7 +39,6 @@ public ResultsView() {
 
     mainWindow.setVisible(true);  // Setting the MainWindow to visible so panels can be seen
 
-    resultsViewController = new ResultsViewController(this);
     }
 
 

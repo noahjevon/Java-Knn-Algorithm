@@ -1,6 +1,5 @@
 package cmet.ac.st20141224.Knn;
 
-import cmet.ac.st20141224.Controller.ResultsViewController;
 import cmet.ac.st20141224.Model.*;
 import cmet.ac.st20141224.View.ResultsView;
 
@@ -15,7 +14,6 @@ import java.util.concurrent.ForkJoinPool;
 public class Algorithm {
 
     private ResultsView resultsView;
-    private ResultsViewController resultsViewController;
     private List<TrainingDatasetModel> data; // List to store parameters of training image object
     private List<TestImageModel> unknown; // List to store parameters of test image object
     private List<ImageLabelModel> labels; // List to store labels of images
@@ -62,7 +60,6 @@ public class Algorithm {
         this.unknown = unknown; // Set test image value
         this.labels = labels; // Set label value
         this.resultsView = new ResultsView();
-        this.resultsViewController = new ResultsViewController(resultsView);
         computeDistance();
     }
 
