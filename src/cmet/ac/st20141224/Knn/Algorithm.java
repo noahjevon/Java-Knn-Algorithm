@@ -36,13 +36,11 @@ public class Algorithm {
 
     private List<Integer> train; // Lists to store pixel data of train image
 
-    private int percentage = 0;
-    int i = -1;
+    int i = -1; // Starting index for image files at -1 (increases to 0 on first run)
 
-    private int startTime;
-    private int endTime;
-    private int timeTaken;
-    public Boolean isCancelled;
+    private int startTime; // Store start time of Knn
+    private int endTime; // Store end time of Knn
+    private int timeTaken; // Store time taken to run Knn
 
     List<Integer> greyscale;
 
@@ -60,32 +58,32 @@ public class Algorithm {
         this.data = data; // Set training image
         this.unknown = unknown; // Set test image value
         this.labels = labels; // Set label value
-        this.resultsView = new ResultsView();
+        this.resultsView = new ResultsView(); // new ResultsView
         computeDistance();
     }
 
+
     /**
+     * Method to compute the distance between two data points within training and testing images. Contains a
      * SwingWorker thread. Allows the GUI to update dynamically, showing the user an increasing time in ms and a dynamically
      * changing accuracy rating as the classification process runs. Can be seen better when using larger amounts of source
-     * and training files.
-     */
-
-
-    /**
-     * Method to compute the distance between two data points within training and testing images.
+     * and training files. Also allows a progress view to bne displayed to the user with the option to cancel the action,
+     * which stops the worker thread from running and proceeds with whatever data was collected during the run time.
      *
-     * @return
+     * @return returns null
      */
-
     public void computeDistance() {
         this.startTime = (int) System.currentTimeMillis(); // Get time at start
 
-        final SwingWorker sw = new SwingWorker<Integer, Integer>() {
+        final SwingWorker sw = new SwingWorker<Integer, Integer>() { // New swing worker thread
 
-            protected Integer doInBackground() throws Exception {
-                final ProgressMonitor pm = new ProgressMonitor(resultsView, "", "", 1, unknown.size() - 1);
-                pm.setMillisToDecideToPopup(100);
+            protected Integer doInBackground() throws Exception { // Background thread for process to run in
+                final ProgressMonitor pm = new ProgressMonitor(resultsView, "",
+                        "", 1, unknown.size() - 1); // Progress monitor to display progress to user
+
+                pm.setMillisToDecideToPopup(100); // Time it takes to display progress monitor
                 pm.setMillisToPopup(100);
+
                 labelList = new ArrayList<>(); // Arraylist to store labels
                 labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
 
@@ -93,31 +91,35 @@ public class Algorithm {
                     labelList.add(imageLabels.getLabel()); // add to label list
 
                 for (TestImageModel testImage : unknown) {
-                    while (i++ < unknown.size() && !pm.isCanceled()) {
-                        TestImageModel image = unknown.get(i);
-                        pm.setProgress(i);
-                        greyscale = new ArrayList<>();
+                    while (i++ < unknown.size() && !pm.isCanceled()) { // Loop until process finishes or is cancelled by user
+                        TestImageModel image = unknown.get(i); // Get image at index i in TestImageModel
+
+                        pm.setProgress(i); // Set the progress of the progress model
+
+                        greyscale = new ArrayList<>(); // New arraylist to store greyscale data
                         filePath = image.getFilePath(); // Get filepath of image
                         test = image.getGreyscale(); // Lists to store pixel data
                         actualLabel = image.getLabel(); // Get label of image
-                        pm.setNote(filePath);
+
+                        pm.setNote(filePath); // Update the progress model with the filepath currently in use
+
                         greyscale = image.getGreyscale(); // Get greyscale value of image
 
                         ForkJoinPool fjpool = new ForkJoinPool(); // New ForkJoinPool
-                        TrainingDatasetModel[] train = data.toArray(new TrainingDatasetModel[data.size()]);
+                        TrainingDatasetModel[] train = data.toArray(new TrainingDatasetModel[data.size()]); // Convert data to array
 
                         RecursiveAlgorithm task = new RecursiveAlgorithm(train,
                                 greyscale, 0, data.size()); // New task with training data, greyscale data, start point and set size
 
                         fjpool.invoke(task); // Start the ForkJoinPool
 
-                        classify();
+                        classify(); // Classify image
                     }
                 }
                 return null;
             }
         };
-        sw.execute();
+        sw.execute(); // Execute worker thread
     }
 
 
@@ -127,7 +129,6 @@ public class Algorithm {
      * data, where 'n' = K.
      */
     public void classify() {
-        this.percentage = percentage + 1;
         DecimalFormat df = new DecimalFormat("#.00"); // DecimalFormat to 2 decimal places
 
         this.data.sort(Comparator.comparingDouble(TrainingDatasetModel::getDistance)); // Compare values to get distance

@@ -28,6 +28,11 @@ public class CheckValidIOController {
     Boolean lbl; // Declaring lbl variable
     Boolean kVal; // Declaring kVal variable
 
+    // Boolean checks to ensure that file data reads successfully
+    Boolean check1;
+    Boolean check2;
+    Boolean check3;
+
 
     public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
@@ -136,29 +141,28 @@ public class CheckValidIOController {
             IFileReader readTestImage = new TestImageIO();
             IFileReader readLabels = new ImageLabelsIO();
 
-            // REMOVE THESE COMPLETABLE FUTURES - CAUSE INFINITE ERROR HANGING!!!!!
+            try {
+                readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
+                readLabels.read(); // Reading the label file
+            } catch (IOException e) { // Inform user there was an error reading the label
+                check1 = false;
+                ErrorView.errorMessage("Error reading label data.", "Label Error");
+            }
 
-            //CompletableFuture allows each block to be run in parallel. Saves approx. 0.2 seconds.
-                try {
-                    readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
-                    readLabels.read(); // Reading the label file
-                } catch (IOException e) { // Inform user there was an error reading the label
-                    ErrorView.errorMessage("Error reading label data", "Label Error");
-                }
-
-                try {
-                    readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
-                    readTestImage.read(); // Reading test image
-                } catch (IOException e) {
-                    ErrorView.errorMessage("Error reading image", "Image Read Error");
-                }
-                try { // Read specified source
-                    readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
-                    readTrainingDataset.read(); // Reading training data
-                } catch (IOException e) { // Inform user there was an error reading the training data
-                    ErrorView.errorMessage("Error reading source data", "Source Error");
-                }
-
+            try {
+                readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
+                readTestImage.read(); // Reading test image
+            } catch (IOException e) {
+                check2 = false;
+                ErrorView.errorMessage("Error reading image data.", "Image Read Error");
+            }
+            try { // Read specified source
+                readTrainingDataset.setFilename(this.mainViewModel.getSrcSrc()); // Getting filepath to training data file
+                readTrainingDataset.read(); // Reading training data
+            } catch (IOException e) { // Inform user there was an error reading the training data
+                ErrorView.errorMessage("Error reading source data.", "Source Error");
+                check3 = false;
+            }
 
             // Declaring ArrayLists for the training dataset and the image data
             ArrayList<ImageLabelModel> labelList = (ArrayList<ImageLabelModel>) readLabels.getData();
@@ -167,8 +171,7 @@ public class CheckValidIOController {
 
             // Creating new instance of 'Algorithm' class with data from IO classes
             Algorithm algorithm = new Algorithm(this.mainViewModel.getkValue(), trainingSet, imageList, labelList);
-        }
-        else { // Let user know the parameters were invalid
+        } else { // Let user know the parameters were invalid
             ErrorView.errorMessage("Please check parameters and try again.", "Run Error");
         }
         return null;

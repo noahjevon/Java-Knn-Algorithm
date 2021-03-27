@@ -29,6 +29,7 @@ public class TestImageIO implements IFileReader {
     private List<Integer> greenList; // List to store green pixel values
     private List<Integer> blueList; // List to store blue pixel values
     private List<Integer> greyscaleList; // List to store grayscale values
+    private String fileName;
 
     public TestImageIO() {
         this.imageList = new ArrayList<>();
@@ -64,7 +65,7 @@ public class TestImageIO implements IFileReader {
     public void readData(String path) throws IOException {
         try {
             FileInputStream imageStream; // Declaring new FileInputStream to read file
-            String fileName = path; // Filepath
+            this.fileName = path; // Filepath
 
             File path2 = new File(fileName); // Getting whole path of the specified file
             String name = path2.getName(); // Getting just the name of the specified file
@@ -89,7 +90,7 @@ public class TestImageIO implements IFileReader {
                 int image_width = img.getWidth(); // Getting the image width
                 int image_height = img.getHeight(); // Getting the image height
                 if (image_height > 32 && image_width > 32) { // Checking that image is 32 x 32 or less
-                    ErrorView.errorMessage("Image cannot be greater than 32x32!", "Image Size Error");
+                    ErrorView.errorMessage("Image: " + fileName + " is greater than 32x32.", "Image Size Error");
                 } else {
                     this.redList = new ArrayList<>(); // Initialising list to store red data
                     this.greenList = new ArrayList<>(); // Initialising list to store green data
@@ -122,15 +123,12 @@ public class TestImageIO implements IFileReader {
             this.imageList.add(new TestImageModel // Creating new object containing all image data
                     (fileName, label, redList, greenList, blueList, greyscaleList));
         } catch (NumberFormatException e) {
-            ErrorView.errorMessage("Error reading image data. Check if incorrect image is" +
-                    "present in directory and try again.", "Image Read Error");
+            ErrorView.errorMessage("Error reading image: " + fileName + ".", "Image Read Error");
         }
     }
 
     /**
      * Getters & setters
-     *
-     * @return Returns the current value assigned to variable
      */
     @Override
     public Object getData() {
