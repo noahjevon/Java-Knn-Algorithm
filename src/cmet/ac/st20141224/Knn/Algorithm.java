@@ -91,7 +91,7 @@ public class Algorithm {
                     labelList.add(imageLabels.getLabel()); // add to label list
                 });
 
-                unknown.forEach((n) -> {
+                unknown.forEach((n) -> { // Lambda - for each item in unknown
                     while (i++ < unknown.size() && !pm.isCanceled()) { // Loop until process finishes or is cancelled by user
                         TestImageModel image = unknown.get(i); // Get image at index i in TestImageModel
 
@@ -186,7 +186,7 @@ public class Algorithm {
         if (this.unknown.size() <= 1) {
             // Display results to user
             File f = new File(filePath); // Get file name
-            this.resultsView.setTitle(f.getName()); // Set title to file name
+            this.resultsView.setTitle(f.getName() + " | " + labelText); // Set title to file name
             this.resultsView.getResultsImagePanel().setImage(filePath);
             this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText + "  "); // Display actual label
             this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result); // Display classified label
