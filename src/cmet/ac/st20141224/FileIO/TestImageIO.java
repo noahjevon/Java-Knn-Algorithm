@@ -49,9 +49,13 @@ public class TestImageIO implements IFileReader {
             Files.walk(dir).forEach(path -> showFile(path.toFile())); // Run toFile to add paths to array
             filePath.remove(0); // Remove first index (It's the directory itself)
 
-            for (String path : filePath) { // Start reading each file
-                readData(path);
-            }
+            filePath.forEach( (path) -> { // Start reading each file
+                try {
+                    readData(path); // Run readData function with path as argument
+                } catch (IOException e) {
+                    e.printStackTrace(); // Throw exception
+                }
+            });
 
         } else { // If not a directory, read single file
             readData(testImage);
