@@ -28,11 +28,6 @@ public class CheckValidIOController {
     Boolean lbl; // Declaring lbl variable
     Boolean kVal; // Declaring kVal variable
 
-    // Boolean checks to ensure that file data reads successfully
-    Boolean check1;
-    Boolean check2;
-    Boolean check3;
-
 
     public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
@@ -145,7 +140,6 @@ public class CheckValidIOController {
                 readLabels.setFilename(this.mainViewModel.getLblSrc()); // Getting the filepath of the label file
                 readLabels.read(); // Reading the label file
             } catch (IOException e) { // Inform user there was an error reading the label
-                check1 = false;
                 ErrorView.errorMessage("Error reading label data.", "Label Error");
             }
 
@@ -153,7 +147,6 @@ public class CheckValidIOController {
                 readTestImage.setFilename(this.mainViewModel.getImgSrc()); // Getting filepath of test image file
                 readTestImage.read(); // Reading test image
             } catch (IOException e) {
-                check2 = false;
                 ErrorView.errorMessage("Error reading image data.", "Image Read Error");
             }
             try { // Read specified source
@@ -161,7 +154,6 @@ public class CheckValidIOController {
                 readTrainingDataset.read(); // Reading training data
             } catch (IOException e) { // Inform user there was an error reading the training data
                 ErrorView.errorMessage("Error reading source data.", "Source Error");
-                check3 = false;
             }
 
             // Declaring ArrayLists for the training dataset and the image data
