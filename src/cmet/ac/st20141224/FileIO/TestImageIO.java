@@ -22,12 +22,8 @@ public class TestImageIO implements IFileReader {
     private List<TestImageModel> imageList; // Declaring list to store image data
     private List<ImageLabelModel> labelList; // List of labels
     public List<String> filePath; // List to store individual paths of files in the directory
-    FileInputStream in_stream_images; // Declaring new FileInputStream
 
     private Integer label; // Integer to store label of image
-    private List<Integer> redList; // List to store red pixel values
-    private List<Integer> greenList; // List to store green pixel values
-    private List<Integer> blueList; // List to store blue pixel values
     private List<Integer> greyscaleList; // List to store grayscale values
     private String fileName;
 
@@ -96,9 +92,6 @@ public class TestImageIO implements IFileReader {
                 if (image_height > 32 && image_width > 32) { // Checking that image is 32 x 32 or less
                     ErrorView.errorMessage("Image: " + fileName + " is greater than 32x32.", "Image Size Error");
                 } else {
-                    this.redList = new ArrayList<>(); // Initialising list to store red data
-                    this.greenList = new ArrayList<>(); // Initialising list to store green data
-                    this.blueList = new ArrayList<>(); // Initialising list to store blue data
                     this.greyscaleList = new ArrayList<>(); // Initialising list to store greyscale data
 
                     for (int i = 0; i < 32; i++) { // Loop each pixel in the image
@@ -116,16 +109,13 @@ public class TestImageIO implements IFileReader {
                             int greyscale = (int) ((0.3 * red) + // Formula to calculate greyscale value of the pixel
                                     (0.59 * green) + (0.11 * blue));
 
-                            this.redList.add(red); // Adding red pixel data to red list
-                            this.greenList.add(green); // Adding green pixel data to green list
-                            this.blueList.add(blue); // Adding blue pixel data to blue list
                             this.greyscaleList.add(greyscale); // Adding greyscale pixel data to greyscale list
                         }
                     }
                 }
             }
             this.imageList.add(new TestImageModel // Creating new object containing all image data
-                    (fileName, label, redList, greenList, blueList, greyscaleList));
+                    (fileName, label, greyscaleList));
         } catch (NumberFormatException e) {
             ErrorView.errorMessage("Error reading image: " + fileName + ".", "Image Read Error");
         }

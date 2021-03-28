@@ -17,9 +17,6 @@ public class TrainingDatasetIO implements IFileReader {
     public List<String> filePath; // List to store individual paths of files in the directory
 
     private List<TrainingDatasetModel> imageList; // Declaring new list to store image data
-    private List<Integer> redList; // Declaring new list to store red pixel values
-    private List<Integer> greenList; // Declaring new list to store green pixel values
-    private List<Integer> blueList; // Declaring new list to store blue pixel values
     private List<Integer> greyscaleList; // Declaring new list to store greyscale pixel values
 
 
@@ -99,9 +96,6 @@ public class TrainingDatasetIO implements IFileReader {
             BufferedImage img = new BufferedImage // New BufferedImage for the image being read
                     (32, 32, BufferedImage.TYPE_INT_ARGB);
 
-            this.redList = new ArrayList<>(); // Initialising list to store red data
-            this.greenList = new ArrayList<>(); // Initialising list to store green data
-            this.blueList = new ArrayList<>(); // Initialising list to store blue data
             this.greyscaleList = new ArrayList<>(); // Initialising list to store greyscale data
 
             for(int i=0; i < 32; i++) { // Loop each pixel in the image
@@ -119,14 +113,11 @@ public class TrainingDatasetIO implements IFileReader {
                     int greyscale = (int) ((0.3 * red) + // Formula to calculate greyscale value of the pixel
                             (0.59 * green) + (0.11 * blue));
 
-                    this.redList.add(red); // Adding red pixel data to red list
-                    this.greenList.add(green); // Adding green pixel data to green list
-                    this.blueList.add(blue); // Adding blue pixel data to blue list
                     this.greyscaleList.add(greyscale); // Adding greyscale pixel data to greyscale list
                 }
             }
             this.imageList.add(new TrainingDatasetModel // Creating new object containing all image data
-                    (label, redList, greenList, blueList, greyscaleList));
+                    (label,greyscaleList));
         }
     }
 
