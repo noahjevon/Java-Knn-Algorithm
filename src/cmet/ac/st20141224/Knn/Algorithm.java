@@ -87,10 +87,11 @@ public class Algorithm {
                 labelList = new ArrayList<>(); // Arraylist to store labels
                 labelHash = new HashMap<String, Integer>(); // Hashmap to store labels and their frequency during classification
 
-                for (ImageLabelModel imageLabels : labels)  // For each item in label object,
+                labels.forEach((imageLabels) -> {
                     labelList.add(imageLabels.getLabel()); // add to label list
+                });
 
-                for (TestImageModel testImage : unknown) {
+                unknown.forEach((n) -> {
                     while (i++ < unknown.size() && !pm.isCanceled()) { // Loop until process finishes or is cancelled by user
                         TestImageModel image = unknown.get(i); // Get image at index i in TestImageModel
 
@@ -115,7 +116,7 @@ public class Algorithm {
 
                         classify(); // Classify image
                     }
-                }
+                });
                 return null;
             }
         };
@@ -180,22 +181,24 @@ public class Algorithm {
         this.endTime = (int) System.currentTimeMillis(); // Get time at completion
         this.timeTaken = (endTime - startTime); // Calculate time taken
 
+        // Updating the views is in the classify class - this way the results page updates dynamically as the classification
+        // runs, acting as a visual guide for the user to see classifications happening in real-time
         if (this.unknown.size() <= 1) {
             // Display results to user
             File f = new File(filePath); // Get file name
             this.resultsView.setTitle(f.getName()); // Set title to file name
             this.resultsView.getResultsImagePanel().setImage(filePath);
-            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText + "  ");
-            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result);
-            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%");
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Actual Label: " + labelText + "  "); // Display actual label
+            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Classified Label: " + result); // Display classified label
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Confidence: " + confidenceFormatted + "%"); // Display confidence
         } else {
             // calculate the average accuracy
             Double accuracy = (double) (this.correctClassification * 100) / (this.unknown.size());
             String accuracyFormatted = df.format(accuracy); // Format accuracy to 2 decimal places
-            this.resultsView.setTitle("Multiple Files");
-            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification + "  ");
-            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + (i + 1));
-            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%");
+            this.resultsView.setTitle("Multiple Files"); // Set title
+            this.resultsView.getResultsLabelPanel().getImageLabel().setText("Correctly Classified: " + this.correctClassification + "  "); // Show correct classifications
+            this.resultsView.getResultsLabelPanel().getResultLabel().setText("Total Images: " + (i + 1)); // Show images classified
+            this.resultsView.getConfidenceRatingPanel().getConfidenceRating().setText("Accuracy: " + accuracyFormatted + "%"); // Show accuracy
         }
         // Show K value used and the time it took to complete
         this.resultsView.getkValuePanel().getkValueLabel().setText("K value: " + (String.valueOf(this.k)));
