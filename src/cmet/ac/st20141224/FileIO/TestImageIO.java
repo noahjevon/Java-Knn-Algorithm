@@ -17,8 +17,7 @@ import java.util.List;
 
 
 public class TestImageIO implements IFileReader {
-    String testImage; // Declaring variable to store file path
-
+    private String testImage; // Declaring variable to store file path
     private List<TestImageModel> imageList; // Declaring list to store image data
     private List<ImageLabelModel> labelList; // List of labels
     public List<String> filePath; // List to store individual paths of files in the directory
@@ -34,6 +33,12 @@ public class TestImageIO implements IFileReader {
     }
 
 
+    /**
+     * Reads the file. Checks to see if path is a directory, if it is, get each path of each individual image in the
+     * directory to read. If it is not, just read one image.
+     *
+     * @throws IOException Throws an input output exception if there is an error reading the file./
+     */
     @Override
     public void read() throws IOException {
         File file = new File(testImage); // Path of directory or file
@@ -58,10 +63,23 @@ public class TestImageIO implements IFileReader {
         }
     }
 
+    /**
+     * Adds the filepath of each image to a list
+     *
+     * @param file The individual file
+     */
     public void showFile(File file) {
         this.filePath.add(file.getAbsolutePath());
     }
 
+
+    /**
+     * Reads the individual files, or single file, if determined by the read function above. Gets RGB data of
+     * the file and adds it to an object for processing by the algorithm.
+     *
+     * @param path The path to read
+     * @throws IOException
+     */
     public void readData(String path) throws IOException {
         try {
             FileInputStream imageStream; // Declaring new FileInputStream to read file

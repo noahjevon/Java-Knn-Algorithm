@@ -12,8 +12,6 @@ import cmet.ac.st20141224.View.ErrorView;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Class to check if inputs are valid. If validity checks come back positive, the class proceeds to read data and
@@ -23,16 +21,18 @@ public class CheckValidIOController {
     MainViewModel mainViewModel;
 
     // Declaring Boolean variables. Set to true if an input is valid, false if an input is invalid.
-    Boolean img; // Declaring img variable
-    Boolean src; // Declaring src variable
-    Boolean lbl; // Declaring lbl variable
-    Boolean kVal; // Declaring kVal variable
+    private Boolean img; // Declaring img variable
+    private Boolean src; // Declaring src variable
+    private Boolean lbl; // Declaring lbl variable
+    private Boolean kVal; // Declaring kVal variable
 
 
     public CheckValidIOController(MainViewModel mainViewModel) {
         this.mainViewModel = mainViewModel;
-        (new CheckValidIOController.readThread()).execute(); // worker thread
+        (new CheckValidIOController.readThread()).execute(); // Execute worker thread
     }
+
+
     /**
      * Check that test image source is valid. If it is not, it returns an error to the user.
      * Sets boolean value depending on outcome.
@@ -113,6 +113,9 @@ public class CheckValidIOController {
     }
 
 
+    /**
+     * Starts a new swingWorker thread to read the files in the background.
+     */
     class readThread extends SwingWorker { // Reading files is a relatively long task. Worker thread to handle this.
         @Override
         protected Object doInBackground() throws Exception {
@@ -125,10 +128,10 @@ public class CheckValidIOController {
      * Checks that all boolean values from above are true. If they are, proceed to run the model.
      * Initialises the file readers, reads the data within the try-catch statements.
      * Creates a new instance of the Algorithm class using data required for it to run (test, label and image data)
-     * @return
+     * @return returns null
      */
     public Object checkIO() { // Check to see if all boolean values return true
-        if ((this.getImg() == true) && (this.getSrc() == true) && (this.getLbl() == true) && (this.getkVal() == true)) {
+        if ((this.getImg()) && (this.getSrc()) && (this.getLbl()) && (this.getkVal())) {
             AlertView.alertMessage("Running model!", "Alert"); // Inform user model is running. Tests passed
 
             // Initialising new file readers

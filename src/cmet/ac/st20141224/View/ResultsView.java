@@ -17,6 +17,11 @@ public class ResultsView extends JFrame {
 
     public String title;
 
+
+/**
+*  The results view of the application. Creates a new JFrame, which has panels added on found in the 'panel' folder
+*  within the 'view' package.
+*/
 public ResultsView() {
     mainWindow = new JFrame();
     mainWindow.setSize(325,250);  // Setting size of MainWindow

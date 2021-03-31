@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
+/**
+ * This panel allows the K value and label path to be selected on the main JFrame.
+ */
 public class ParameterPanel extends JPanel {
 
     private JPanel form;

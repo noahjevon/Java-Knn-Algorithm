@@ -6,6 +6,10 @@ import cmet.ac.st20141224.FileIO.*;
 
 import java.util.List;
 
+
+/**
+ * MainViewModel. Contains getters & setters for the main view classes.
+ */
 public class MainViewModel {
     String imgSrc; // String to store image filepath
     String srcSrc; // String to store training dataset filepath

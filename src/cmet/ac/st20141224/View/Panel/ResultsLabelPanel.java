@@ -2,6 +2,9 @@ package cmet.ac.st20141224.View.Panel;
 
 import javax.swing.*;
 
+/**
+ * This panel allows the true and predicted labels to be displayed on the results JFrame.
+ */
 public class ResultsLabelPanel extends JPanel {
 
     private JPanel form;

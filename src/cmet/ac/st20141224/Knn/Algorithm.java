@@ -161,10 +161,8 @@ public class Algorithm {
         labelText = this.labelList.get(actualLabel);
 
         // Getting the predicted label of the test image
-        if (this.result == labelText) { // If result from above loop matches the text label of the test image
+        if (this.result.equals(labelText)) { // If result from above loop matches the text label of the test image
             this.correctClassification++; // Increment correctClassification
-        } else {
-            // Do nothing
         }
 
         // Find confidence value

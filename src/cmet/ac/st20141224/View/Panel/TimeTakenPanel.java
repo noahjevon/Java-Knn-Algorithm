@@ -2,6 +2,10 @@ package cmet.ac.st20141224.View.Panel;
 
 import javax.swing.*;
 
+
+/**
+ * This panel allows the time taken to be displayed on the results JFrame.
+ */
 public class TimeTakenPanel extends JPanel {
     private JPanel form;
     private JLabel timeTakenLabel;

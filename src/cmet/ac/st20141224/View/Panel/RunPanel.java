@@ -3,6 +3,10 @@ package cmet.ac.st20141224.View.Panel;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * This panel allows the run button to be displayed on the main JFrame.
+ */
 public class RunPanel extends JPanel{
     private JPanel form;
     JButton runModelBtn;

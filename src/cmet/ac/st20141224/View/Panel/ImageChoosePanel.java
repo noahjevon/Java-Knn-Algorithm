@@ -4,6 +4,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
+/**
+ * This panel allows the image selection button to be displayed on the main JFrame.
+ */
 public class ImageChoosePanel extends JPanel {
 
     JPanel form;

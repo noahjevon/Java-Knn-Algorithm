@@ -1,5 +1,9 @@
 package cmet.ac.st20141224.Model;
 
+
+/**
+ * ImageLabelModel. Handles data surrounding the image label file.
+ */
 public class ImageLabelModel { // Handles label object
 
     private String label; // String to store label models

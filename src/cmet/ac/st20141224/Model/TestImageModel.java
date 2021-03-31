@@ -2,6 +2,10 @@ package cmet.ac.st20141224.Model;
 
 import java.util.List;
 
+
+/**
+ * TestImageModel. Handles data surrounding the test image file(s).
+ */
 public class TestImageModel {
 
     String filePath;

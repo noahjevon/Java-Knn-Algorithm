@@ -10,14 +10,19 @@ import java.util.List;
 
 public class ImageLabelsIO implements IFileReader {
 
-    String filePath; // String variable for the file path of the image labels
-    String extension; // String variable for the extension of the file
-    List<ImageLabelModel> labelList; // List to store the labels
+    private String filePath; // String variable for the file path of the image labels
+    private String extension; // String variable for the extension of the file
+    private List<ImageLabelModel> labelList; // List to store the labels
 
     public ImageLabelsIO() {
         this.labelList = new ArrayList<ImageLabelModel>();
     }
 
+    /**
+     * Reads the file. Checks the extension of the file to ensure that only .txt documents are used for the labels.
+     *
+     * @throws IOException Throws an input output exception if there is an error reading the file./
+     */
     @Override
     public void read() throws IOException {
 

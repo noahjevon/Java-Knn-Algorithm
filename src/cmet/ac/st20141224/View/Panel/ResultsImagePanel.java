@@ -2,6 +2,9 @@ package cmet.ac.st20141224.View.Panel;
 
 import javax.swing.*;
 
+/**
+ * This panel allows the test image to be displayed on the results JFrame.
+ */
 public class ResultsImagePanel extends JPanel {
 
     private JPanel form;

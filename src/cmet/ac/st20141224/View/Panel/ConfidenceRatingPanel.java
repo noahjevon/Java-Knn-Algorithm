@@ -2,6 +2,9 @@ package cmet.ac.st20141224.View.Panel;
 
 import javax.swing.*;
 
+/**
+ * This panel allows the confidence rating to be displayed on the results JFrame.
+ */
 public class ConfidenceRatingPanel extends JPanel{
     private JPanel form;
     private JLabel confidenceRating;

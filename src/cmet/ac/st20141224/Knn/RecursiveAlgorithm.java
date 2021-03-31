@@ -26,6 +26,10 @@ public class RecursiveAlgorithm extends RecursiveAction implements IAlgorithm<Do
         this.greyscale = greyscale;
     }
 
+    /**
+     * Compute class. Decides how much data should be split up within the ForkJoin pool. Performs the actions
+     * normally done by the Algorithm class to speed up the process (About 6x increase in speed)
+     */
     @Override
     protected void compute() {
         if((end - start) < threshold) {

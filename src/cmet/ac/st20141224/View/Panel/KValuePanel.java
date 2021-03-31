@@ -2,6 +2,9 @@ package cmet.ac.st20141224.View.Panel;
 
 import javax.swing.*;
 
+/**
+ * This panel allows the K Value to be displayed on the results JFrame.
+ */
 public class KValuePanel extends JPanel {
     private JPanel form;
     private JLabel kValueLabel;
