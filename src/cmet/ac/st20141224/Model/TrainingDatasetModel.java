@@ -1,7 +1,11 @@
 package cmet.ac.st20141224.Model;
 
 import java.util.List;
-//test
+
+
+/**
+ * TrainingDatasetModel. Handles data surrounding the training dataset file(s).
+ */
 public class TrainingDatasetModel {
 
     private int label; // Int to store label data

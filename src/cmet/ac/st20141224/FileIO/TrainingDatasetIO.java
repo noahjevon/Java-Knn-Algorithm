@@ -44,7 +44,7 @@ public class TrainingDatasetIO implements IFileReader {
                 Files.walk(dir).forEach(path -> showFile(path.toFile())); // Run toFile to add paths to array
                 filePath.remove(0); // Remove first index (It's the directory itself)
 
-                filePath.forEach((path) -> { // Start reading each file within directory
+                filePath.forEach( (path) -> { // Start reading each file within directory
                     try {
                         readData(path); // Run readData method with path
                     } catch (IOException e) {
